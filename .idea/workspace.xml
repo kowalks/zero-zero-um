@@ -6,7 +6,6 @@
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/img/bg_title_screen.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/title_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
@@ -14,6 +13,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/zero-zero-um.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/zero-zero-um.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/teste.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +64,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1615128025554</updated>
-      <workItem from="1615128027934" duration="7509000" />
+      <workItem from="1615128027934" duration="7750000" />
     </task>
     <servers />
   </component>

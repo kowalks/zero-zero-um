@@ -1,6 +1,7 @@
 import pygame
 import settings
 import buttons
+import map
 
 class Screen():
     """ Class of a generic screen in the game """
@@ -73,7 +74,8 @@ class TitleScreen(Screen):
         # TODO: create click function in the Button class
         if ng_button.rectangle.collidepoint((mx, my)):
             if click:
-                pass
+                game_screen = GameScreen()
+                running = game_screen.run(running)
         if controls_button.rectangle.collidepoint((mx, my)):
             if click:
                 controls_screen = ControlsScreen()
@@ -148,3 +150,11 @@ class ControlsScreen(Screen):
 
         return running
 
+class GameScreen(Screen):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def run_events(self, running):
+        game_map = map.Map()
+        running = game_map.run(self.scn, running)
+        return running

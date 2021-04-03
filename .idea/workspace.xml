@@ -2,18 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/img/bg_title_screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/title_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/buttons.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/fonts/SuperLegendBoy.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/img/background/bg_NONE.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/img/background/bg_title_screen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/img/buttons/blue_button.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/screens.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/zero-zero-um.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/zero-zero-um.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/teste.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/img/bg_title_screen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/title_screen.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,16 +44,18 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gabri\OneDrive\Documentos\GitHub\zero-zero-um\data\img\buttons" />
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
@@ -65,6 +68,9 @@
       <option name="presentableId" value="Default" />
       <updated>1615128025554</updated>
       <workItem from="1615128027934" duration="7750000" />
+      <workItem from="1617285964072" duration="2164000" />
+      <workItem from="1617321385368" duration="128000" />
+      <workItem from="1617451720211" duration="20602000" />
     </task>
     <servers />
   </component>
@@ -81,6 +87,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

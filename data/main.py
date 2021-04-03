@@ -1,5 +1,7 @@
+import game
+import screens
 
-from title_screen import title_screen
-
-title_screen()
-pygame.quit()
+my_game = game.Game()
+title_screen = screens.TitleScreen()
+title_screen.run(my_game.running)
+my_game.close()

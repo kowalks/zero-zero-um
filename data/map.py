@@ -12,7 +12,7 @@ class Map:
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
-        
+
     def run(self, screen, running):
         
         self.done = False
@@ -40,13 +40,13 @@ class Map:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    self.my_player.horizontal(1)
+                    self.my_player.move(1,0, self.walls)
                 elif event.key == pygame.K_LEFT:
-                    self.my_player.horizontal(-1)
+                    self.my_player.move(-1,0, self.walls)
                 elif event.key == pygame.K_UP:
-                    self.my_player.vertical(-1)
+                    self.my_player.move(0,-1, self.walls)
                 elif event.key == pygame.K_DOWN:
-                    self.my_player.vertical(1)
+                    self.my_player.move(0,1, self.walls)
 
         self.all_sprites.update()
         return running

@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data/buttons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/fonts/SuperLegendBoy.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/game.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/img/background/bg_NONE.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/img/background/bg_title_screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/img/buttons/blue_button.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/screens.py" afterDir="false" />
+    <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="Created title screens and its buttons">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/zero-zero-um.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/zero-zero-um.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/img/bg_title_screen.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/title_screen.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,8 +58,16 @@
       <workItem from="1615128027934" duration="7750000" />
       <workItem from="1617285964072" duration="2164000" />
       <workItem from="1617321385368" duration="128000" />
-      <workItem from="1617451720211" duration="20602000" />
+      <workItem from="1617451720211" duration="22870000" />
     </task>
+    <task id="LOCAL-00001" summary="Created title screens and its buttons">
+      <created>1617477656511</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1617477656511</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -91,5 +87,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Created title screens and its buttons" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created title screens and its buttons" />
   </component>
 </project>

@@ -1,16 +1,16 @@
 import pygame
 from settings import *
 import player
-
-
+from wall import *
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, screen):
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(500,50)
         self.my_player = player.Player(0, 0)
         self.all_sprites = pygame.sprite.Group()
+        self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
         
     def run(self, screen, running):

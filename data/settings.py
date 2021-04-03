@@ -1,27 +1,21 @@
-import pygame
-import sys
 
-# Screen size settings
-SCREEN_WIDTH = 1600
-SCREEN_HEIGHT = 900
-
-# Screen caption
-CAPTION = "Zero-zero-um"
-
-# Margins size
-MARGIN = 15/128*SCREEN_WIDTH
-
-# Buttons size and distances
-BT_WIDTH = int(20/128*SCREEN_WIDTH)
-BT_HEIGHT = int(SCREEN_HEIGHT/10)
-BT_DIST =  BT_WIDTH + 6/128*SCREEN_WIDTH
-
-# Colors
-
+# some colors RGB
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+DARKGREY = (40, 40, 40)
+LIGHTGREY = (100, 100, 100)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 
-# Fonts
-BT_FONT = "SuperLegendBoy"
+# game settings
+TITLE = "Zero Zero Um"
+FPS = 30
+WIDTH = 1024   #32 * 32
+HEIGHT = 768  # 32 * 24 
+BGCOLOR = DARKGREY
 
-# #Initial screen background
-# TITLE_BG = pygame.image.load("img/bg_title_screen.png")
+
+TILESIZE = 32
+GRIDWIDTH = WIDTH / TILESIZE
+GRIDHEIGHT = HEIGHT / TILESIZE

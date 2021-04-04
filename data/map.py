@@ -17,11 +17,11 @@ class Map:
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     def set_rooms(self):
-        room_list = [[Room("up_left_corner"),Room("room1"),Room("up_middle_corner"),Room("room1"),Room("up_right_corner")],
-                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-                     [Room("down_left_corner"), Room("room1"), Room("down_middle_corner"), Room("room1"),
+        room_list = [[Room("up_left_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_right_corner")],
+                     [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
+                     [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
+                     [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
+                     [Room("down_left_corner"), Room("down_middle_corner"), Room("down_middle_corner"), Room("down_middle_corner"),
                       Room("down_right_corner")]
                       ]
         for rw in range(MAPSIZE):

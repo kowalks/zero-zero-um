@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="Uning screens.py and map.py in the game state">
+      <change afterPath="$PROJECT_DIR$/data/room.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/rooms/room1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/map.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/map.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

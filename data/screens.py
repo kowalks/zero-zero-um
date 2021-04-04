@@ -3,6 +3,7 @@ import settings
 import buttons
 import map
 
+
 class Screen():
     """ Class of a generic screen in the game """
     def __init__(self, caption = "My game name", *args, **kwargs):
@@ -83,7 +84,7 @@ class TitleScreen(Screen):
         if settings_button.rectangle.collidepoint((mx, my)):
             if click:
                 setting_screen = SettingsScreen()
-                running = setting_screen.run(running)
+                running, state = setting_screen.run(running)
         if quit_button.rectangle.collidepoint((mx, my)):
             if click:
                 running = False
@@ -94,18 +95,60 @@ class SettingsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.state = ""
 
-    def run_events(self, running):
-
+    def run_events(self, running, state = "Default"):
         mx, my = pygame.mouse.get_pos()
-
-        quit_button = pygame.Rect(settings.MARGIN + 3*settings.BT_DIST,
-                               settings.SCREEN_HEIGHT-settings.MARGIN,
-                               settings.BT_WIDTH,
-                               settings.BT_HEIGHT)
-
-        pygame.draw.rect(self.scn, (49, 146, 179), quit_button)
-
+        back_button = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
+                                     settings.SCREEN_HEIGHT - settings.MARGIN,
+                                     "Voltar", "blue_button")
+        video_button = buttons.Button(settings.MARGIN,
+                                      settings.MARGIN,
+                                      "Vídeo", "blue_button")
+        sound_button = buttons.Button(settings.MARGIN,
+                                      settings.MARGIN + settings.BT_HEIGHT,
+                                      "Áudio", "blue_button")
+        video_button.draw_button(self.scn)
+        back_button.draw_button(self.scn)
+        sound_button.draw_button(self.scn)
+        if state == "Vídeo":
+            video_setting_button_type1 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                                        settings.SCREEN_HEIGHT - settings.MARGIN,
+                                                        "Default", "blue_button")
+            video_setting_button_type2 = buttons.Button(settings.MARGIN+ 2 * settings.BT_DIST,
+                                                        settings.MARGIN,
+                                                        "2560x1600", "blue_button")
+            video_setting_button_type3 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                                        settings.MARGIN + settings.BT_HEIGHT+1,
+                                                        "800x600", "blue_button")
+            video_setting_button_type1.draw_button(self.scn)
+            video_setting_button_type2.draw_button(self.scn)
+            video_setting_button_type3.draw_button(self.scn)
+        if state == "Áudio":
+            music_setting_button = buttons.Button(settings.MARGIN + 2*settings.BT_DIST,
+                                                        settings.MARGIN + settings.BT_HEIGHT,
+                                                        "Music", "blue_button")
+            music_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
+                                                        settings.MARGIN + settings.BT_HEIGHT,
+                                                        "ON", "blue_button")
+            music_setting_button_off = buttons.Button(settings.MARGIN+ 3* settings.BT_DIST,
+                                                        settings.MARGIN + settings.BT_HEIGHT,
+                                                        "OFF", "blue_button")
+            sound_setting_button = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                                  settings.MARGIN + 2*settings.BT_HEIGHT+10,
+                                                  "Music", "blue_button")
+            sound_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
+                                                     settings.MARGIN + 2*settings.BT_HEIGHT+10,
+                                                     "ON", "blue_button")
+            sound_setting_button_off = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
+                                                      settings.MARGIN + 2*settings.BT_HEIGHT+10,
+                                                      "OFF", "blue_button")
+            music_setting_button_on.draw_button(self.scn)
+            music_setting_button.draw_button(self.scn)
+            music_setting_button_off.draw_button(self.scn)
+            sound_setting_button_on.draw_button(self.scn)
+            sound_setting_button.draw_button(self.scn)
+            sound_setting_button_off.draw_button(self.scn)
         click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -113,12 +156,28 @@ class SettingsScreen(Screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
-        if quit_button.collidepoint((mx, my)):
+        # TODO: Antes de dar push, organizar essa implementacao do quit button
+        if back_button.rectangle.collidepoint((mx, my)):
             if click:
-                running = False
+                title_screen = TitleScreen()
+                running = title_screen.run(running)
+        if video_button.rectangle.collidepoint((mx, my)):
+            if click:
+                state = "Vídeo"
+        if sound_button.rectangle.collidepoint((mx, my)):
+            if click:
+                state = "Áudio"
 
-        return running
+        return running, state
+
+    def run(self, running):
+        while running:
+            self.scn.blit(self.bg, (0, 0))
+            if self.state != "":
+                running, self.state = self.run_events(running, self.state)
+            else:
+                running, self.state = self.run_events(running)
+            pygame.display.update()
 
 class ControlsScreen(Screen):
 

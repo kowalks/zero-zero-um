@@ -18,9 +18,10 @@ class Map:
 
     def set_rooms(self):
         room1 = Room("room1")
-        room1.generate_walls(self.all_sprites, self.walls)
-
-
+        for row in range(MAPSIZE):
+            for col in range(MAPSIZE):
+                room1.generate_walls(self.all_sprites, self.walls,
+                                     col*ROOMSIZE, row*ROOMSIZE)
 
     def run(self, screen, running):
         self.done = False

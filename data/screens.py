@@ -214,6 +214,6 @@ class GameScreen(Screen):
         super().__init__(*args, **kwargs)
 
     def run_events(self, running):
-        game_map = map.Map()
+        game_map = map.Map(self.scn)
         running = game_map.run(self.scn, running)
         return running

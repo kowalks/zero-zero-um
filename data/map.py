@@ -14,11 +14,15 @@ class Map:
         self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
         self.set_rooms()
-    
+        self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+
     def set_rooms(self):
         room1 = Room("room1")
-        room1.generate_walls(self.all_sprites, self.walls)
-          
+        for row in range(MAPSIZE):
+            for col in range(MAPSIZE):
+                room1.generate_walls(self.all_sprites, self.walls,
+                                     col*ROOMSIZE, row*ROOMSIZE)
+
     def run(self, screen, running):
         self.done = False
         while not self.done:
@@ -29,7 +33,8 @@ class Map:
     def draw(self, screen):
         screen.fill(BGCOLOR)
         self.draw_grid(screen)
-        self.all_sprites.draw(screen)
+        for sprite in self.all_sprites:
+            screen.blit(sprite.image, self.camera.apply(sprite))
         pygame.display.flip()
     
     def draw_grid(self, screen):
@@ -54,6 +59,21 @@ class Map:
                     self.my_player.move(0,1, self.walls)
 
         self.all_sprites.update()
+        self.camera.update(self.my_player)
         return running
 
 
+class Camera:
+    def __init__(self, sizeX, sizeY):
+        self.camera = pygame.Rect(0,0,sizeX, sizeY)
+        self.width= sizeX
+        self.height = sizeY
+
+    def apply(self, entity):
+        return entity.rect.move(self.camera.topleft); #New Rect moved
+
+    def update(self, player):
+        # To center: (SCREEN_WIDTH/2) and (SCREEN_HEIGHT/2)
+        x = -player.rect.x + (SCREEN_WIDTH/2)
+        y = -player.rect.y + (SCREEN_HEIGHT/2)
+        self.camera = pygame.Rect(x, y, self.width, self.height)

@@ -238,12 +238,15 @@ class ControlsScreen(Screen):
 
         mx, my = pygame.mouse.get_pos()
 
-        quit_button = pygame.Rect(settings.MARGIN + 3*settings.BT_DIST,
-                               settings.SCREEN_HEIGHT-settings.MARGIN,
-                               settings.BT_WIDTH,
-                               settings.BT_HEIGHT)
+        back_button = quit_button = buttons.Button(settings.MARGIN + 3*settings.BT_DIST,
+                                   settings.SCREEN_HEIGHT - settings.MARGIN,
+                                   "Voltar", "blue_button")
 
-        pygame.draw.rect(self.scn, (49, 146, 179), quit_button)
+        back_button.draw_button(self.scn)
+        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        text = font.render("Bem-vindos, senhores!", True, (29, 13, 64))
+        self.scn.blit(text, (50, 80))
+
 
         click = False
         for event in pygame.event.get():
@@ -253,9 +256,10 @@ class ControlsScreen(Screen):
                 if event.button == 1:
                     click = True
 
-        if quit_button.collidepoint((mx, my)):
+        if back_button.rectangle.collidepoint((mx, my)):
             if click:
-                running = False
+                title_screen = TitleScreen()
+                running = title_screen.run(running)
 
         return running
 

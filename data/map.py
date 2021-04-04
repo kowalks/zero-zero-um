@@ -17,11 +17,17 @@ class Map:
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     def set_rooms(self):
-        room1 = Room("room1")
-        for row in range(MAPSIZE):
+        room_list = [[Room("up_left_corner"),Room("room1"),Room("up_middle_corner"),Room("room1"),Room("up_right_corner")],
+                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
+                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
+                     [Room("middle_left_corner"),Room("room1"),Room("room1"),Room("room1"),Room("middle_right_corner")],
+                     [Room("down_left_corner"), Room("room1"), Room("down_middle_corner"), Room("room1"),
+                      Room("down_right_corner")]
+                      ]
+        for rw in range(MAPSIZE):
             for col in range(MAPSIZE):
-                room1.generate_walls(self.all_sprites, self.walls,
-                                     col*ROOMSIZE, row*ROOMSIZE)
+                room_list[rw][col].generate_walls(self.all_sprites, self.walls,
+                                     col*ROOMSIZE, rw*ROOMSIZE)
 
     def run(self, screen, running):
         self.done = False

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="Updating settings.py">
-      <change afterPath="$PROJECT_DIR$/data/player.py" afterDir="false" />
+    <list default="true" id="e1459606-f81d-41f6-855a-790461595ca0" name="Default Changelist" comment="Uning screens.py and map.py in the game state">
+      <change afterPath="$PROJECT_DIR$/data/room.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/rooms/room1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/map.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/map.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/screens.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/screens.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,6 +22,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1pQvFR0D8Rflsq3iG4kft5wJDqk" />
@@ -62,7 +68,7 @@
       <workItem from="1615128027934" duration="7750000" />
       <workItem from="1617285964072" duration="2164000" />
       <workItem from="1617321385368" duration="128000" />
-      <workItem from="1617451720211" duration="25381000" />
+      <workItem from="1617451720211" duration="27996000" />
     </task>
     <task id="LOCAL-00001" summary="Created title screens and its buttons">
       <created>1617477656511</created>
@@ -78,7 +84,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617480361925</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Uning screens.py and map.py in the game state">
+      <created>1617482922558</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1617482922558</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,6 +113,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Created title screens and its buttons" />
     <MESSAGE value="Updating settings.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updating settings.py" />
+    <MESSAGE value="Uning screens.py and map.py in the game state" />
+    <option name="LAST_COMMIT_MESSAGE" value="Uning screens.py and map.py in the game state" />
   </component>
 </project>

@@ -3,7 +3,6 @@ import settings
 import buttons
 import map
 
-
 class Screen():
     """ Class of a generic screen in the game """
     def __init__(self, caption = "My game name", *args, **kwargs):
@@ -111,6 +110,16 @@ class SettingsScreen(Screen):
         video_button.draw_button(self.scn)
         back_button.draw_button(self.scn)
         sound_button.draw_button(self.scn)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+
         if state == "Vídeo":
             video_setting_button_type1 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
                                                         settings.SCREEN_HEIGHT - settings.MARGIN,
@@ -124,16 +133,34 @@ class SettingsScreen(Screen):
             video_setting_button_type1.draw_button(self.scn)
             video_setting_button_type2.draw_button(self.scn)
             video_setting_button_type3.draw_button(self.scn)
+            if video_setting_button_type1.rectangle.collidepoint((mx, my)):
+                if click:
+                    video_setting_button_type1.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    video_setting_button_type1.draw_button(self.scn)
+            if video_setting_button_type2.rectangle.collidepoint((mx, my)):
+                if click:
+                    video_setting_button_type2.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    video_setting_button_type2.draw_button(self.scn)
+            if video_setting_button_type3.rectangle.collidepoint((mx, my)):
+                if click:
+                    video_setting_button_type3.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    video_setting_button_type3.draw_button(self.scn)
         if state == "Áudio":
             music_setting_button = buttons.Button(settings.MARGIN + 2*settings.BT_DIST,
-                                                        settings.MARGIN + settings.BT_HEIGHT,
-                                                        "Music", "blue_button")
+                                                  settings.MARGIN + settings.BT_HEIGHT,
+                                                  "Music", "blue_button")
             music_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
-                                                        settings.MARGIN + settings.BT_HEIGHT,
-                                                        "ON", "blue_button")
+                                                     settings.MARGIN + settings.BT_HEIGHT,
+                                                     "ON", "blue_button")
             music_setting_button_off = buttons.Button(settings.MARGIN+ 3* settings.BT_DIST,
-                                                        settings.MARGIN + settings.BT_HEIGHT,
-                                                        "OFF", "blue_button")
+                                                      settings.MARGIN + settings.BT_HEIGHT,
+                                                      "OFF", "blue_button")
             sound_setting_button = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
                                                   settings.MARGIN + 2*settings.BT_HEIGHT+10,
                                                   "Music", "blue_button")
@@ -149,13 +176,36 @@ class SettingsScreen(Screen):
             sound_setting_button_on.draw_button(self.scn)
             sound_setting_button.draw_button(self.scn)
             sound_setting_button_off.draw_button(self.scn)
-        click = False
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
+            if music_setting_button.rectangle.collidepoint((mx, my)):
+                if click:
+                    pass
+            if music_setting_button_on.rectangle.collidepoint((mx, my)):
+                if click:
+                    music_setting_button_on.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    music_setting_button_on.draw_button(self.scn)
+            if music_setting_button_off.rectangle.collidepoint((mx, my)):
+                if click:
+                    music_setting_button_off.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    music_setting_button_off.draw_button(self.scn)
+            if sound_setting_button.rectangle.collidepoint((mx, my)):
+                if click:
+                    pass
+            if sound_setting_button_on.rectangle.collidepoint((mx, my)):
+                if click:
+                    sound_setting_button_on.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    sound_setting_button_on.draw_button(self.scn)
+            if sound_setting_button_off.rectangle.collidepoint((mx, my)):
+                if click:
+                    sound_setting_button_off.button_img = pygame.transform.scale(
+                        pygame.image.load(f'img/buttons/green_button.png'),
+                        (settings.BT_WIDTH, settings.BT_HEIGHT))
+                    sound_setting_button_off.draw_button(self.scn)
         # TODO: Antes de dar push, organizar essa implementacao do quit button
         if back_button.rectangle.collidepoint((mx, my)):
             if click:

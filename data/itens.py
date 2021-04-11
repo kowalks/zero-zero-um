@@ -18,7 +18,7 @@ class Item(pygame.sprite.Sprite, *args, **kwargs):
      
     def update(self):
         if(self.got)
-            """remover item da tela e adicionar ao player"""
+            """remover item da tela e adicionar ao jogador"""
         self.rect.x = self.x*TILESIZE
         self.rect.y = self.y*TILESIZE
         

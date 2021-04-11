@@ -15,6 +15,13 @@ class Item(pygame.sprite.Sprite, *args, **kwargs):
     def check_got(self, player):
       if (self.x == player.x and self.y == player.y):
         self.got = True
+     
+    def update(self):
+        if(self.got)
+            "remover item da tela e adicionar ao player"
+        self.rect.x = self.x*TILESIZE
+        self.rect.y = self.y*TILESIZE
+        
 
 "Iteração com jogador: atributo getout"
 class Key_item(Item):

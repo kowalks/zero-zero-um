@@ -3,7 +3,7 @@ from settings import *
 import player
 from wall import *
 from room import *
-import buttons
+
 
 class Map:
     def __init__(self, screen):
@@ -59,7 +59,6 @@ class Map:
 
         for sprite in self.all_sprites:
             screen.blit(sprite.image, self.camera.apply(sprite))
-
         self.draw_info(screen)
         self.check_collision(screen)
         pygame.display.flip()

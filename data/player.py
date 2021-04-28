@@ -1,8 +1,6 @@
 import pygame
 from settings import *
-
 vec = pygame.math.Vector2
-
 
 class Character(pygame.sprite.Sprite):
     def __init__(self, x, y, hp=100, COLOR=RED):
@@ -67,3 +65,4 @@ class Enemy(Character):
         super().update()
         self.rot = (vec(self.player.x, self.player.y) - vec(self.x, self.y)).angle_to(vec(1, 0))
         self.image = pygame.transform.rotate(self.original_image, self.rot)
+

@@ -57,8 +57,8 @@ class Player(Character):
 
 
 class Enemy(Character):
-    def __init__(self, all_sprites, enemy_sprites, player, x,y, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, all_sprites, enemy_sprites, player, x,y, hp = 100, *args, **kwargs):
+        super().__init__(hp = hp,*args, **kwargs)
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()

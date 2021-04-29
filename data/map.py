@@ -13,29 +13,35 @@ class Map:
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
-        self.set_rooms()
-        self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.map_image = self.set_rooms()
+        self.map_rect = self.map_image.get_rect()
+        self.camera = Camera(MAPSIZE*ROOMSIZE*TILESIZE, MAPSIZE*ROOMSIZE*TILESIZE)
         self.enemies = pygame.sprite.Group()
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1,1,41)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1,1,41)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
+        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
 
 
     def set_rooms(self):
-        room_list = [[Room("up_left_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_right_corner")],
-                     [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-                     [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
-                     [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
-                     [Room("down_left_corner"), Room("down_middle_corner"), Room("down_middle_corner"), Room("down_middle_corner"),
-                      Room("down_right_corner")]
-                      ]
-        for rw in range(MAPSIZE):
-            for col in range(MAPSIZE):
-                room_list[rw][col].generate_walls(self.all_sprites, self.walls,
-                                     col*ROOMSIZE, rw*ROOMSIZE)
+        all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*TILESIZE, MAPSIZE*ROOMSIZE*TILESIZE))
+        room1 = TiledRoom('room_16_teste')
+        all_room_img = room1.make_room(all_room_img)
+
+        # room_list = [[Room("up_left_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_right_corner")],
+        #              [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
+        #              [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
+        #              [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
+        #              [Room("down_left_corner"), Room("down_middle_corner"), Room("down_middle_corner"), Room("down_middle_corner"),
+        #               Room("down_right_corner")]
+        #               ]
+        # for rw in range(MAPSIZE):
+        #     for col in range(MAPSIZE):
+        #         room_list[rw][col].generate_walls(self.all_sprites, self.walls,
+        #                              col*ROOMSIZE, rw*ROOMSIZE)
+        return  all_room_img
 
     def run(self, screen, running):
         self.done = False
@@ -45,10 +51,14 @@ class Map:
             self.draw(screen)
 
     def draw(self, screen):
-        screen.fill(BGCOLOR)
+        # screen.fill(BGCOLOR)
         # self.draw_grid(screen)
+
+        screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))
+
         for sprite in self.all_sprites:
             screen.blit(sprite.image, self.camera.apply(sprite))
+
         self.draw_info(screen)
         self.check_collision(screen)
         pygame.display.flip()
@@ -78,6 +88,8 @@ class Map:
         self.camera.update(self.my_player)
         # pygame.sprite.spritecollide(self.my_player, self.enemies, 1)
         return running
+
+
     def check_collision(self, screen):
         Collide = False
         for enemy in self.enemies:
@@ -121,6 +133,9 @@ class Camera:
 
     def apply(self, entity):
         return entity.rect.move(self.camera.topleft); #New Rect moved
+
+    def apply_rect(self, rect):
+        return rect.move(self.camera.topleft)
 
     def update(self, player):
         # To center: (SCREEN_WIDTH/2) and (SCREEN_HEIGHT/2)

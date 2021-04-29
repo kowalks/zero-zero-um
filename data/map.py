@@ -28,10 +28,10 @@ class Map:
 
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
-        room1 = TiledRoom('room_16_teste')
-        all_room_img = room1.make_room(all_room_img)
+        # room1 = TiledRoom('up_left_corner')
+        # all_room_img = room1.make_room(all_room_img)
 
-        # room_list = [[Room("up_left_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_middle_corner"),Room("up_right_corner")],
+        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
         #              [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
         #              [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
         #              [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
@@ -39,9 +39,9 @@ class Map:
         #               Room("down_right_corner")]
         #               ]
         # for rw in range(MAPSIZE):
-        #     for col in range(MAPSIZE):
-        #         room_list[rw][col].generate_walls(self.all_sprites, self.walls,
-        #                              col*ROOMSIZE, rw*ROOMSIZE)
+        for col in range(MAPSIZE):
+            all_room_img = room_list[0][col].make_room(all_room_img, col, 0)
+
         return  all_room_img
 
     def run(self, screen, running):

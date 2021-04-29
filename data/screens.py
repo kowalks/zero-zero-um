@@ -381,4 +381,12 @@ def pop_up(player, enemy, screen):
             enemy.life -= 1
         if atck.rectangle.collidepoint((mx, my)):
             enemy.life -= 50
+        if item1.rectangle.collidepoint((mx, my)):
+            player.life -= 50
+        if item2.rectangle.collidepoint((mx, my)):
+            player.life += 50
+        if item3.rectangle.collidepoint((mx, my)):
+            enemy.life -= 5
+        if item4.rectangle.collidepoint((mx, my)):
+            enemy.life -= 10
     pygame.display.flip()

@@ -40,7 +40,6 @@ class Player(Character):
         self.check_move(walls, sinalx, sinaly)
 
     def check_move(self, walls, dx, dy):
-        print(walls)
         for brick in walls:
             if abs(self.rect.x - brick.x * TILESIZE) < TILESIZE and abs(self.rect.y - brick.y * TILESIZE) < TILESIZE:
                 if dx != 0:

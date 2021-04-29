@@ -90,8 +90,11 @@ class Map:
                 break
 
         if collide:
-            pop_up(self.my_player, enemy_battle, screen)
+            while(enemy.life > 0 and self.my_enemy.life > 0):
+                pop_up(self.my_player, enemy_battle, screen)
 
+        if enemy.life <= 0:
+            enemy.kill()
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
 
@@ -134,67 +137,84 @@ class Camera:
 
 
 def pop_up(player, enemy, screen):
-    BLUE = GREEN
-    screen.fill(BGCOLOR)
-    font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
-    # Title
-    img = font.render('Combate', True, WHITE)
-    rect = img.get_rect(center = (SCREEN_WIDTH/2, TILESIZE))
-    screen.blit(img, rect)
+        BLUE = GREEN
+        screen.fill(BGCOLOR)
+        font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+        # Title
+        img = font.render('Combate', True, WHITE)
+        rect = img.get_rect(center = (SCREEN_WIDTH/2, TILESIZE))
+        screen.blit(img, rect)
 
-    # Players Life
-    pl_life = font.render('Vida:', True, WHITE)
-    vida =pl_life.get_rect(bottomleft = (TILESIZE, 3*TILESIZE))
-    screen.blit(pl_life, vida)
+        # Players Life
+        pl_life = font.render('Vida:', True, WHITE)
+        vida =pl_life.get_rect(bottomleft = (TILESIZE, 3*TILESIZE))
+        screen.blit(pl_life, vida)
 
-    jogador = font.render("Jogador", True, WHITE)
-    player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
-    screen.blit(jogador, player_title)
+        jogador = font.render("Jogador", True, WHITE)
+        player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
+        screen.blit(jogador, player_title)
 
-    pl_life = font.render(str(player.life), True, RED)
-    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
+        pl_life = font.render(str(player.life), True, RED)
+        vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
+        screen.blit(pl_life, vida)
 
-    # Enemy Life
-    jogador = font.render("Inimigo", True, WHITE)
-    enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
-    screen.blit(jogador, enemy_title)
+        # Enemy Life
+        jogador = font.render("Inimigo", True, WHITE)
+        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
+        screen.blit(jogador, enemy_title)
 
-    pl_life = font.render('Vida:', True, WHITE)
-    vida = pl_life.get_rect(bottomleft = (enemy_title.left, 3*TILESIZE))
-    screen.blit(pl_life, vida)
+        pl_life = font.render('Vida:', True, WHITE)
+        vida = pl_life.get_rect(bottomleft = (enemy_title.left, 3*TILESIZE))
+        screen.blit(pl_life, vida)
 
-    pl_life = font.render(str(enemy.life), True, RED)
-    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
+        pl_life = font.render(str(enemy.life), True, RED)
+        vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
+        screen.blit(pl_life, vida)
 
-    BACK = (70, 70, 70)
-    #Rect for actions
-    rect = pygame.Rect(50, 60, SCREEN_WIDTH-2*TILESIZE, 0.4*SCREEN_HEIGHT)
-    rect.midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT - TILESIZE/4)
-    pygame.draw.rect(screen, BACK, rect, border_radius=10)
+        BACK = (70, 70, 70)
+        #Rect for actions
+        rect = pygame.Rect(50, 60, SCREEN_WIDTH-2*TILESIZE, 0.4*SCREEN_HEIGHT)
+        rect.midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT - TILESIZE/4)
+        pygame.draw.rect(screen, BACK, rect, border_radius=10)
 
-    #Buttons
-    ng_button = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
-                               rect.y + TILESIZE/2,
-                               "Atacar", "withe_button")
-    ng_button.draw_button(screen)
+        #Buttons
+        atck1 = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
+                                   rect.y + TILESIZE/2,
+                                   "Atacar", "withe_button")
+        atck1.draw_button(screen)
 
-    atck = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
-                               rect.y + TILESIZE/2 + 2*TILESIZE,
-                               "Atacar", "withe_button")
-    atck.draw_button(screen)
+        atck = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
+                                   rect.y + TILESIZE/2 + 2*TILESIZE,
+                                   "Atacar", "withe_button")
+        atck.draw_button(screen)
 
-    itens = font.render("Itens", True, WHITE)
-    itenspos = itens.get_rect(midtop = (rect.center[0] + (rect.right - rect.left)/4, rect.y  + TILESIZE/4))
-    screen.blit(itens, itenspos)
+        itens = font.render("Itens", True, WHITE)
+        itenspos = itens.get_rect(midtop = (rect.center[0] + (rect.right - rect.left)/4, rect.y  + TILESIZE/4))
+        screen.blit(itens, itenspos)
 
-    #ITENS
-    nTILESIZE = 1.2*TILESIZE
-    rect_itens = pygame.Rect(0,0, nTILESIZE, nTILESIZE)
+        #ITENS
+        nTILESIZE = 1.2*TILESIZE
+        rect_itens = pygame.Rect(0,0, nTILESIZE, nTILESIZE)
 
-    for y_off in range(0, 3, 1):
-        for x_off in range(0, 3,1):
-            rect_itens.topleft = (itenspos.bottomleft[0] + x_off*nTILESIZE,itenspos.bottomleft[1]+y_off*nTILESIZE)
-            pygame.draw.rect(screen, (50, 50, 50), rect_itens)
-            pygame.draw.rect(screen, WHITE, rect_itens, width=1)
+
+        for y_off in range(0, 3, 1):
+            for x_off in range(0, 3,1):
+                rect_itens.topleft = (itenspos.bottomleft[0] + x_off*nTILESIZE,itenspos.bottomleft[1]+y_off*nTILESIZE)
+                pygame.draw.rect(screen, (50, 50, 50), rect_itens)
+                pygame.draw.rect(screen, WHITE, rect_itens, width=1)
+
+       #mouse position
+        mx, my = pygame.mouse.get_pos()
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        if click:
+            if atck1.rectangle.collidepoint((mx, my)):
+                enemy.life-=1
+            if atck.rectangle.collidepoint((mx, my)):
+                enemy.life -= 50
+        pygame.display.flip()

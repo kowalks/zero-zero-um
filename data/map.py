@@ -5,6 +5,7 @@ from wall import *
 from room import *
 import buttons
 
+
 class Map:
     def __init__(self, screen):
         self.clock = pygame.time.Clock()
@@ -24,25 +25,15 @@ class Map:
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
-
+        self.dt = 0
 
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
-        # room1 = TiledRoom('up_left_corner')
-        # all_room_img = room1.make_room(all_room_img)
-
         room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
-        #              [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-        #              [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
-        #              [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
-        #              [Room("down_left_corner"), Room("down_middle_corner"), Room("down_middle_corner"), Room("down_middle_corner"),
-        #               Room("down_right_corner")]
-        #               ]
-        # for rw in range(MAPSIZE):
         for col in range(MAPSIZE):
             all_room_img = room_list[0][col].make_room(all_room_img, col, 0)
 
-        return  all_room_img
+        return all_room_img
 
     def run(self, screen, running):
         while running:
@@ -83,7 +74,6 @@ class Map:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.done = True
                 running = False
 
         self.all_sprites.update()
@@ -91,17 +81,16 @@ class Map:
         # pygame.sprite.spritecollide(self.my_player, self.enemies, 1)
         return running
 
-
     def check_collision(self, screen):
-        Collide = False
+        collide = False
         for enemy in self.enemies:
-            if (self.my_player.x == enemy.x and self.my_player.y == enemy.y):
-                enemy_battle = enemy;
-                Collide = True
-                break;
+            if self.my_player.x == enemy.x and self.my_player.y == enemy.y:
+                enemy_battle = enemy
+                collide = True
+                break
 
-        if Collide == True:
-            pop_up(self.my_player, enemy_battle, screen);
+        if collide:
+            pop_up(self.my_player, enemy_battle, screen)
 
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
@@ -110,10 +99,8 @@ class Map:
         pl_life_text = font.render('Vida:', True, WHITE)
         vida_text = pl_life_text.get_rect(bottomleft=(TILESIZE/2, TILESIZE))
 
-
         pl_life = font.render(str(self.my_player.life), True, RED)
         vida = pl_life.get_rect(bottomleft=(vida_text.right, TILESIZE))
-
 
         lifeSurface = pygame.Surface(((vida.width + vida_text.width)*1.2, vida.height*1.2))  # the size of your rect
         lifeSurface.set_alpha(128)  # alpha level
@@ -134,7 +121,7 @@ class Camera:
         self.height = sizeY
 
     def apply(self, entity):
-        return entity.rect.move(self.camera.topleft); #New Rect moved
+        return entity.rect.move(self.camera.topleft)  # New Rect moved
 
     def apply_rect(self, rect):
         return rect.move(self.camera.topleft)
@@ -145,16 +132,17 @@ class Camera:
         y = -player.rect.y + (SCREEN_HEIGHT/2)
         self.camera = pygame.Rect(x, y, self.width, self.height)
 
+
 def pop_up(player, enemy, screen):
     BLUE = GREEN
     screen.fill(BGCOLOR)
     font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
-    #Title
+    # Title
     img = font.render('Combate', True, WHITE)
     rect = img.get_rect(center = (SCREEN_WIDTH/2, TILESIZE))
     screen.blit(img, rect)
 
-    #Players Life
+    # Players Life
     pl_life = font.render('Vida:', True, WHITE)
     vida =pl_life.get_rect(bottomleft = (TILESIZE, 3*TILESIZE))
     screen.blit(pl_life, vida)
@@ -167,7 +155,7 @@ def pop_up(player, enemy, screen):
     vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
     screen.blit(pl_life, vida)
 
-    #Enemy Life
+    # Enemy Life
     jogador = font.render("Inimigo", True, WHITE)
     enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
     screen.blit(jogador, enemy_title)
@@ -210,6 +198,3 @@ def pop_up(player, enemy, screen):
             rect_itens.topleft = (itenspos.bottomleft[0] + x_off*nTILESIZE,itenspos.bottomleft[1]+y_off*nTILESIZE)
             pygame.draw.rect(screen, (50, 50, 50), rect_itens)
             pygame.draw.rect(screen, WHITE, rect_itens, width=1)
-
-
-

@@ -1,6 +1,6 @@
-import pygame
 from settings import *
 vec = pygame.math.Vector2
+
 
 class Character(pygame.sprite.Sprite):
     def __init__(self, x, y, hp=100, COLOR=RED):
@@ -20,30 +20,6 @@ class Character(pygame.sprite.Sprite):
         self.x = self.rect.x // TILESIZE
         self.y = self.rect.y // TILESIZE
 
-    def check_move(self, sinalx, sinaly, walls):
-        Collide = False
-        for brick in walls:
-            if (self.x == brick.x and self.y == brick.y):
-                Collide = True
-        if Collide == True:
-            self.x -= sinalx;
-            self.y -= sinaly;
-
-    def move(self, sinalx, sinaly, walls):
-        self.x += sinalx
-        self.y += sinaly
-        if sinalx == 1:
-           self.image = self.image_r
-        elif sinalx == -1:
-           self.image = self.original_image
-        # elif sinaly == 1:
-        #     self.image = pygame.transform.rotate(self.original_image, 270)
-        # else:
-        #     self.image = pygame.transform.rotate(self.original_image, 90)
-        self.check_move(sinalx, sinaly, walls)
-
-
-
 
 class Player(Character):
     def __init__(self, x, y, *args, **kwargs):
@@ -57,15 +33,14 @@ class Player(Character):
     def move(self, sinalx, sinaly, walls):
         self.rect.x += sinalx * PLAYER_SPEED
         self.rect.y += sinaly * PLAYER_SPEED
-
         if sinalx == 1:
             self.image = self.image_r
         elif sinalx == -1:
             self.image = self.original_image
-
         self.check_move(walls, sinalx, sinaly)
 
     def check_move(self, walls, dx, dy):
+        print(walls)
         for brick in walls:
             if abs(self.rect.x - brick.x * TILESIZE) < TILESIZE and abs(self.rect.y - brick.y * TILESIZE) < TILESIZE:
                 if dx != 0:

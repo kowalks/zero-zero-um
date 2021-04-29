@@ -31,7 +31,7 @@ class Map:
         # room1 = TiledRoom('up_left_corner')
         # all_room_img = room1.make_room(all_room_img)
 
-        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
+        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")]]
         #              [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
         #              [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
         #              [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],

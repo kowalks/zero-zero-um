@@ -84,8 +84,7 @@ class Map:
     def check_collision(self, screen):
         for enemy in self.enemies:
             if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
-                print(enemy)
-                while (enemy.life > 0 and self.my_player.life > 0):
+                while enemy.life > 0 and self.my_player.life > 0:
                     pop_up(self.my_player, enemy, screen)
                 if enemy.life <= 0:
                     enemy.kill()

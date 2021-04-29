@@ -3,20 +3,20 @@ from settings import *
 vec = pygame.math.Vector2
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x=0, y = 0, hp = 100, COLOR = RED):
+    def __init__(self, x, y, hp = 100, COLOR = RED):
         self.life = hp
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((TILESIZE, TILESIZE))
         self.image.fill(COLOR)
         self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y
+        self.rect.x = x*TILESIZE
+        self.rect.y = y*TILESIZE
         self.vx = 0
         self.vy = 0
 
     def update(self):
         self.x = self.rect.x/TILESIZE
-        self.y = self.rect.y*TILESIZE
+        self.y = self.rect.y/TILESIZE
 
     def check_move(self, sinalx, sinaly, walls):
         collide = False
@@ -40,14 +40,14 @@ class Character(pygame.sprite.Sprite):
 
 class Player(Character):
     def __init__(self, x,y, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(x, y, *args, **kwargs)
         self.original_image = pygame.image.load("img/player/player.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image_r = pygame.image.load("img/player/player_right.png").convert_alpha()
         self.image_r = pygame.transform.scale(self.image_r, (TILESIZE, TILESIZE))
         self.image = self.original_image
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x*TILESIZE
+        self.rect.y = y*TILESIZE
 
     def update(self):
         super().update()
@@ -56,14 +56,12 @@ class Player(Character):
 
 class Enemy(Character):
     def __init__(self, all_sprites, enemy_sprites, player, x,y, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
-        self.x = x
-        self.y = y
         self.rot = 0
         self.player = player
 

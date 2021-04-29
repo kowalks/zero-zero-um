@@ -82,19 +82,18 @@ class Map:
         return running
 
     def check_collision(self, screen):
-        collide = False
         for enemy in self.enemies:
-            if self.my_player.x == enemy.x and self.my_player.y == enemy.y:
-                enemy_battle = enemy
-                collide = True
+            if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
+                print(enemy)
+                while (enemy.life > 0 and self.my_player.life > 0):
+                    pop_up(self.my_player, enemy, screen)
+                if enemy.life <= 0:
+                    enemy.kill()
                 break
 
-        if collide:
-            while(enemy.life > 0 and self.my_enemy.life > 0):
-                pop_up(self.my_player, enemy_battle, screen)
 
-        if enemy.life <= 0:
-            enemy.kill()
+
+
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
 

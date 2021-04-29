@@ -3,7 +3,7 @@ from settings import *
 import player
 from wall import *
 from room import *
-
+import buttons
 
 class Map:
     def __init__(self, screen):

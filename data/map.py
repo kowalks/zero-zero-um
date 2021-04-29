@@ -43,7 +43,6 @@ class Map:
 
     def draw(self, screen):
         screen.fill(BLACK)
-        # self.draw_grid(screen)
 
         screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))
 
@@ -82,7 +81,7 @@ class Map:
         return running
 
     def check_collision(self, screen):
-        for enemy in self.enemies:
+        for enemy in  self.enemies:
             if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 while enemy.life > 0 and self.my_player.life > 0:
                     pop_up(self.my_player, enemy, screen)

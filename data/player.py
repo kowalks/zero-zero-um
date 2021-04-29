@@ -4,11 +4,11 @@ import random as rnd
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, hp=100, COLOR=RED):
+    def __init__(self, x, y, hp=100, color=RED):
         self.life = hp
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((TILESIZE, TILESIZE))
-        self.image.fill(COLOR)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
@@ -20,8 +20,6 @@ class Character(pygame.sprite.Sprite):
     def update(self):
         self.x = self.rect.x // TILESIZE
         self.y = self.rect.y // TILESIZE
-
-
 
 
 class Player(Character):
@@ -60,10 +58,10 @@ class Enemy(Character):
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
-        self.velocity = Vec(1,0).rotate(rnd.randrange(0, 360))
-        self.tmax = rnd.randrange(20,50)
+        self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
+        self.tmax = rnd.randrange(20, 50)
         self.tick = 0
-        self.furious = rnd.randint(0,1)
+        self.furious = rnd.randint(0, 1)
 
     def update(self):
         # self.rot = (vec(self.player.x, self.player.y) - vec(self.x, self.y)).angle_to(vec(1,0))
@@ -73,7 +71,7 @@ class Enemy(Character):
             self.random_velocity()
 
         self.walk()
-        phi = self.velocity.angle_to(Vec(1,0))
+        phi = self.velocity.angle_to(Vec(1, 0))
         self.image = pygame.transform.rotate(self.original_image, phi)
         self.check_move()
         super().update()
@@ -81,7 +79,7 @@ class Enemy(Character):
     def target_velocity(self):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
         if displacement.length() == 0:
-            self.velocity = Vec(0,0)
+            self.velocity = Vec(0, 0)
         else:
             self.velocity = displacement.normalize()
 
@@ -89,13 +87,13 @@ class Enemy(Character):
         self.tick += 1
         if self.tick > self.tmax:
             self.tick = 0
-            self.tmax = rnd.randrange(20,50)
+            self.tmax = rnd.randrange(20, 50)
             self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
 
     def walk(self):
         self.rect.x += ENEMY_SPEED * self.velocity.x
         self.rect.y += ENEMY_SPEED * self.velocity.y
 
-    #TODO
+    # TODO
     def check_move(self):
         pass

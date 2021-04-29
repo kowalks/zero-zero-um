@@ -45,10 +45,9 @@ class Map:
         return  all_room_img
 
     def run(self, screen, running):
-        self.done = False
-        while not self.done:
-            self.clock.tick(FPS)
-            self.event(running)
+        while running:
+            self.dt = self.clock.tick(FPS)/1000
+            running = self.event(running)
             self.draw(screen)
 
     def draw(self, screen):
@@ -70,19 +69,22 @@ class Map:
             pygame.draw.line(screen, LIGHTGREY, (x_offset, 0), (x_offset, SCREEN_WIDTH))
 
     def event(self, running):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.my_player.move(1,0, self.walls)
+        elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            self.my_player.move(-1,0, self.walls)
+        elif keys[pygame.K_UP] or keys[pygame.K_w]:
+            self.my_player.move(0,-1, self.walls)
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.my_player.move(0,1, self.walls)
+        elif keys[pygame.QUIT]:
+            running = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.done = True
                 running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    self.my_player.move(1,0, self.walls)
-                elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    self.my_player.move(-1,0, self.walls)
-                elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    self.my_player.move(0,-1, self.walls)
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    self.my_player.move(0,1, self.walls)
 
         self.all_sprites.update()
         self.camera.update(self.my_player)

@@ -28,16 +28,16 @@ class TiledRoom:
         self.height = tm.height * tm.tileheight
         self.tmxdata = tm
 
-    def render(self, surface):
+    def render(self, surface, xRoom, yRoom):
         ti = self.tmxdata.get_tile_image_by_gid
         for layer in self.tmxdata.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:
                     tile = ti(gid)
                     if tile:
-                        surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                            y *self.tmxdata.tileheight))
+                        surface.blit(tile, (x * self.tmxdata.tilewidth + self.width * xRoom,
+                                            y *self.tmxdata.tileheight + self.height * yRoom))
 
-    def make_room(self, rooms_surface):
-        self.render(rooms_surface)
+    def make_room(self, rooms_surface, xRoom, yRoom):
+        self.render(rooms_surface, xRoom, yRoom)
         return rooms_surface

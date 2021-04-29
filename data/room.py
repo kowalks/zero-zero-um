@@ -11,8 +11,8 @@ class Room:
                 self.room_data.append(line)
 
 
-    def generate_walls(self, all_sprites, wall_sprites):
+    def generate_walls(self, all_sprites, wall_sprites, x_room, y_room):
         for row, tiles in enumerate(self.room_data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
-                    wall.Wall(all_sprites, wall_sprites, col, row)
+                    wall.Wall(all_sprites, wall_sprites, x_room + col, y_room + row)

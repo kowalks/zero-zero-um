@@ -43,3 +43,4 @@ ROOMSIZE = 16
 
 MAPSIZE = 5 # in rooms
 
+

@@ -15,19 +15,20 @@ class Map:
         self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
         self.map_image = self.set_rooms()
+        self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
-        self.camera = Camera(MAPSIZE*ROOMSIZE*TILESIZE, MAPSIZE*ROOMSIZE*TILESIZE)
+        self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.enemies = pygame.sprite.Group()
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1,1,41)
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
-        # self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1,1,41)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
 
 
     def set_rooms(self):
-        all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*TILESIZE, MAPSIZE*ROOMSIZE*TILESIZE))
+        all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room1 = TiledRoom('room_16_teste')
         all_room_img = room1.make_room(all_room_img)
 
@@ -51,7 +52,7 @@ class Map:
             self.draw(screen)
 
     def draw(self, screen):
-        # screen.fill(BGCOLOR)
+        screen.fill(BLACK)
         # self.draw_grid(screen)
 
         screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))

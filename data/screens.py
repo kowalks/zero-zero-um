@@ -269,5 +269,5 @@ class GameScreen(Screen):
 
     def run_events(self, running):
         game_map = map.Map(self.scn)
-        running = game_map.run(self.scn, running)
+        running = game_map.run(self.scn, True)
         return running

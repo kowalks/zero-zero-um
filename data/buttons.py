@@ -3,6 +3,7 @@ import settings
 
 class Button():
     def __init__(self, x_pos, y_pos, bt_text = "", bt_img_name = ""):
+        self.text = bt_text
         self.x = x_pos
         self.y = y_pos
         self.rectangle = pygame.Rect(x_pos, y_pos,
@@ -15,14 +16,16 @@ class Button():
         if bt_img_name != "":
             self.button_img = pygame.transform.scale(
                 pygame.image.load(f'img/buttons/{bt_img_name}.png'),
-                (settings.BT_WIDTH, settings.BT_HEIGHT))
+                (int(settings.BT_WIDTH*1.1), settings.BT_HEIGHT))
 
     def draw_button(self, screen):
-        width_text, height_text = self.text_surface.get_size()
-        x_text_pos = self.x + settings.BT_WIDTH/2 - width_text/2
-        y_text_pos = self.y + settings.BT_HEIGHT/2 - height_text/2
+        Rect = self.button_img.get_rect()
+        Rect.x = self.x
+        Rect.y = self.y
+        self.rectangle = Rect
+        position = self.text_surface.get_rect(center = Rect.center)
         screen.blit(self.button_img, (self.x, self.y))
-        screen.blit(self.text_surface, (x_text_pos, y_text_pos))
+        screen.blit(self.text_surface, position)
 
 class ButtonFight():
     def __init__(self, x_pos, y_pos, bt_text = "", bt_img_name = ""):

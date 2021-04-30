@@ -1,0 +1,6 @@
+import random as rnd
+import csv
+print(rnd.randint(1,5))
+print(rnd.sample(range(1,5+1), k = 5))
+
+

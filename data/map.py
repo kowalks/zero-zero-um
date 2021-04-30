@@ -5,6 +5,8 @@ from wall import *
 from room import *
 import buttons
 import screens as scn
+from qa import *
+
 
 class Map:
     def __init__(self, screen):
@@ -27,6 +29,7 @@ class Map:
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
         self.dt = 0
 
+        self.qa = QA()
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
@@ -40,6 +43,8 @@ class Map:
             self.dt = self.clock.tick(FPS)/1000
             running = self.event(running)
             self.draw(screen)
+            if self.my_player.life == 0:
+                break
 
     def draw(self, screen):
         screen.fill(BLACK)
@@ -89,6 +94,9 @@ class Map:
                 if enemy.life <= 0:
                     enemy.kill()
                 break
+
+        if self.my_player.life <= 0:
+            scn.gameover(screen)
 
 
 

@@ -31,16 +31,16 @@ class Map:
         # room1 = TiledRoom('up_left_corner')
         # all_room_img = room1.make_room(all_room_img)
 
-        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")]]
-        #              [Room("middle_left_corner"),Room("room3"),Room("room1"),Room("room1"),Room("middle_right_corner")],
-        #              [Room("middle_left_corner"),Room("room1"),Room("room2"),Room("room1"),Room("middle_right_corner")],
-        #              [Room("middle_left_corner"),Room("room4"),Room("room1"),Room("room4"),Room("middle_right_corner")],
-        #              [Room("down_left_corner"), Room("down_middle_corner"), Room("down_middle_corner"), Room("down_middle_corner"),
-        #               Room("down_right_corner")]
-        #               ]
-        # for rw in range(MAPSIZE):
-        for col in range(MAPSIZE):
-            all_room_img = room_list[0][col].make_room(all_room_img, col, 0)
+        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
+                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
+                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
+                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
+                     [TiledRoom("down_left_corner"), TiledRoom("down_middle_corner"), TiledRoom("down_middle_corner"), TiledRoom("down_middle_corner"),TiledRoom("down_rigth_corner")]
+                    ]
+
+        for row in range(MAPSIZE):
+            for col in range(MAPSIZE):
+                 all_room_img = room_list[row][col].make_room(all_room_img, col, row)
 
         return  all_room_img
 

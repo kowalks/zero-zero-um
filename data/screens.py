@@ -124,7 +124,6 @@ class SettingsScreen(Screen):
                 if event.button == 1:
                     click = True
 
-
         if state == "Vídeo":
             video_setting_button_type1 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
                                                         settings.SCREEN_HEIGHT - settings.MARGIN,
@@ -249,9 +248,8 @@ class ControlsScreen(Screen):
 
         back_button.draw_button(self.scn)
         font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        text = font.render("Bem-vindos, senhores!", True, (29, 13, 64))
+        text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
         self.scn.blit(text, (50, 80))
-
 
         click = False
         for event in pygame.event.get():
@@ -268,6 +266,7 @@ class ControlsScreen(Screen):
 
         return running
 
+
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -277,8 +276,9 @@ class GameScreen(Screen):
         running = game_map.run(self.scn, True)
         return running
 
-def pop_up(player, enemy, screen):
-    tempo = pygame.time.Clock();
+
+def pop_up(player, enemy, my_itens, screen):
+    tempo = pygame.time.Clock()
     time = 0
     while time <= 10000:
         screen.fill(BGCOLOR)
@@ -336,9 +336,6 @@ def pop_up(player, enemy, screen):
                                    position_y,
                                    "Letra C", "withe_button")
 
-
-
-
         atck1.draw_button(screen)
         atck2.draw_button(screen)
         atck3.draw_button(screen)
@@ -382,9 +379,6 @@ def pop_up(player, enemy, screen):
         item8.draw_button(screen)
         item9.draw_button(screen)
 
-
-
-
         # mouse position
         mx, my = pygame.mouse.get_pos()
 
@@ -396,27 +390,36 @@ def pop_up(player, enemy, screen):
 
         if click:
             if atck1.rectangle.collidepoint((mx, my)):
-                enemy.life -= 1
+                enemy.life -= 30
             if atck2.rectangle.collidepoint((mx, my)):
                 enemy.life -= 50
-            if item1.rectangle.collidepoint((mx, my)):
-                player.life -= 50
-            if item2.rectangle.collidepoint((mx, my)):
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[0] == 1:
+                enemy.life -= 50
+                my_itens[0] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[1] == 1:
                 player.life += 50
-            if item3.rectangle.collidepoint((mx, my)):
+                my_itens[1] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[2] == 1:
                 enemy.life -= 5
-            if item4.rectangle.collidepoint((mx, my)):
+                my_itens[2] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[3] == 1:
                 enemy.life -= 10
-            if item5.rectangle.collidepoint((mx, my)):
+                my_itens[3] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[4] == 1:
                 enemy.life -= 100
-            if item6.rectangle.collidepoint((mx, my)):
+                my_itens[4] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[5] == 1:
                 enemy.life += 1000
-            if item7.rectangle.collidepoint((mx, my)):
+                my_itens[5] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[6] == 1:
                 enemy.life -= 1000
-            if item8.rectangle.collidepoint((mx, my)):
+                my_itens[6] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[7] == 1:
                 player.life += 1000
-            if item9.rectangle.collidepoint((mx, my)):
+                my_itens[7] = 0
+            if item1.rectangle.collidepoint((mx, my)) and my_itens[8] == 1:
                 player.life -= 1000
+                my_itens[8] = 0
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d]:
@@ -429,12 +432,8 @@ def pop_up(player, enemy, screen):
         time += tempo.tick()
         pygame.display.flip()
 
-
-
         if player.life <=0 or enemy.life <=0:
             break
-
-
 
 def gameover(screen):
     screen.fill(BGCOLOR)

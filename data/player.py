@@ -24,20 +24,57 @@ class Character(pygame.sprite.Sprite):
 class Player(Character):
     def __init__(self, x, y, *args, **kwargs):
         super().__init__(x, y, *args, **kwargs)
-        self.original_image = pygame.image.load("img/player/player.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image_r = pygame.image.load("img/player/player_right.png").convert_alpha()
-        self.image_r = pygame.transform.scale(self.image_r, (TILESIZE, TILESIZE))
-        self.image = self.original_image
+        self.front = "down"
+        self.current_player_frame = 1
+        self.image = pygame.image.load("img/player/p_down_1.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
+        self.frames = [[]]
+        self.down_image = pygame.image.load("img/player/p_down_1.png").convert_alpha()
+        self.up_image = pygame.image.load("img/player/p_up_1.png").convert_alpha()
+        self.left_image = pygame.image.load("img/player/p_left_1.png").convert_alpha()
+        self.right_image = pygame.image.load("img/player/p_right_1.png").convert_alpha()
+        self.tick = 1
+        self.tick_max = 10
+
+
+        # self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
+
 
     def move(self, sinalx, sinaly, walls):
         self.rect.x += sinalx * PLAYER_SPEED
         self.rect.y += sinaly * PLAYER_SPEED
+        self.tick+=1
+        if self.tick > self.tick_max:
+            self.tick = 1
+            self.current_player_frame = self.current_player_frame%4+1
         if sinalx == 1:
-            self.image = self.image_r
+            self.image = pygame.image.load(f'img/player/p_right_{self.current_player_frame}.png').convert_alpha()
+            self.front = "right"
         elif sinalx == -1:
-            self.image = self.original_image
+            self.image = pygame.image.load(f'img/player/p_left_{self.current_player_frame}.png').convert_alpha()
+            self.front = "left"
+        elif sinaly == -1:
+            self.image = pygame.image.load(f'img/player/p_up_{self.current_player_frame}.png').convert_alpha()
+            self.front = "up"
+        elif sinaly == 1:
+            self.image = pygame.image.load(f'img/player/p_down_{self.current_player_frame}.png').convert_alpha()
+            self.front = "down"
         self.check_move(walls, sinalx, sinaly)
+        self.image = pygame.transform.scale(self.image, (TILESIZE, 2*TILESIZE))
+
+
+    def stop(self):
+        if self.front == "down":
+            self.image = self.down_image
+        elif self.front == "up":
+            self.image = self.up_image
+        elif self.front == "left":
+            self.image = self.left_image
+        elif self.front == "right":
+            self.image = self.right_image
+        self.image = pygame.transform.scale(self.image,
+                                            (TILESIZE, 2 * TILESIZE))
+        self.tick=5
 
     def check_move(self, walls, dx, dy):
         print(walls)
@@ -47,6 +84,10 @@ class Player(Character):
                     self.rect.x = (brick.x - dx) * TILESIZE
                 if dy != 0:
                     self.rect.y = (brick.y - dy) * TILESIZE
+
+    # TODO
+    # def load_frames(self):
+
 
 
 class Enemy(Character):

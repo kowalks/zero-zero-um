@@ -71,6 +71,8 @@ class Map:
             self.my_player.move(0,1, self.walls)
         elif keys[pygame.QUIT]:
             running = False
+        else:
+            self.my_player.stop()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

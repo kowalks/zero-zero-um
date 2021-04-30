@@ -28,14 +28,15 @@ class Button():
         screen.blit(self.text_surface, position)
 
 class ButtonFight():
-    def __init__(self, x_pos, y_pos, bt_text = "", bt_img_name = ""):
+    def __init__(self, x_pos, y_pos, bt_text = "", bt_img_name = "", index = 0):
+        self.index = index
         self.x = x_pos
         self.y = y_pos
         self.rectangle = pygame.Rect(x_pos, y_pos,
                                      settings.BT_WIDTH,
                                      settings.BT_HEIGHT)
         if bt_text != "":
-            smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 30)
+            smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 15)
             self.text_surface = smallfont.render(bt_text, True, settings.BLACK)
 
         if bt_img_name != "":

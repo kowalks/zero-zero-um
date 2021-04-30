@@ -3,6 +3,7 @@ import settings
 from settings import *
 import buttons
 import map
+import random as rnd
 
 class Screen():
     """ Class of a generic screen in the game """
@@ -277,10 +278,14 @@ class GameScreen(Screen):
         running = game_map.run(self.scn, True)
         return running
 
-def pop_up(player, enemy, screen):
+def pop_up(player, enemy, screen, qa):
     tempo = pygame.time.Clock();
-    time = 0
-    while time <= 10000:
+    ms = 1000
+    time_lim = 10*ms
+    answered, correct = False, False
+    question, ans = qa.get_qa()
+    sample = rnd.sample(range(0, 3), 3)
+    while time_lim >= 0:
         screen.fill(BGCOLOR)
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
         # Title
@@ -323,18 +328,19 @@ def pop_up(player, enemy, screen):
         # Buttons
         position_x = rect.x + (rect.right - rect.left) / 4
         position_y = rect.y + rect.h/2 - TILESIZE + TILESIZE/4
+
         atck2 = buttons.ButtonFight(position_x,position_y
                                     ,
-                                    "Letra A", "withe_button")
+                                    ans[sample[0]], "withe_button", sample[0])
 
         space = TILESIZE
         atck1 = buttons.ButtonFight(position_x - atck2.rectangle.w - space,
                                    position_y,
-                                   "Letra B", "withe_button")
+                                   ans[sample[1]], "withe_button", sample[1])
 
         atck3 = buttons.ButtonFight(position_x + atck2.rectangle.w + space,
                                    position_y,
-                                   "Letra C", "withe_button")
+                                   ans[sample[2]], "withe_button", sample[2])
 
 
 
@@ -361,7 +367,6 @@ def pop_up(player, enemy, screen):
                 pygame.draw.rect(screen, WHITE, rect_itens, width=1)
 
         #print(pos_center)
-
         item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion")
         item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion")
         item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion")
@@ -370,7 +375,7 @@ def pop_up(player, enemy, screen):
         item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion")
         item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion")
         item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion")
-        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "hp_potion")
+        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "timer")
 
         item1.draw_button(screen)
         item2.draw_button(screen)
@@ -381,9 +386,6 @@ def pop_up(player, enemy, screen):
         item7.draw_button(screen)
         item8.draw_button(screen)
         item9.draw_button(screen)
-
-
-
 
         # mouse position
         mx, my = pygame.mouse.get_pos()
@@ -396,9 +398,14 @@ def pop_up(player, enemy, screen):
 
         if click:
             if atck1.rectangle.collidepoint((mx, my)):
-                enemy.life -= 1
+                answered, correct = True, qa.is_correct(atck1.index)
+                break
             if atck2.rectangle.collidepoint((mx, my)):
-                enemy.life -= 50
+                answered, correct = True, qa.is_correct(atck2.index)
+                break
+            if atck3.rectangle.collidepoint((mx, my)):
+                answered, correct = True, qa.is_correct(atck3.index)
+                break
             if item1.rectangle.collidepoint((mx, my)):
                 player.life -= 50
             if item2.rectangle.collidepoint((mx, my)):
@@ -416,17 +423,30 @@ def pop_up(player, enemy, screen):
             if item8.rectangle.collidepoint((mx, my)):
                 player.life += 1000
             if item9.rectangle.collidepoint((mx, my)):
-                player.life -= 1000
+                print("got it")
+                time_lim+=2*ms
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_d]:
-            print("OK")
-
-        text_time = int(time/1000)
+        text_time = round(time_lim/1000)
         tempo_text = font.render(str(text_time), True, WHITE)
-        tempo_title= tempo_text.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE*2))
+        tempo_title= tempo_text.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE*1.5 + TILESIZE/4))
         screen.blit(tempo_text, tempo_title)
-        time += tempo.tick()
+        time_lim -= tempo.tick()
+
+        font_text = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+
+        # Question Text
+
+        qSurface = pygame.Surface((TILESIZE*10, TILESIZE*4))  # the size of your rect
+        qSurface.set_alpha(128)  # alpha level
+        qSurface.fill(WHITE)  # this fills the entire surface
+        rect = qSurface.get_rect(midtop = (tempo_title.midbottom[0],tempo_title.midbottom[1] + TILESIZE/4))
+
+        question_text = font_text.render(question, True, WHITE)
+        question_rect = question_text.get_rect(center= rect.center)
+
+        screen.blit(qSurface, rect)
+        screen.blit(question_text, question_rect)
+
         pygame.display.flip()
 
 
@@ -434,7 +454,10 @@ def pop_up(player, enemy, screen):
         if player.life <=0 or enemy.life <=0:
             break
 
-
+    if not answered or not correct:
+        player.life -= 10
+    if answered and correct:
+        enemy.life -= 10
 
 def gameover(screen):
     screen.fill(BGCOLOR)
@@ -444,9 +467,3 @@ def gameover(screen):
     rect = img.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT/2))
     screen.blit(img, rect)
     pygame.display.flip()
-
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                run = False

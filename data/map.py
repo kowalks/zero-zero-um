@@ -10,6 +10,7 @@ from qa import *
 
 class Map:
     def __init__(self, screen):
+        self.key = rnd.randint(0,200)
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(500,50)
         self.my_player = player.Player(5, 5)
@@ -28,8 +29,9 @@ class Map:
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
         self.dt = 0
+        print("key: "+str(self.key))
+        self.qa = QA(self.key)
 
-        self.qa = QA()
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
@@ -43,7 +45,8 @@ class Map:
             self.dt = self.clock.tick(FPS)/1000
             running = self.event(running)
             self.draw(screen)
-            if self.my_player.life == 0:
+            if self.my_player.life <= 0:
+                pygame.time.wait(2000)
                 break
 
     def draw(self, screen):
@@ -91,7 +94,7 @@ class Map:
         for enemy in  self.enemies:
             if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 while enemy.life > 0 and self.my_player.life > 0:
-                    scn.pop_up(self.my_player, enemy, screen)
+                    scn.pop_up(self.my_player, enemy, screen, self.qa)
                 if enemy.life <= 0:
                     enemy.kill()
                 break

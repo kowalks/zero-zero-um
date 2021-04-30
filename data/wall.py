@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Wall(pygame.sprite.Sprite):
     def __init__(self, all_sprites, wall_sprites, x, y):
         self.groups = all_sprites, wall_sprites

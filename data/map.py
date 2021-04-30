@@ -21,14 +21,43 @@ class Map:
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+        self.key_sprites = pygame.sprite.Group()
+        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 1, 1)
+
         self.clock_sprites = pygame.sprite.Group()
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 6, 6)
+        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
+
+        self.heal_low_sprites = pygame.sprite.Group()
+        self.my_heal_low = itens.HealItem(self.all_sprites, self.heal_low_sprites, self.my_player, 1, 3)
+
+        self.heal_medium_sprites = pygame.sprite.Group()
+        self.my_heal_medium = itens.AdvancedHealItem(self.all_sprites, self.heal_medium_sprites, self.my_player, 1, 4)
+
+        self.life_improve_sprites = pygame.sprite.Group()
+        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 1, 5)
+
+        self.attack_low_sprites = pygame.sprite.Group()
+        self.my_attack_low = itens.AttackItem(self.all_sprites, self.attack_low_sprites, self.my_player, 2, 1)
+
+        self.attack_medium_sprites = pygame.sprite.Group()
+        self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 2, 2)
+
+        self.supreme_sprites = pygame.sprite.Group()
+        self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 2, 3)
+
+        self.attack_improve_sprites = pygame.sprite.Group()
+        self.my_attack_improve = itens.ImproveAttackItem(self.all_sprites, self.attack_improve_sprites, self.my_player, 2, 4)
+
+        self.defence_sprites = pygame.sprite.Group()
+        self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
+
         self.enemies = pygame.sprite.Group()
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
         #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
         #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
         #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,80)
         #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
         self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
@@ -61,6 +90,7 @@ class Map:
 
         self.draw_info(screen)
         self.check_collision(screen)
+
         pygame.display.flip()
 
     def draw_grid(self, screen):
@@ -91,18 +121,15 @@ class Map:
         self.all_sprites.update()
         self.camera.update(self.my_player)
 
-        if self.my_clock.check_got:
-            self.my_itens[0] = 1
-            self.my_clock.kill()
-
         # pygame.sprite.spritecollide(self.my_player, self.enemies, 1)
         return running
 
     def check_collision(self, screen):
         for enemy in self.enemies:
-            if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
+            if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 while enemy.life > 0 and self.my_player.life > 0:
-                    scn.pop_up(self.my_player, enemy, screen)
+                    scn.pop_up(self.my_player, enemy, self.my_itens, screen)
                 if enemy.life <= 0:
                     enemy.kill()
                 break
@@ -110,6 +137,75 @@ class Map:
         if self.my_player.life <= 0:
             scn.gameover(screen)
 
+        for key in self.key_sprites:
+            if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
+                self.my_itens[9] = 1
+                print(self.my_itens)
+                key.kill()
+
+        for clock in self.clock_sprites:
+            if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
+                self.my_itens[3] = 1
+                print(self.my_itens)
+                clock.kill()
+
+        for heal_low in self.heal_low_sprites:
+            if abs(self.my_player.rect.x - heal_low.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - heal_low.rect.y) < TILESIZE:
+                self.my_itens[0] = 1
+                print(self.my_itens)
+                heal_low.kill()
+
+        for heal_medium in self.heal_medium_sprites:
+            if abs(self.my_player.rect.x - heal_medium.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - heal_medium.rect.y) < TILESIZE:
+                self.my_itens[1] = 1
+                print(self.my_itens)
+                heal_medium.kill()
+
+        for life_improve in self.life_improve_sprites:
+            if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
+                self.my_itens[2] = 1
+                print(self.my_itens)
+                life_improve.kill()
+
+        for defence in self.defence_sprites:
+            if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
+                self.my_itens[4] = 1
+                print(self.my_itens)
+                defence.kill()
+
+        for attack_low in self.attack_low_sprites:
+            if abs(self.my_player.rect.x - attack_low.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - attack_low.rect.y) < TILESIZE:
+                self.my_itens[6] = 1
+                print(self.my_itens)
+                attack_low.kill()
+
+        for attack_medium in self.attack_medium_sprites:
+            if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
+                self.my_itens[7] = 1
+                print(self.my_itens)
+                attack_medium.kill()
+
+        for attack_improve in self.attack_improve_sprites:
+            if abs(self.my_player.rect.x - attack_improve.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - attack_improve.rect.y) < TILESIZE:
+                self.my_itens[8] = 1
+                print(self.my_itens)
+                attack_improve.kill()
+
+        for supreme in self.supreme_sprites:
+            if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
+                self.my_itens[5] = 1
+                print(self.my_itens)
+                supreme.kill()
 
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)

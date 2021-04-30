@@ -36,6 +36,7 @@ class Player(Character):
         self.right_image = pygame.image.load("img/player/p_right_1.png").convert_alpha()
         self.tick = 1
         self.tick_max = 10
+        self.itens = [9, 9, 9, 9, 9, 9, 9, 9, 9, 0]
 
 
         # self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))

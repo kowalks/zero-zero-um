@@ -52,7 +52,7 @@ class ButtonFight():
         screen.blit(self.text_surface, (x_text_pos, y_text_pos))
 
 class ButtonItens():
-    def __init__(self, x_pos, y_pos, size, center, bt_img_name = ""):
+    def __init__(self, x_pos, y_pos, size, center, bt_img_name = "", item = 0):
         size = 0.8*size
         w, h = (int(size), int(size))
         self.x = x_pos
@@ -62,6 +62,9 @@ class ButtonItens():
                                      size)
         self.rectangle.center = center
 
+        font = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 15)
+        self.item_number = font.render(str(item), True, settings.WHITE)
+        self.item_rect = self.item_number.get_rect(center= (self.rectangle.bottomright[0]-2,self.rectangle.bottomright[1]-5))
         if bt_img_name != "":
             self.button_img = pygame.transform.scale(
                 pygame.image.load(f'img/itens/{bt_img_name}.png'),
@@ -70,4 +73,5 @@ class ButtonItens():
 
     def draw_button(self, screen):
         screen.blit(self.button_img, self.rectangle)
+        screen.blit(self.item_number, self.item_rect)
 

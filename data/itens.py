@@ -1,8 +1,5 @@
 import pygame
 from settings import *
-import random as rnd #teste, apagar depois
-from pygame.math import Vector2 as Vec  #teste, apagar depois
-
 
 class Item(pygame.sprite.Sprite):
 

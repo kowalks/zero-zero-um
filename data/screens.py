@@ -238,6 +238,7 @@ class ControlsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Screen.set_bg(self, "bg_control_screen.png")
 
     def run_events(self, running):
 
@@ -248,10 +249,9 @@ class ControlsScreen(Screen):
                                    "Voltar", "blue_button")
 
         back_button.draw_button(self.scn)
-        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        text = font.render("Bem-vindos, senhores!", True, (29, 13, 64))
-        self.scn.blit(text, (50, 80))
-
+        #font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        #text = font.render("Bem-vindos, senhores!", True, (29, 13, 64))
+        #self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():

@@ -1,5 +1,6 @@
 import pygame
 import settings
+from settings import *
 import buttons
 import map
 
@@ -35,6 +36,7 @@ class Screen():
                 if event.type == pygame.QUIT:
                     running = False
             return running
+
 
 class TitleScreen(Screen):
 
@@ -271,3 +273,112 @@ class GameScreen(Screen):
         game_map = map.Map(self.scn)
         running = game_map.run(self.scn, True)
         return running
+
+def pop_up(player, enemy, screen):
+    screen.fill(BGCOLOR)
+    font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+    # Title
+    img = font.render('Combate', True, WHITE)
+    rect = img.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE))
+    screen.blit(img, rect)
+
+    # Players Life
+    pl_life = font.render('Vida:', True, WHITE)
+    vida = pl_life.get_rect(bottomleft=(TILESIZE, 3 * TILESIZE))
+    screen.blit(pl_life, vida)
+
+    jogador = font.render("Jogador", True, WHITE)
+    player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
+    screen.blit(jogador, player_title)
+
+    pl_life = font.render(str(player.life), True, RED)
+    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
+    screen.blit(pl_life, vida)
+
+    # Enemy Life
+    jogador = font.render("Inimigo", True, WHITE)
+    enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
+    screen.blit(jogador, enemy_title)
+
+    pl_life = font.render('Vida:', True, WHITE)
+    vida = pl_life.get_rect(bottomleft=(enemy_title.left, 3 * TILESIZE))
+    screen.blit(pl_life, vida)
+
+    pl_life = font.render(str(enemy.life), True, RED)
+    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
+    screen.blit(pl_life, vida)
+
+    BACK = (70, 70, 70)
+    # Rect for actions
+    rect = pygame.Rect(50, 60, SCREEN_WIDTH - 2 * TILESIZE, 0.4 * SCREEN_HEIGHT)
+    rect.midbottom = (SCREEN_WIDTH / 2, SCREEN_HEIGHT - TILESIZE / 4)
+    pygame.draw.rect(screen, BACK, rect, border_radius=10)
+
+    # Buttons
+    atck1 = buttons.ButtonFight(rect.x + (rect.right - rect.left) / 4,
+                                rect.y + TILESIZE / 2,
+                                "Atacar", "withe_button")
+    atck1.draw_button(screen)
+
+    atck = buttons.ButtonFight(rect.x + (rect.right - rect.left) / 4,
+                               rect.y + TILESIZE / 2 + 2 * TILESIZE,
+                               "Atacar", "withe_button")
+    atck.draw_button(screen)
+
+    itens = font.render("Itens", True, WHITE)
+    itenspos = itens.get_rect(midtop=(rect.center[0] + (rect.right - rect.left) / 4, rect.y + TILESIZE / 4))
+    screen.blit(itens, itenspos)
+
+    # ITENS
+    nTILESIZE = 1.2 * TILESIZE
+    rect_itens = pygame.Rect(0, 0, nTILESIZE, nTILESIZE)
+
+    pos_center = []
+    for y_off in range(0, 3, 1):
+        for x_off in range(0, 3, 1):
+            rect_itens.topleft = (
+            itenspos.bottomleft[0] + x_off * nTILESIZE, itenspos.bottomleft[1] + y_off * nTILESIZE)
+            pos_center.append(rect_itens.center)
+            pygame.draw.rect(screen, (50, 50, 50), rect_itens)
+            pygame.draw.rect(screen, WHITE, rect_itens, width=1)
+
+    #print(pos_center)
+
+    item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion")
+    item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion")
+    item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion")
+    item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion")
+    item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion")
+    item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion")
+    item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion")
+    item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion")
+    item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "hp_potion")
+
+    item1.draw_button(screen)
+    item2.draw_button(screen)
+    item3.draw_button(screen)
+    item4.draw_button(screen)
+    item5.draw_button(screen)
+    item6.draw_button(screen)
+    item7.draw_button(screen)
+    item8.draw_button(screen)
+    item9.draw_button(screen)
+
+
+
+
+    # mouse position
+    mx, my = pygame.mouse.get_pos()
+
+    click = False
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                click = True
+
+    if click:
+        if atck1.rectangle.collidepoint((mx, my)):
+            enemy.life -= 1
+        if atck.rectangle.collidepoint((mx, my)):
+            enemy.life -= 50
+    pygame.display.flip()

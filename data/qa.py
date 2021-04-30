@@ -64,7 +64,7 @@ class QA():
         self.question.remove(self.question[sort])
         self.ans.remove(self.ans[sort])
 
-        print("got it")
+        print("pop it")
         return question, ans
 
     def is_correct(self, index):

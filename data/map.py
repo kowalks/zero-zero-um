@@ -31,11 +31,11 @@ class Map:
         # room1 = TiledRoom('up_left_corner')
         # all_room_img = room1.make_room(all_room_img)
 
-        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
-                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
-                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
-                     [TiledRoom("up_left_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"), TiledRoom("up_middle_corner"),TiledRoom("up_rigth_corner")],
-                     [TiledRoom("down_left_corner"), TiledRoom("down_middle_corner"), TiledRoom("down_middle_corner"), TiledRoom("down_middle_corner"),TiledRoom("down_rigth_corner")]
+        room_list = [[TiledRoom("map_template_up_left"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_right")],
+                     [TiledRoom("map_template_middle_left"), TiledRoom("map_template_center"), TiledRoom("map_template_center"), TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_middle_left"), TiledRoom("map_template_center"), TiledRoom("map_template_center"), TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_middle_left"), TiledRoom("map_template_center"), TiledRoom("map_template_center"), TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_bot_left"), TiledRoom("map_template_bot_middle"), TiledRoom("map_template_bot_middle"), TiledRoom("map_template_bot_middle"),TiledRoom("map_template_bot_right")]
                     ]
 
         for row in range(MAPSIZE):

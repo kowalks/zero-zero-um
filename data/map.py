@@ -4,6 +4,8 @@ import player
 from wall import *
 from room import *
 import buttons
+import screens as scn
+from qa import *
 
 
 class Map:
@@ -27,6 +29,7 @@ class Map:
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
         self.dt = 0
 
+        self.qa = QA()
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
@@ -40,10 +43,11 @@ class Map:
             self.dt = self.clock.tick(FPS)/1000
             running = self.event(running)
             self.draw(screen)
+            if self.my_player.life == 0:
+                break
 
     def draw(self, screen):
         screen.fill(BLACK)
-        # self.draw_grid(screen)
 
         screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))
 
@@ -84,15 +88,19 @@ class Map:
         return running
 
     def check_collision(self, screen):
-        collide = False
-        for enemy in self.enemies:
-            if self.my_player.x == enemy.x and self.my_player.y == enemy.y:
-                enemy_battle = enemy
-                collide = True
+        for enemy in  self.enemies:
+            if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
+                while enemy.life > 0 and self.my_player.life > 0:
+                    scn.pop_up(self.my_player, enemy, screen)
+                if enemy.life <= 0:
+                    enemy.kill()
                 break
 
-        if collide:
-            pop_up(self.my_player, enemy_battle, screen)
+        if self.my_player.life <= 0:
+            scn.gameover(screen)
+
+
+
 
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
@@ -135,68 +143,3 @@ class Camera:
         self.camera = pygame.Rect(x, y, self.width, self.height)
 
 
-def pop_up(player, enemy, screen):
-    BLUE = GREEN
-    screen.fill(BGCOLOR)
-    font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
-    # Title
-    img = font.render('Combate', True, WHITE)
-    rect = img.get_rect(center = (SCREEN_WIDTH/2, TILESIZE))
-    screen.blit(img, rect)
-
-    # Players Life
-    pl_life = font.render('Vida:', True, WHITE)
-    vida =pl_life.get_rect(bottomleft = (TILESIZE, 3*TILESIZE))
-    screen.blit(pl_life, vida)
-
-    jogador = font.render("Jogador", True, WHITE)
-    player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
-    screen.blit(jogador, player_title)
-
-    pl_life = font.render(str(player.life), True, RED)
-    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
-
-    # Enemy Life
-    jogador = font.render("Inimigo", True, WHITE)
-    enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
-    screen.blit(jogador, enemy_title)
-
-    pl_life = font.render('Vida:', True, WHITE)
-    vida = pl_life.get_rect(bottomleft = (enemy_title.left, 3*TILESIZE))
-    screen.blit(pl_life, vida)
-
-    pl_life = font.render(str(enemy.life), True, RED)
-    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
-
-    BACK = (70, 70, 70)
-    #Rect for actions
-    rect = pygame.Rect(50, 60, SCREEN_WIDTH-2*TILESIZE, 0.4*SCREEN_HEIGHT)
-    rect.midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT - TILESIZE/4)
-    pygame.draw.rect(screen, BACK, rect, border_radius=10)
-
-    #Buttons
-    ng_button = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
-                               rect.y + TILESIZE/2,
-                               "Atacar", "withe_button")
-    ng_button.draw_button(screen)
-
-    atck = buttons.ButtonFight(rect.x + (rect.right - rect.left)/4,
-                               rect.y + TILESIZE/2 + 2*TILESIZE,
-                               "Atacar", "withe_button")
-    atck.draw_button(screen)
-
-    itens = font.render("Itens", True, WHITE)
-    itenspos = itens.get_rect(midtop = (rect.center[0] + (rect.right - rect.left)/4, rect.y  + TILESIZE/4))
-    screen.blit(itens, itenspos)
-
-    #ITENS
-    nTILESIZE = 1.2*TILESIZE
-    rect_itens = pygame.Rect(0,0, nTILESIZE, nTILESIZE)
-
-    for y_off in range(0, 3, 1):
-        for x_off in range(0, 3,1):
-            rect_itens.topleft = (itenspos.bottomleft[0] + x_off*nTILESIZE,itenspos.bottomleft[1]+y_off*nTILESIZE)
-            pygame.draw.rect(screen, (50, 50, 50), rect_itens)
-            pygame.draw.rect(screen, WHITE, rect_itens, width=1)

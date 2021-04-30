@@ -22,7 +22,7 @@ class Map:
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.clock_sprites = pygame.sprite.Group()
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 6, 6)
+        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 56, 56)
         self.enemies = pygame.sprite.Group()
         self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
         #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
@@ -91,7 +91,7 @@ class Map:
         self.all_sprites.update()
         self.camera.update(self.my_player)
 
-        if self.my_clock.check_got:
+        if self.my_clock.check_got(self.my_player):
             self.my_itens[0] = 1
             self.my_clock.kill()
 

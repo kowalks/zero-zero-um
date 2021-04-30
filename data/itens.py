@@ -1,5 +1,7 @@
 import pygame
 from settings import *
+import random as rnd #teste, apagar depois
+from pygame.math import Vector2 as Vec  #teste, apagar depois
 
 
 class Item(pygame.sprite.Sprite):
@@ -19,7 +21,7 @@ class Item(pygame.sprite.Sprite):
     def check_got(self, player):
         if self.x == player.x and self.y == player.y:
             self.got = True
-        return got
+        return self.got
 
 
     def update(self):

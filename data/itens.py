@@ -4,32 +4,37 @@ from settings import *
 
 class Item(pygame.sprite.Sprite):
 
-    def __init__(self, x=0, y = 0, got = False, COLOR = LIGHTGREY):
+    def __init__(self, x, y, got = False, COLOR = LIGHTGREY):
         self.got = got
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((TILESIZE, TILESIZE))
         self.image.fill(COLOR)
         self.rect = self.image.get_rect()
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
         self.x = x
         self.y = y
 
+
     def check_got(self, player):
-      if self.x == player.x and self.y == player.y:
-        self.got = True
+        if self.x == player.x and self.y == player.y:
+            self.got = True
+        return got
+
 
     def update(self):
-        self.rect.x = self.x*TILESIZE
-        self.rect.y = self.y*TILESIZE
+        self.rect.x = self.x*TILESIZE // TILESIZE
+        self.rect.y = self.y*TILESIZE // TILESIZE
 
 
 class KeyItem(Item):
-    def __init__(self, all_sprites, item_sprites, player, x, y, *args, **kwargs):
+    def __init__(self, player, x, y, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.groups = all_sprites, item_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = x
         self.y = y
         self.player = player
+        self.COLOR = GREEN
+
 
     def check_got(self, player):
         super().check_got(player)
@@ -38,28 +43,31 @@ class KeyItem(Item):
         super().update()
 
 
-class BasicAttackItem(Item):
-    def __init__(self, all_sprites, item_sprites, player, x, y, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.groups = all_sprites, item_sprites
+class ClockItem(Item):
+    def __init__(self, all_sprites, clock_sprites, player, x, y, *args, **kwargs):
+        super().__init__(x, y, *args, **kwargs)
+        self.groups = all_sprites, clock_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
+        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
+        self.image = self.original_image
+        self.player = player
         self.x = x
         self.y = y
-        self.attack_points = 40
-        self.player = player
-
-    def check_got(self, player):
-        super().check_got(player)
 
     def update(self):
         super().update()
+
+    def check_got(self, player):
+        super().check_got(player)
 
   
 class AdvancedAttackItem(Item):
     def __init__(self, all_sprites, item_sprites, player, x, y, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.groups = all_sprites, item_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        while check_got(player):
+            pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = x
         self.y = y
         self.attack_points = 80
@@ -75,7 +83,8 @@ class BasicHealItem(Item):
     def __init__(self, all_sprites, item_sprites, player, x, y, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.groups = all_sprites, item_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        while check_got(player):
+            pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = x
         self.y = y
         self.heal_points = 30
@@ -92,7 +101,8 @@ class AdvancedHealItem(Item):
     def __init__(self, all_sprites, item_sprites, player, x, y, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.groups = all_sprites, item_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        while check_got(player):
+            pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = x
         self.y = y
         self.heal_points = 60

@@ -5,6 +5,7 @@ from wall import *
 from room import *
 import buttons
 import screens as scn
+import itens
 from qa import *
 
 
@@ -20,16 +21,20 @@ class Map:
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.clock_sprites = pygame.sprite.Group()
+        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 6, 6)
         self.enemies = pygame.sprite.Group()
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1,1,41)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,2)
+        #self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
-
         self.qa = QA()
+
+
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
@@ -53,6 +58,7 @@ class Map:
 
         for sprite in self.all_sprites:
             screen.blit(sprite.image, self.camera.apply(sprite))
+
         self.draw_info(screen)
         self.check_collision(screen)
         pygame.display.flip()
@@ -84,11 +90,16 @@ class Map:
 
         self.all_sprites.update()
         self.camera.update(self.my_player)
+
+        if self.my_clock.check_got:
+            self.my_itens[0] = 1
+            self.my_clock.kill()
+
         # pygame.sprite.spritecollide(self.my_player, self.enemies, 1)
         return running
 
     def check_collision(self, screen):
-        for enemy in  self.enemies:
+        for enemy in self.enemies:
             if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 while enemy.life > 0 and self.my_player.life > 0:
                     scn.pop_up(self.my_player, enemy, screen)
@@ -98,8 +109,6 @@ class Map:
 
         if self.my_player.life <= 0:
             scn.gameover(screen)
-
-
 
 
     def draw_info(self, screen):
@@ -141,5 +150,3 @@ class Camera:
         x = -player.rect.x + (SCREEN_WIDTH/2)
         y = -player.rect.y + (SCREEN_HEIGHT/2)
         self.camera = pygame.Rect(x, y, self.width, self.height)
-
-

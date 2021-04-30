@@ -11,7 +11,7 @@ class Screen():
                                                settings.SCREEN_HEIGHT))
         # Load default background
         self.bg = pygame.transform.scale( # TODO: remove this when all bg defined
-            pygame.image.load("img/background/bg_NONE.png"),
+            pygame.image.load("img/background/capa.png"),
             (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
 
         # Load caption of the screen (game name by default)

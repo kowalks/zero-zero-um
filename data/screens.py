@@ -398,7 +398,6 @@ class GameScreen(Screen):
                     return
 
 
-
 def pop_up(player, enemy, screen, qa):
     tempo = pygame.time.Clock();
     ms = 1000
@@ -406,8 +405,10 @@ def pop_up(player, enemy, screen, qa):
     answered, correct = False, False
     question, ans = qa.get_qa()
     sample = rnd.sample(range(0, 3), 3)
+    bg = pygame.transform.scale(pygame.image.load("img/background/battle_alt.png"),
+                                (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
     while time_lim >= 0:
-        screen.fill(BGCOLOR)
+        screen.blit(bg, (0, 0))
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
         # Title
         img = font.render('Combate', True, WHITE)

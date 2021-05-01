@@ -281,9 +281,9 @@ class GameScreen(Screen):
     def intro_animated_text(self):
         global text_surface, text_rect
 
-        intro1 = "Em mais um dia de campanha, o militar mais padrao de todos e posto a prova."
-        intro2 = "Fuja da area de acampamento sem ser pego pelos sargentos."
-        intro3 = "Para ser considerado padrao, o Zero-zero-um deve responder a senha correta."
+        intro1 = "Em mais um dia de campanha, o militar mais padrão de todos é posto a prova."
+        intro2 = "Fuja da área de acampamento sem ser pego pelos sargentos."
+        intro3 = "Para ser considerado padrão, o Zero-zero-um deve responder a senha correta."
         full_intro_list = [intro1, intro2, intro3]
 
         smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)

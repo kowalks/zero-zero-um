@@ -38,7 +38,7 @@ class KeyItem(Item):
 
         message_l1 = f"Uma aeronave AT-{password.airplane_n}, saindo da base aérea de UET, às {password.departure_time}h"
         message_l2 = f"de Zulu carregando {password.sigsauer_rifles} fuzis SigSauer e {password.atomic_bombs} bombas atômicas"
-        message_l3 = f"e {password.lmg_rifles} metralhadora .{password.lmg_caliber} devendo chegar às {password.arrival_time}h em Zulu"
+        message_l3 = f"e {password.lmg_rifles} metralhadoras .{password.lmg_caliber} devendo chegar às {password.arrival_time}h em Zulu"
 
         full_message = [message_l1, message_l2, message_l3]
 

@@ -21,7 +21,7 @@ class QA():
             employee_writer.writerow(x)
             x = [key - 32, key - 31, key - 30]
             employee_writer.writerow(x)
-            print("successfull")
+            # print("successfull")
 
     def read_q(self):
         q = []
@@ -31,7 +31,7 @@ class QA():
             q.append(text)
         f.close()
 
-        print("questions created")
+        # print("questions created")
         return q
 
     def read_a(self):
@@ -41,7 +41,7 @@ class QA():
             for row in reader:
                 a.append(row)
 
-        print("ans created")
+        # print("ans created")
         return a
 
 
@@ -51,9 +51,9 @@ class QA():
 
     def get_qa(self):
         if len(self.question) == 0:
-            print("it is empty")
+            # print("it is empty")
             self.reload()
-            print("reload successfull")
+            # print("reload successfull")
 
         #getting them
         sort = rnd.randint(0, len(self.question)-1)
@@ -64,13 +64,13 @@ class QA():
         self.question.remove(self.question[sort])
         self.ans.remove(self.ans[sort])
 
-        print("pop it")
+        # print("pop it")
         return question, ans
 
     def is_correct(self, index):
         if index == 0:
-            print("CORRECT!")
+            # print("CORRECT!")
             return True
 
-        print("ERROOOU!")
+        # print("ERROOOU!")
         return False

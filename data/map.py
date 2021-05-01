@@ -24,7 +24,7 @@ class Map:
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.key_sprites = pygame.sprite.Group()
-        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 8, 8)
+        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 25 , 8)
 
         # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
         # self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
@@ -54,7 +54,7 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        # self.spawn_enemies()
+        self.spawn_enemies()
 
         self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0

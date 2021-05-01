@@ -61,8 +61,8 @@ class Map:
 
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
-        room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("only_right"), TiledRoom("only_right")],
-                     [TiledRoom("map_template_up_left"),TiledRoom("map_template_bottom_middle"), TiledRoom("only_right"), TiledRoom("key_room")],
+        room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("before_end"), TiledRoom("End_room")],
+                     [TiledRoom("passagem_up_left"),TiledRoom("map_template_bottom_middle"), TiledRoom("only_right"), TiledRoom("key_room")],
                      [TiledRoom("map_template_bottom_left"), TiledRoom("map_template_up_right"), TiledRoom("map_template_up_left"), TiledRoom("map_template_bottom_right")],
                      [TiledRoom("only_left"), TiledRoom("map_template_bottom_middle"), TiledRoom("map_template_bottom_middle"), TiledRoom("only_right")]]
         for row in range(MAPSIZE):

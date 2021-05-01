@@ -11,14 +11,13 @@ from qa import *
 
 class Map:
     def __init__(self, screen):
-        self.key = rnd.randint(0,200)
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(500,50)
-        self.my_player = player.Player(5, 5)
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
+        self.my_player = player.Player(5, 5, self.walls)
         self.all_sprites.add(self.my_player)
-        self.map_image = self.set_rooms()
+        self.map_image, self.room_tmx = self.set_rooms()
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -54,23 +53,32 @@ class Map:
         self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 10, 7,80)
-        self.my_enemy = player.Enemy(self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 5, 6,54)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 7,545)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 10, 7,80)
+        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
         print("key: "+str(self.key))
         self.qa = QA(self.key)
 
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
-        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
-        for col in range(MAPSIZE):
-            all_room_img = room_list[0][col].make_room(all_room_img, col, 0)
-
-        return all_room_img
+        room_list = [[TiledRoom("map_template_up_left"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_middle"),TiledRoom("map_template_up_right")],
+                     [TiledRoom("map_template_middle_left"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_middle_left"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_middle_left"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_middle_right")],
+                     [TiledRoom("map_template_bottom_left"),TiledRoom("map_template_bottom_middle"),TiledRoom("map_template_bottom_middle"),TiledRoom("map_template_bottom_middle"),TiledRoom("map_template_bottom_right")],]
+        for row in range(MAPSIZE):
+            for col in range(MAPSIZE):
+                all_room_img = room_list[row][col].make_room(all_room_img, col, row)
+                for tile_object in room_list[row][col].tmxdata.objects:
+                    if tile_object.name == 'Wall':
+                        # print(tile_object.x,tile_object.y,tile_object.width,tile_object.height)
+                        Obstacle(self.walls,tile_object.x*4 + col * ROOMSIZE*TILESIZE,tile_object.y*4+ row * ROOMSIZE*TILESIZE,tile_object.width*4,tile_object.height*4)
+        return all_room_img, room_list
 
     def run(self, screen, running):
         while running:
@@ -103,13 +111,13 @@ class Map:
     def event(self, running):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.my_player.move(1,0, self.walls)
+            self.my_player.move(1, 0)
         elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.my_player.move(-1,0, self.walls)
+            self.my_player.move(-1, 0)
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.my_player.move(0,-1, self.walls)
+            self.my_player.move(0, -1)
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.my_player.move(0,1, self.walls)
+            self.my_player.move(0, 1)
         elif keys[pygame.QUIT]:
             running = False
         else:
@@ -213,10 +221,8 @@ class Map:
         # Players Life
         pl_life_text = font.render('Vida:', True, WHITE)
         vida_text = pl_life_text.get_rect(bottomleft=(TILESIZE/2, TILESIZE))
-
         pl_life = font.render(str(self.my_player.life), True, RED)
         vida = pl_life.get_rect(bottomleft=(vida_text.right, TILESIZE))
-
         lifeSurface = pygame.Surface(((vida.width + vida_text.width)*1.2, vida.height*1.2))  # the size of your rect
         lifeSurface.set_alpha(128)  # alpha level
         lifeSurface.fill(BLACK)  # this fills the entire surface
@@ -226,7 +232,6 @@ class Map:
         screen.blit(lifeSurface, rect)
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
-
 
 
 class Camera:

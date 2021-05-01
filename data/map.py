@@ -1,6 +1,5 @@
 import pygame
-from settings import *
-import player
+from player import *
 from wall import *
 from room import *
 import buttons
@@ -16,7 +15,7 @@ class Map:
         pygame.key.set_repeat(500,50)
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
-        self.my_player = player.Player(5, 5, self.walls)
+        self.my_player = Player(5, 5, self.walls)
         self.all_sprites.add(self.my_player)
         self.map_image, self.room_tmx = self.set_rooms()
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
@@ -24,45 +23,40 @@ class Map:
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.key_sprites = pygame.sprite.Group()
-        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 1, 1)
+        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 8, 8)
 
-        self.clock_sprites = pygame.sprite.Group()
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
-
-        self.heal_low_sprites = pygame.sprite.Group()
-        self.my_heal_low = itens.HealItem(self.all_sprites, self.heal_low_sprites, self.my_player, 1, 3)
-
-        self.heal_medium_sprites = pygame.sprite.Group()
-        self.my_heal_medium = itens.AdvancedHealItem(self.all_sprites, self.heal_medium_sprites, self.my_player, 1, 4)
-
-        self.life_improve_sprites = pygame.sprite.Group()
-        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 1, 5)
-
-        self.attack_low_sprites = pygame.sprite.Group()
-        self.my_attack_low = itens.AttackItem(self.all_sprites, self.attack_low_sprites, self.my_player, 2, 1)
-
-        self.attack_medium_sprites = pygame.sprite.Group()
-        self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 2, 2)
-
-        self.supreme_sprites = pygame.sprite.Group()
-        self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 2, 3)
-
-        self.attack_improve_sprites = pygame.sprite.Group()
-        self.my_attack_improve = itens.ImproveAttackItem(self.all_sprites, self.attack_improve_sprites, self.my_player, 2, 4)
-
-        self.defence_sprites = pygame.sprite.Group()
-        self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
+        # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
+        # self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
+        #
+        # self.heal_low_sprites = pygame.sprite.Group() # aumenta um pouco a vida (cantil semicheio)
+        # self.my_heal_low = itens.HealItem(self.all_sprites, self.heal_low_sprites, self.my_player, 1, 3)
+        #
+        # self.heal_medium_sprites = pygame.sprite.Group() # aumenta um pouco mais a vida (cantil pleno)
+        # self.my_heal_medium = itens.AdvancedHealItem(self.all_sprites, self.heal_medium_sprites, self.my_player, 1, 4)
+        #
+        # self.life_improve_sprites = pygame.sprite.Group() # congela o tempo para uma pergunta (relogio com neve)
+        # self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 1, 5)
+        #
+        # self.attack_low_sprites = pygame.sprite.Group() # dá um dano pequeno no inimigo (ripa de madeira)
+        # self.my_attack_low = itens.AttackItem(self.all_sprites, self.attack_low_sprites, self.my_player, 2, 1)
+        #
+        # self.attack_medium_sprites = pygame.sprite.Group() # dá um dano medio no inimigo (boot)
+        # self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 2, 2)
+        #
+        # self.supreme_sprites = pygame.sprite.Group() # derrota o inimigo instantaneamente (em off)
+        # self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 2, 3)
+        #
+        # self.attack_improve_sprites = pygame.sprite.Group() # aumenta o dano dado por resposta correta (livro)
+        # self.my_attack_improve = itens.ImproveAttackItem(self.all_sprites, self.attack_improve_sprites, self.my_player, 2, 4)
+        #
+        # self.defence_sprites = pygame.sprite.Group() # dá uma chance de errar/passar tempo sem perder vida (colete)
+        # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
-        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 10, 7,80)
-        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        self.spawn_enemies()
+
         self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
-        print("key: "+str(self.key))
         self.qa = QA(self.key)
 
     def set_rooms(self):
@@ -149,72 +143,75 @@ class Map:
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
-                self.my_player.itens[9]+= 1
-                print(self.my_player.itens)
-                key.kill()
+                # TODO
+                keySurface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))  # the size of your rect
+                keySurface.set_alpha(128)  # alpha level
+                keySurface.fill(BLACK)  # this fills the entire surface
+                keyRect = keySurface.get_rect()
+                screen.blit(keySurface, keyRect)
 
-        for clock in self.clock_sprites:
-            if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
-                self.my_player.itens[3]+= 1
-                print(self.my_player.itens)
-                clock.kill()
-
-        for heal_low in self.heal_low_sprites:
-            if abs(self.my_player.rect.x - heal_low.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - heal_low.rect.y) < TILESIZE:
-                self.my_player.itens[0]+= 1
-                print(self.my_player.itens)
-                heal_low.kill()
-
-        for heal_medium in self.heal_medium_sprites:
-            if abs(self.my_player.rect.x - heal_medium.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - heal_medium.rect.y) < TILESIZE:
-                self.my_player.itens[1]+= 1
-                print(self.my_player.itens)
-                heal_medium.kill()
-
-        for life_improve in self.life_improve_sprites:
-            if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
-                self.my_player.itens[2]+= 1
-                print(self.my_player.itens)
-                life_improve.kill()
-
-        for defence in self.defence_sprites:
-            if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
-                self.my_player.itens[4]+= 1
-                print(self.my_player.itens)
-                defence.kill()
-
-        for attack_low in self.attack_low_sprites:
-            if abs(self.my_player.rect.x - attack_low.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - attack_low.rect.y) < TILESIZE:
-                self.my_player.itens[6]+= 1
-                print(self.my_player.itens)
-                attack_low.kill()
-
-        for attack_medium in self.attack_medium_sprites:
-            if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
-                self.my_player.itens[7]+= 1
-                print(self.my_player.itens)
-                attack_medium.kill()
-
-        for attack_improve in self.attack_improve_sprites:
-            if abs(self.my_player.rect.x - attack_improve.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - attack_improve.rect.y) < TILESIZE:
-                self.my_player.itens[8]+= 1
-                print(self.my_player.itens)
-                attack_improve.kill()
-
-        for supreme in self.supreme_sprites:
-            if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
-                self.my_player.itens[5] = 1
-                print(self.my_player.itens)
-                supreme.kill()
+        # for clock in self.clock_sprites:
+        #     if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
+        #         self.my_player.itens[3]+= 1
+        #         print(self.my_player.itens)
+        #         clock.kill()
+        #
+        # for heal_low in self.heal_low_sprites:
+        #     if abs(self.my_player.rect.x - heal_low.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - heal_low.rect.y) < TILESIZE:
+        #         self.my_player.itens[0]+= 1
+        #         print(self.my_player.itens)
+        #         heal_low.kill()
+        #
+        # for heal_medium in self.heal_medium_sprites:
+        #     if abs(self.my_player.rect.x - heal_medium.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - heal_medium.rect.y) < TILESIZE:
+        #         self.my_player.itens[1]+= 1
+        #         print(self.my_player.itens)
+        #         heal_medium.kill()
+        #
+        # for life_improve in self.life_improve_sprites:
+        #     if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
+        #         self.my_player.itens[2]+= 1
+        #         print(self.my_player.itens)
+        #         life_improve.kill()
+        #
+        # for defence in self.defence_sprites:
+        #     if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
+        #         self.my_player.itens[4]+= 1
+        #         print(self.my_player.itens)
+        #         defence.kill()
+        #
+        # for attack_low in self.attack_low_sprites:
+        #     if abs(self.my_player.rect.x - attack_low.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - attack_low.rect.y) < TILESIZE:
+        #         self.my_player.itens[6]+= 1
+        #         print(self.my_player.itens)
+        #         attack_low.kill()
+        #
+        # for attack_medium in self.attack_medium_sprites:
+        #     if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
+        #         self.my_player.itens[7]+= 1
+        #         print(self.my_player.itens)
+        #         attack_medium.kill()
+        #
+        # for attack_improve in self.attack_improve_sprites:
+        #     if abs(self.my_player.rect.x - attack_improve.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - attack_improve.rect.y) < TILESIZE:
+        #         self.my_player.itens[8]+= 1
+        #         print(self.my_player.itens)
+        #         attack_improve.kill()
+        #
+        # for supreme in self.supreme_sprites:
+        #     if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
+        #         self.my_player.itens[5] = 1
+        #         print(self.my_player.itens)
+        #         supreme.kill()
 
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
@@ -236,6 +233,19 @@ class Map:
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
 
+    def spawn_enemies(self):
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 7, 7, 41)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 5, 6, 54)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 7, 7, 545)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 7, 8, 13)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 10, 7, 80)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 7, 11, 899)
 
 class Camera:
     def __init__(self, sizeX, sizeY):

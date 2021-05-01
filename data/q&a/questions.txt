@@ -1,3 +1,10 @@
 Faca = 3,5. Caveira = ?
 Faca = 8. Caveira = ?
 Faca = 32. Caveira = ?
+Faca = 4. Caveira = ?
+Faca = -6. Caveira = ?
+Faca = -9. Caveira = ?
+Faca = 17. Caveira = ?
+Faca = 32. Caveira = ?
+Faca = -15. Caveira = ?
+Faca = 20. Caveira = ?

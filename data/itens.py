@@ -1,7 +1,6 @@
 import pygame
 from settings import *
 
-
 class Item(pygame.sprite.Sprite):
 
     def __init__(self, x, y, got=False, COLOR=LIGHTGREY):
@@ -25,12 +24,9 @@ class KeyItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, key_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image = self.original_image
+        self.image = pygame.image.load("img/itens/message.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (TILESIZE, TILESIZE))
         self.player = player
-        self.x = x
-        self.y = y
 
     def update(self):
         super().update()

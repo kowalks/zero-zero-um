@@ -76,24 +76,27 @@ class Player(Character):
             self.image = self.left_image
         elif self.front == "right":
             self.image = self.right_image
-        self.image = pygame.transform.scale(self.image,
-                                            (TILESIZE, 2 * TILESIZE))
+        self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
         self.tick=5
+
     def check_move(self, dx, dy):
         for brick in self.walls:
             # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
             # TODO tirar TILESIZE abaixo para playerwidth
             if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
-                    self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2 * TILESIZE:
-                print("Colidiu")
+                    self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2*TILESIZE:
                 if dx == 1:
                     self.rect.x = brick.rect.x - TILESIZE
+                    self.stop()
                 if dx == -1:
                     self.rect.x = brick.rect.x + brick.rect.w
+                    self.stop()
                 if dy == 1:
-                    self.rect.y = brick.rect.y - 2 * TILESIZE
+                    self.rect.y = brick.rect.y - 2*TILESIZE
+                    self.stop()
                 if dy == -1:
                     self.rect.y = brick.rect.y + brick.rect.h
+                    self.stop()
 
 
 
@@ -105,7 +108,7 @@ class Player(Character):
 
 class Enemy(Character):
     def __init__(self, walls, all_sprites, enemy_sprites, player, x, y, *args, **kwargs):
-        super().__init__(x, y,walls, *args, **kwargs)
+        super().__init__(x, y, walls, *args, **kwargs)
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
@@ -113,8 +116,8 @@ class Enemy(Character):
         self.image = self.original_image
         self.player = player
         self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
-        self.tmax = rnd.randrange(20, 50)
         self.tick = 0
+        self.tmax = rnd.randrange(20, 50)
         self.furious = rnd.randint(0, 1)
 
     def update(self):
@@ -124,7 +127,7 @@ class Enemy(Character):
         else:
             self.random_velocity()
 
-        self.walk()
+        # self.walk()
         phi = self.velocity.angle_to(Vec(1, 0))
         self.image = pygame.transform.rotate(self.original_image, phi)
         super().update()

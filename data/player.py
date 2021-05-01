@@ -79,11 +79,23 @@ class Player(Character):
 
     def check_move(self, walls, dx, dy):
         for brick in walls:
-            if abs(self.rect.x - brick.x * TILESIZE) < TILESIZE and abs(self.rect.y - brick.y * TILESIZE) < TILESIZE:
-                if dx != 0:
-                    self.rect.x = (brick.x - dx) * TILESIZE
-                if dy != 0:
-                    self.rect.y = (brick.y - dy) * TILESIZE
+            print(self.rect.x ,self.rect.y , brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
+            #TODO tirar TILESIZE abaixo para playerwidth
+            if self.rect.x < brick.rect.x +brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
+                    self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2* TILESIZE:
+                print("Colidiu")
+                if dx == 1:
+                    self.rect.x = brick.rect.x - TILESIZE
+                if dx == -1:
+                    self.rect.x = brick.rect.x + brick.rect.w
+                if dy == 1:
+                    self.rect.y = brick.rect.y - 2*TILESIZE
+                if dy == -1:
+                    self.rect.y = brick.rect.y + brick.rect.h
+        # if abs(self.rect.x - brick.x * TILESIZE) < TILESIZE and abs(self.rect.y - brick.y * TILESIZE) < TILESIZE:
+
+
+
 
     # TODO
     # def load_frames(self):

@@ -17,7 +17,7 @@ class Map:
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.all_sprites.add(self.my_player)
-        self.map_image = self.set_rooms()
+        self.map_image, self.room_tmx = self.set_rooms()
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -66,11 +66,14 @@ class Map:
 
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
-        room_list = [[TiledRoom("up_left_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner"),TiledRoom("up_middle_corner")]]
+        room_list = [[TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center"),TiledRoom("map_template_center")]]
         for col in range(MAPSIZE):
             all_room_img = room_list[0][col].make_room(all_room_img, col, 0)
-
-        return all_room_img
+            for tile_object in room_list[0][col].tmxdata.objects:
+                if tile_object.name == 'Wall':
+                    # print(tile_object.x,tile_object.y,tile_object.width,tile_object.height)
+                    Obstacle(self.walls,tile_object.x*4 + col * ROOMSIZE*TILESIZE,tile_object.y*4,tile_object.width*4,tile_object.height*4)
+        return all_room_img, room_list
 
     def run(self, screen, running):
         while running:
@@ -92,6 +95,10 @@ class Map:
         self.check_collision(screen)
 
         pygame.display.flip()
+        # for tile_object in TiledRoom.tmxdata.objects:
+        #     if tile_object.name == 'wWll':
+        #         Obstacle(self, tile_object.x, tile_object.y,
+        #                  tile_object.width, tile_object.height)
 
     def draw_grid(self, screen):
         for y_offset in range(0, SCREEN_HEIGHT, TILESIZE):

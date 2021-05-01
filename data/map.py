@@ -258,7 +258,17 @@ class Camera:
         return rect.move(self.camera.topleft)
 
     def update(self, player):
-        # To center: (SCREEN_WIDTH/2) and (SCREEN_HEIGHT/2)
-        x = -player.rect.x + (SCREEN_WIDTH/2)
-        y = -player.rect.y + (SCREEN_HEIGHT/2)
+        x = -player.rect.x + (SCREEN_WIDTH / 2)
+        y = -player.rect.y + (SCREEN_HEIGHT / 2)
+
+        if player.rect.x <= SCREEN_WIDTH/2:
+            x = 0
+        elif player.rect.x >= MAPSIZE*ROOMSIZE*TILESIZE - SCREEN_WIDTH/2:
+            x = SCREEN_WIDTH - MAPSIZE*ROOMSIZE*TILESIZE
+
+        if player.rect.y <= SCREEN_HEIGHT/2:
+            y = 0
+        elif player.rect.y >= MAPSIZE*ROOMSIZE*TILESIZE - SCREEN_HEIGHT/2:
+            y = SCREEN_HEIGHT - MAPSIZE*ROOMSIZE*TILESIZE
+
         self.camera = pygame.Rect(x, y, self.width, self.height)

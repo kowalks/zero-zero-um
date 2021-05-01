@@ -76,24 +76,27 @@ class Player(Character):
             self.image = self.left_image
         elif self.front == "right":
             self.image = self.right_image
-        self.image = pygame.transform.scale(self.image,
-                                            (TILESIZE, 2 * TILESIZE))
+        self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
         self.tick=5
+
     def check_move(self, dx, dy):
         for brick in self.walls:
             # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
             # TODO tirar TILESIZE abaixo para playerwidth
             if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
                     self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2 * TILESIZE:
-                print("Colidiu")
                 if dx == 1:
                     self.rect.x = brick.rect.x - TILESIZE
+                    self.stop()
                 if dx == -1:
                     self.rect.x = brick.rect.x + brick.rect.w
+                    self.stop()
                 if dy == 1:
                     self.rect.y = brick.rect.y - 2 * TILESIZE
+                    self.stop()
                 if dy == -1:
                     self.rect.y = brick.rect.y + brick.rect.h
+                    self.stop()
 
 
 

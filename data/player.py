@@ -27,8 +27,8 @@ class Character(pygame.sprite.Sprite):
 
 
 class Player(Character):
-    def __init__(self, x, y,walls ,*args, **kwargs):
-        super().__init__(x, y,walls, *args, **kwargs)
+    def __init__(self, x, y, walls ,*args, **kwargs):
+        super().__init__(x, y, walls, *args, **kwargs)
         self.front = "down"
         self.current_player_frame = 1
         self.image = pygame.image.load("img/player/p_down_1.png").convert_alpha()

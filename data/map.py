@@ -55,11 +55,11 @@ class Map:
 
         self.enemies = pygame.sprite.Group()
         self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 1, 1, 41)
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 5, 6,54)
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 7,545)
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 10, 7,80)
-        self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 11,899)
+        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 5, 6,54)
+        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 7,545)
+        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 8, 13)
+        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 10, 7,80)
+        # self.my_enemy = player.Enemy(self.walls,self.all_sprites, self.enemies, self.my_player, 7, 11,899)
         self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
         print("key: "+str(self.key))
@@ -103,11 +103,11 @@ class Map:
 
         pygame.display.flip()
 
-    def draw_grid(self, screen):
-        for y_offset in range(0, SCREEN_HEIGHT, TILESIZE):
-            pygame.draw.line(screen, LIGHTGREY, (0,y_offset), (SCREEN_WIDTH, y_offset))
-        for x_offset in range(0, SCREEN_WIDTH, TILESIZE):
-            pygame.draw.line(screen, LIGHTGREY, (x_offset, 0), (x_offset, SCREEN_WIDTH))
+    # def draw_grid(self, screen):
+    #     for y_offset in range(0, SCREEN_HEIGHT, TILESIZE):
+    #         pygame.draw.line(screen, LIGHTGREY, (0,y_offset), (SCREEN_WIDTH, y_offset))
+    #     for x_offset in range(0, SCREEN_WIDTH, TILESIZE):
+    #         pygame.draw.line(screen, LIGHTGREY, (x_offset, 0), (x_offset, SCREEN_WIDTH))
 
     def event(self, running):
         keys = pygame.key.get_pressed()
@@ -222,8 +222,10 @@ class Map:
         # Players Life
         pl_life_text = font.render('Vida:', True, WHITE)
         vida_text = pl_life_text.get_rect(bottomleft=(TILESIZE/2, TILESIZE))
+
         pl_life = font.render(str(self.my_player.life), True, RED)
         vida = pl_life.get_rect(bottomleft=(vida_text.right, TILESIZE))
+
         lifeSurface = pygame.Surface(((vida.width + vida_text.width)*1.2, vida.height*1.2))  # the size of your rect
         lifeSurface.set_alpha(128)  # alpha level
         lifeSurface.fill(BLACK)  # this fills the entire surface

@@ -38,7 +38,6 @@ class Screen():
                     running = False
             return running
 
-
 class TitleScreen(Screen):
 
     def __init__(self, *args, **kwargs):
@@ -78,6 +77,7 @@ class TitleScreen(Screen):
         if ng_button.rectangle.collidepoint((mx, my)):
             if click:
                 game_screen = GameScreen()
+                game_screen.intro_animated_text()
                 running = game_screen.run(running)
         if controls_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -276,6 +276,78 @@ class GameScreen(Screen):
         running = game_map.run(self.scn, True)
         return running
 
+    def intro_animated_text(self):
+        global text_surface, text_rect
+
+        intro1 = "Em mais um dia de EXEC, o militar mais padrao do CPOR e posto a prova."
+        intro2 = "Fuja da area de acampamento sem ser pego pelos sargentos."
+        intro3 = "Para ser considerado padrao, o Zero-zero-um deve responder a senha correta."
+        full_intro_list = [intro1, intro2, intro3]
+
+        smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+        text = ''
+        surfaces_list = []
+        linespace = 30
+        line = 0
+        skip = False
+
+        for intro in full_intro_list :
+            for i in range(len(intro)):
+
+                # verificando se nao ha skip
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        skip = True
+                    continue
+
+                if skip:
+                    surfaces_list = []
+                    linespace = 30
+                    line = 0
+                    for intro_line in full_intro_list:
+                        text_surface = smallfont.render(intro_line, True, WHITE)
+                        text_rect = text_surface.get_rect()
+                        text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + (line-1) * linespace)
+                        line+=1
+                        s = (text_surface, text_rect)
+                        surfaces_list.append(s)
+                    continue
+
+                self.scn.fill(BLACK)
+                for s in surfaces_list:
+                    self.scn.blit(*s)
+                text += intro[i]
+                text_surface = smallfont.render(text, True, WHITE)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 -linespace + line*linespace)
+                self.scn.blit(text_surface, text_rect)
+                pygame.display.update()
+                pygame.time.wait(60)
+
+            if skip:
+                continue
+            else:
+                s = (text_surface, text_rect)
+                line+=1
+                surfaces_list.append(s)
+                text = ''
+
+        self.scn.fill(BLACK)
+        for s in surfaces_list:
+            self.scn.blit(*s)
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+
 def pop_up(player, enemy, screen, qa):
     tempo = pygame.time.Clock();
     ms = 1000
@@ -326,7 +398,7 @@ def pop_up(player, enemy, screen, qa):
         # Buttons
         position_x = rect.x + (rect.right - rect.left) / 4
         position_y = rect.y + rect.h/2 - TILESIZE + TILESIZE/4
-
+        print(sample, ans)
         atck2 = buttons.ButtonFight(position_x,position_y
                                     ,
                                     ans[sample[0]], "withe_button", sample[0])

@@ -404,7 +404,7 @@ def pop_up(player, enemy, screen, qa):
     ms = 1000
     time_lim = 10*ms
     answered, correct = False, False
-    question, ans = qa.get_qa()
+    question, ans = qa.get_qa(enemy.level)
     sample = rnd.sample(range(0, 3), 3)
     while time_lim >= 0:
         screen.fill(BGCOLOR)

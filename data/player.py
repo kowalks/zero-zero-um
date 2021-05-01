@@ -102,7 +102,7 @@ class Player(Character):
 
 
 class Enemy(Character):
-    def __init__(self, walls, all_sprites, enemy_sprites, player, x, y, *args, **kwargs):
+    def __init__(self, walls, all_sprites, enemy_sprites, player, x, y, level, *args, **kwargs):
         super().__init__(x, y, walls, *args, **kwargs)
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -114,6 +114,7 @@ class Enemy(Character):
         self.tick = 0
         self.tmax = rnd.randrange(20, 50)
         self.furious = rnd.randint(0, 1)
+        self.level = level
 
     def update(self):
         # self.rot = (vec(self.player.x, self.player.y) - vec(self.x, self.y)).angle_to(vec(1,0))

@@ -42,6 +42,6 @@ ENEMY_SPEED = 3
 
 ROOMSIZE = 16
 
-MAPSIZE = 5  # in rooms
+MAPSIZE = 4  # in rooms
 
 

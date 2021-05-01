@@ -27,8 +27,8 @@ class Character(pygame.sprite.Sprite):
 
 
 class Player(Character):
-    def __init__(self, x, y,walls ,*args, **kwargs):
-        super().__init__(x, y,walls, *args, **kwargs)
+    def __init__(self, x, y, walls, *args, **kwargs):
+        super().__init__(x, y, walls, *args, **kwargs)
         self.front = "down"
         self.current_player_frame = 1
         self.image = pygame.image.load("img/player/p_down_1.png").convert_alpha()
@@ -47,10 +47,10 @@ class Player(Character):
     def move(self, sinalx, sinaly):
         self.rect.x += sinalx * PLAYER_SPEED
         self.rect.y += sinaly * PLAYER_SPEED
-        self.tick+=1
+        self.tick += 1
         if self.tick > self.tick_max:
             self.tick = 1
-            self.current_player_frame = self.current_player_frame%4+1
+            self.current_player_frame = self.current_player_frame % 4+1
         if sinalx == 1:
             self.image = pygame.image.load(f'img/player/p_right_{self.current_player_frame}.png').convert_alpha()
             self.front = "right"
@@ -66,7 +66,6 @@ class Player(Character):
         self.check_move(sinalx, sinaly)
         self.image = pygame.transform.scale(self.image, (TILESIZE, 2*TILESIZE))
 
-
     def stop(self):
         if self.front == "down":
             self.image = self.down_image
@@ -77,7 +76,7 @@ class Player(Character):
         elif self.front == "right":
             self.image = self.right_image
         self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
-        self.tick=5
+        self.tick = 5
 
     def check_move(self, dx, dy):
         for brick in self.walls:
@@ -97,10 +96,6 @@ class Player(Character):
                 if dy == -1:
                     self.rect.y = brick.rect.y + brick.rect.h
                     self.stop()
-
-
-
-
     # TODO
     # def load_frames(self):
 

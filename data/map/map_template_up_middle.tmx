@@ -84,8 +84,8 @@
  <objectgroup id="6" name="Obstacles">
   <object id="1" name="Wall" x="0" y="0" width="112" height="28"/>
   <object id="2" name="Wall" x="144" y="0" width="112" height="28"/>
-  <object id="3" name="Wall" x="0" y="244" width="108" height="12"/>
-  <object id="4" name="Wall" x="148" y="244" width="108" height="12"/>
+  <object id="3" name="Wall" x="0" y="244" width="104" height="12"/>
+  <object id="4" name="Wall" x="152" y="244" width="104" height="12"/>
   <object id="9" name="Wall" x="244" y="152" width="12" height="92"/>
   <object id="10" name="Wall" x="0" y="152" width="12" height="92"/>
   <object id="11" name="Wall" x="228" y="228" width="16" height="16"/>

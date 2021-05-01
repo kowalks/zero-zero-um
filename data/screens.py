@@ -281,7 +281,7 @@ class GameScreen(Screen):
     def intro_animated_text(self):
         global text_surface, text_rect
 
-        intro1 = "Em mais um dia de EXEC, o militar mais padrao do CPOR e posto a prova."
+        intro1 = "Em mais um dia de campanha, o militar mais padrao de todos e posto a prova."
         intro2 = "Fuja da area de acampamento sem ser pego pelos sargentos."
         intro3 = "Para ser considerado padrao, o Zero-zero-um deve responder a senha correta."
         full_intro_list = [intro1, intro2, intro3]

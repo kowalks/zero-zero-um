@@ -28,8 +28,34 @@ class KeyItem(Item):
         self.image = pygame.transform.scale(self.image, (TILESIZE, TILESIZE))
         self.player = player
 
-    def update(self):
-        super().update()
+    def show_key_password(self, screen, password):
+        keySurface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        keySurface.set_alpha(128)  # alpha level
+        keySurface.fill(BLACK)  # this fills the entire surface
+        keyRect = keySurface.get_rect()
+        screen.blit(keySurface, keyRect)
+        smallfont = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 22)
+
+        message_l1 = f"Uma aeronave AT-{password.airplane_n}, saindo da base aérea de UET, às {password.departure_time}h"
+        message_l2 = f"de Zulu carregando {password.sigsauer_rifles} fuzis SigSauer e {password.atomic_bombs} bombas atômicas"
+        message_l3 = f"e {password.lmg_rifles} metralhadoras .{password.lmg_caliber} devendo chegar às {password.arrival_time}h em Zulu"
+
+        full_message = [message_l1, message_l2, message_l3]
+
+        surfaces_list = []
+        linespace = 30
+        line_number = 0
+        for line in full_message:
+            text_surface = smallfont.render(line, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (
+            SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line_number - 1) * linespace)
+            line_number += 1
+            s = (text_surface, text_rect)
+            surfaces_list.append(s)
+        for s in surfaces_list:
+            screen.blit(*s)
+
 
 
 class ClockItem(Item):

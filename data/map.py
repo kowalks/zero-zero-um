@@ -6,11 +6,12 @@ import buttons
 import screens as scn
 import itens
 from qa import *
-
+from password import *
 
 class Map:
     def __init__(self, screen, key):
         self.key = key
+        self.password = Password()
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(500,50)
         self.all_sprites = pygame.sprite.Group()
@@ -23,7 +24,7 @@ class Map:
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.key_sprites = pygame.sprite.Group()
-        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 8, 8)
+        self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 25 , 8)
 
         # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
         # self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
@@ -142,12 +143,8 @@ class Map:
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
-                # TODO
-                keySurface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))  # the size of your rect
-                keySurface.set_alpha(128)  # alpha level
-                keySurface.fill(BLACK)  # this fills the entire surface
-                keyRect = keySurface.get_rect()
-                screen.blit(keySurface, keyRect)
+                self.my_key.show_key_password(screen, self.password)
+
 
         # for clock in self.clock_sprites:
         #     if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
@@ -232,6 +229,7 @@ class Map:
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
 
+    # TODO: read spawn locations for data
     def spawn_enemies(self):
         self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
                               self.my_player, 7, 7, 41)

@@ -80,7 +80,7 @@ class Player(Character):
         self.tick=5
     def check_move(self, dx, dy):
         for brick in self.walls:
-            print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
+            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
             # TODO tirar TILESIZE abaixo para playerwidth
             if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
                     self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2 * TILESIZE:
@@ -151,7 +151,7 @@ class Enemy(Character):
 
     def check_move(self, dx, dy):
         for brick in self.walls:
-            print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
+            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
             # TODO tirar TILESIZE abaixo para playerwidth
             if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
                     self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2 * TILESIZE:

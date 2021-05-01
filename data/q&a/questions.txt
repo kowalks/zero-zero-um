@@ -1,3 +1,0 @@
-Faca = 3,5. Caveira = ?
-Faca = 8. Caveira = ?
-Faca = 32. Caveira = ?

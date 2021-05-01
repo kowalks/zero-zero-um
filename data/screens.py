@@ -78,6 +78,7 @@ class TitleScreen(Screen):
             if click:
                 game_screen = GameScreen()
                 game_screen.intro_animated_text()
+                game_screen.password_text()
                 running = game_screen.run(running)
         if controls_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -270,9 +271,10 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.key = rnd.randint(0, 200)
 
     def run_events(self, running):
-        game_map = map.Map(self.scn)
+        game_map = map.Map(self.scn, self.key)
         running = game_map.run(self.scn, True)
         return running
 
@@ -347,6 +349,55 @@ class GameScreen(Screen):
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     return
+
+    def password_text(self):
+        global text_surface, text_rect
+
+        password_text = f"A senha e a contrasenha somam {self.key}."
+
+        smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+        text = ''
+        skip = False
+
+        for i in range(len(password_text)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                text_surface = smallfont.render(password_text, True, WHITE)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+                continue
+
+            self.scn.fill(BLACK)
+            text += password_text[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+            self.scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(60)
+
+        self.scn.fill(BLACK)
+        self.scn.blit(text_surface, text_rect)
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+
+
 
 def pop_up(player, enemy, screen, qa):
     tempo = pygame.time.Clock();

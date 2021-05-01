@@ -10,8 +10,8 @@ from qa import *
 
 
 class Map:
-    def __init__(self, screen):
-        self.key = rnd.randint(0, 200)
+    def __init__(self, screen, key):
+        self.key = key
         self.clock = pygame.time.Clock()
         pygame.key.set_repeat(500,50)
         self.all_sprites = pygame.sprite.Group()

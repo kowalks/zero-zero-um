@@ -61,6 +61,11 @@ class Map:
         self.dt = 0
         self.qa = QA(self.key)
 
+
+        rect = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
+        rect = rect.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+        self.itens = self.draw_itens(rect, screen)
+
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("before_end"), TiledRoom("End_room")],
@@ -233,14 +238,35 @@ class Map:
         lifeSurface.set_alpha(128)  # alpha level
         lifeSurface.fill(BLACK)  # this fills the entire surface
 
-        #rect.left = vida_text.left - 0.1*((vida.width + vida_text.width))
-        #rect.y = vida_text.y - 0.1*vida.height
-
         bg = pygame.image.load("img/map/inventario.png")
         screen.blit(lifeSurface, rect)
         screen.blit(bg, rect)
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
+
+
+        for i in range(0,5):
+            self.itens[i].update(self.my_player.itens[i],screen)
+
+
+    def draw_itens(self, rect_player, screen):
+        # ITENS
+        nTILESIZE = 1.2 * TILESIZE
+
+        pos_center = []
+        for i in range(0, 5):
+            position = (700 + 108 * i, rect_player.midleft[1])
+            pos_center.append(position)
+
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", self.my_player.itens[4])
+
+        return [item1, item2, item3, item4, item5]
+
+
 
     # TODO: read spawn locations for data
     def spawn_enemies(self):

@@ -271,7 +271,7 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.key = rnd.randint(0, 200)
+        self.key = rnd.randint(30, 200)
 
     def run_events(self, running):
         game_map = map.Map(self.scn, self.key)

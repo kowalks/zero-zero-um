@@ -128,6 +128,8 @@ class Map:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.quit()
+                sys.exit()
 
         self.all_sprites.update()
         self.camera.update(self.my_player)

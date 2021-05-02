@@ -68,7 +68,8 @@ class TitleScreen(Screen):
         click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -440,9 +441,6 @@ def pop_up(player, enemy, screen, qa, itens_icon):
         atck2.draw_button(screen)
         atck3.draw_button(screen)
 
-        # ITENS
-        nTILESIZE = 1.2 * TILESIZE
-
         pos_center = []
         for i in range(0,5):
             position = (700 + 108*i, rect_player.midleft[1])
@@ -456,6 +454,9 @@ def pop_up(player, enemy, screen, qa, itens_icon):
 
         click = False
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True

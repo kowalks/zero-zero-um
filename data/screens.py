@@ -129,10 +129,10 @@ class SettingsScreen(Screen):
                                               "Music", "blue_button")
         music_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                                  settings.MARGIN + settings.BT_HEIGHT,
-                                                 "ON", "blue_button")
+                                                 "Infantaria", "blue_button")
         music_setting_button_off = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
                                                   settings.MARGIN + settings.BT_HEIGHT,
-                                                  "OFF", "blue_button")
+                                                  "Avante", "blue_button")
         music_setting_button_on.draw_button(self.scn)
         music_setting_button.draw_button(self.scn)
         music_setting_button_off.draw_button(self.scn)
@@ -159,7 +159,8 @@ class SettingsScreen(Screen):
         if music_setting_button_off.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(music_setting_button_off)
-
+                mixer.music.load('../extras/avante_camaradas.WAV')
+                mixer.music.play(-1)
         if dificuldade_setting_button.rectangle.collidepoint((mx, my)):
             if click:
                 pass

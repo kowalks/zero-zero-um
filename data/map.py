@@ -139,7 +139,7 @@ class Map:
             if abs(self.my_player.rect.x - enemy.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 while enemy.life > 0 and self.my_player.life > 0:
-                    scn.pop_up(self.my_player, enemy, screen, self.qa)
+                    scn.pop_up(self.my_player, enemy, screen, self.qa, self.itens)
                 if enemy.life <= 0:
                     enemy.kill()
                 break
@@ -245,9 +245,8 @@ class Map:
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
 
-
         for i in range(0,5):
-            self.itens[i].update(self.my_player.itens[i],screen)
+            self.itens[i].draw_button(screen)
 
 
     def draw_itens(self, rect_player, screen):
@@ -259,10 +258,10 @@ class Map:
             position = (700 + 108 * i, rect_player.midleft[1])
             pos_center.append(position)
 
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", self.my_player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", self.my_player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", self.my_player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", self.my_player.itens[3])
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "clock", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "ice_clock", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "boot", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "wood", self.my_player.itens[3])
         item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", self.my_player.itens[4])
 
         return [item1, item2, item3, item4, item5]

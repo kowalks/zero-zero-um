@@ -361,7 +361,7 @@ class GameScreen(Screen):
                     return
 
 
-def pop_up(player, enemy, screen, qa):
+def pop_up(player, enemy, screen, qa, itens_icon):
     tempo = pygame.time.Clock();
     ms = 1000
     time_lim = 10*ms
@@ -448,17 +448,8 @@ def pop_up(player, enemy, screen, qa):
             position = (700 + 108*i, rect_player.midleft[1])
             pos_center.append(position)
 
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", player.itens[4])
-
-        item1.draw_button(screen)
-        item2.draw_button(screen)
-        item3.draw_button(screen)
-        item4.draw_button(screen)
-        item5.draw_button(screen)
+        for i in range(0, 5):
+            itens_icon[i].update(player.itens[i], screen)
 
         # mouse position
         mx, my = pygame.mouse.get_pos()
@@ -479,19 +470,19 @@ def pop_up(player, enemy, screen, qa):
             if atck3.rectangle.collidepoint((mx, my)):
                 answered, correct = True, qa.is_correct(atck3.index)
                 break
-            if item1.rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
+            if itens_icon[0].rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
                 time_lim += 10 * ms
                 player.itens[0] -= 1
-            if item2.rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
+            if itens_icon[1].rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
                 time_lim += 2 * ms
                 player.itens[1]-= 1
-            if item3.rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
+            if itens_icon[2].rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
                 time_lim += 2 * ms
                 player.itens[2]-= 1
-            if item4.rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
+            if itens_icon[3].rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
                 time_lim += 2 * ms
                 player.itens[3]-= 1
-            if item5.rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
+            if itens_icon[4].rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
                 time_lim += 2 * ms
                 player.itens[4]-= 1
 

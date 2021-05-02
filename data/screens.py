@@ -239,9 +239,9 @@ class ControlsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Screen.set_bg(self, "bg_control_screen.png")  # mundando a tela para tela de instruções
 
     def run_events(self, running):
-
         mx, my = pygame.mouse.get_pos()
 
         back_button = quit_button = buttons.Button(settings.MARGIN + 3*settings.BT_DIST,
@@ -249,9 +249,10 @@ class ControlsScreen(Screen):
                                    "Voltar", "blue_button")
 
         back_button.draw_button(self.scn)
-        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
-        self.scn.blit(text, (50, 80))
+
+        #font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        #text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
+        #self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():

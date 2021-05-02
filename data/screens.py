@@ -3,6 +3,7 @@ import settings
 from settings import *
 import buttons
 import map
+import random as rnd
 
 class Screen():
     """ Class of a generic screen in the game """
@@ -36,7 +37,6 @@ class Screen():
                 if event.type == pygame.QUIT:
                     running = False
             return running
-
 
 class TitleScreen(Screen):
 
@@ -77,6 +77,8 @@ class TitleScreen(Screen):
         if ng_button.rectangle.collidepoint((mx, my)):
             if click:
                 game_screen = GameScreen()
+                game_screen.intro_animated_text()
+                game_screen.password_text()
                 running = game_screen.run(running)
         if controls_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -123,7 +125,6 @@ class SettingsScreen(Screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
 
         if state == "Vídeo":
             video_setting_button_type1 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
@@ -238,7 +239,6 @@ class ControlsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Screen.set_bg(self, "bg_control_screen.png")
 
     def run_events(self, running):
 
@@ -249,9 +249,9 @@ class ControlsScreen(Screen):
                                    "Voltar", "blue_button")
 
         back_button.draw_button(self.scn)
-        #font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        #text = font.render("Bem-vindos, senhores!", True, (29, 13, 64))
-        #self.scn.blit(text, (50, 80))
+        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
+        self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():
@@ -271,17 +271,144 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.key = rnd.randint(0, 200)
 
     def run_events(self, running):
-        game_map = map.Map(self.scn)
+        game_map = map.Map(self.scn, self.key)
         running = game_map.run(self.scn, True)
         return running
 
-def pop_up(player, enemy, screen):
+    def intro_animated_text(self):
+        global text_surface, text_rect
+
+        intro1 = "Em mais um dia de campanha, o militar mais padrão de todos é posto a prova."
+        intro2 = "Fuja da área de acampamento sem ser pego pelos sargentos."
+        intro3 = "Para ser considerado padrão, o Zero-zero-um deve responder a senha correta."
+        full_intro_list = [intro1, intro2, intro3]
+
+        smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+        text = ''
+        surfaces_list = []
+        linespace = 35
+        line = 0
+        skip = False
+
+        for intro in full_intro_list :
+            for i in range(len(intro)):
+
+                # verificando se nao ha skip
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        skip = True
+                    continue
+
+                if skip:
+                    surfaces_list = []
+                    linespace = 30
+                    line = 0
+                    for intro_line in full_intro_list:
+                        text_surface = smallfont.render(intro_line, True, WHITE)
+                        text_rect = text_surface.get_rect()
+                        text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + (line-1) * linespace)
+                        line += 1
+                        s = (text_surface, text_rect)
+                        surfaces_list.append(s)
+                    continue
+
+                self.scn.fill(BLACK)
+                for s in surfaces_list:
+                    self.scn.blit(*s)
+                text += intro[i]
+                text_surface = smallfont.render(text, True, WHITE)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 -linespace + line*linespace)
+                self.scn.blit(text_surface, text_rect)
+                pygame.display.update()
+                pygame.time.wait(60)
+
+            if skip:
+                continue
+            else:
+                s = (text_surface, text_rect)
+                line+=1
+                surfaces_list.append(s)
+                text = ''
+
+        self.scn.fill(BLACK)
+        for s in surfaces_list:
+            self.scn.blit(*s)
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+
+    def password_text(self):
+        global text_surface, text_rect
+
+        password_text = f"A senha e a contrasenha somam {self.key}."
+
+        smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+        text = ''
+        skip = False
+
+        for i in range(len(password_text)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                text_surface = smallfont.render(password_text, True, WHITE)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+                continue
+
+            self.scn.fill(BLACK)
+            text += password_text[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+            self.scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(60)
+
+        self.scn.fill(BLACK)
+        self.scn.blit(text_surface, text_rect)
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+
+
+def pop_up(player, enemy, screen, qa):
     tempo = pygame.time.Clock();
-    time = 0
-    while time <= 10000:
-        screen.fill(BGCOLOR)
+    ms = 1000
+    time_lim = 10*ms
+    answered, correct = False, False
+    question, ans = qa.get_qa(enemy.level)
+    sample = rnd.sample(range(0, 3), 3)
+    bg = pygame.transform.scale(pygame.image.load("img/background/battle_alt.png"),
+                                (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
+    while time_lim >= 0:
+        screen.blit(bg, (0, 0))
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
         # Title
         img = font.render('Combate', True, WHITE)
@@ -323,21 +450,19 @@ def pop_up(player, enemy, screen):
         # Buttons
         position_x = rect.x + (rect.right - rect.left) / 4
         position_y = rect.y + rect.h/2 - TILESIZE + TILESIZE/4
+        print(sample, ans)
         atck2 = buttons.ButtonFight(position_x,position_y
                                     ,
-                                    "Letra A", "withe_button")
+                                    ans[sample[0]], "withe_button", sample[0])
 
         space = TILESIZE
         atck1 = buttons.ButtonFight(position_x - atck2.rectangle.w - space,
                                    position_y,
-                                   "Letra B", "withe_button")
+                                   ans[sample[1]], "withe_button", sample[1])
 
         atck3 = buttons.ButtonFight(position_x + atck2.rectangle.w + space,
                                    position_y,
-                                   "Letra C", "withe_button")
-
-
-
+                                   ans[sample[2]], "withe_button", sample[2])
 
         atck1.draw_button(screen)
         atck2.draw_button(screen)
@@ -361,16 +486,15 @@ def pop_up(player, enemy, screen):
                 pygame.draw.rect(screen, WHITE, rect_itens, width=1)
 
         #print(pos_center)
-
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion")
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion")
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion")
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion")
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion")
-        item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion")
-        item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion")
-        item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion")
-        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "hp_potion")
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", player.itens[4])
+        item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion", player.itens[5])
+        item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion", player.itens[6])
+        item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion", player.itens[7])
+        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "timer", player.itens[8])
 
         item1.draw_button(screen)
         item2.draw_button(screen)
@@ -381,9 +505,6 @@ def pop_up(player, enemy, screen):
         item7.draw_button(screen)
         item8.draw_button(screen)
         item9.draw_button(screen)
-
-
-
 
         # mouse position
         mx, my = pygame.mouse.get_pos()
@@ -396,45 +517,72 @@ def pop_up(player, enemy, screen):
 
         if click:
             if atck1.rectangle.collidepoint((mx, my)):
-                enemy.life -= 1
+                answered, correct = True, qa.is_correct(atck1.index)
+                break
             if atck2.rectangle.collidepoint((mx, my)):
-                enemy.life -= 50
-            if item1.rectangle.collidepoint((mx, my)):
-                player.life -= 50
-            if item2.rectangle.collidepoint((mx, my)):
-                player.life += 50
-            if item3.rectangle.collidepoint((mx, my)):
-                enemy.life -= 5
-            if item4.rectangle.collidepoint((mx, my)):
-                enemy.life -= 10
-            if item5.rectangle.collidepoint((mx, my)):
-                enemy.life -= 100
-            if item6.rectangle.collidepoint((mx, my)):
-                enemy.life += 1000
-            if item7.rectangle.collidepoint((mx, my)):
-                enemy.life -= 1000
-            if item8.rectangle.collidepoint((mx, my)):
-                player.life += 1000
-            if item9.rectangle.collidepoint((mx, my)):
-                player.life -= 1000
+                answered, correct = True, qa.is_correct(atck2.index)
+                break
+            if atck3.rectangle.collidepoint((mx, my)):
+                answered, correct = True, qa.is_correct(atck3.index)
+                break
+            if item1.rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
+                time_lim += 10 * ms
+                player.itens[0] -= 1
+            if item2.rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
+                time_lim += 2 * ms
+                player.itens[1]-= 1
+            if item3.rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
+                time_lim += 2 * ms
+                player.itens[2]-= 1
+            if item4.rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
+                time_lim += 2 * ms
+                player.itens[3]-= 1
+            if item5.rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
+                time_lim += 2 * ms
+                player.itens[4]-= 1
+            if item6.rectangle.collidepoint((mx, my)) and player.itens[5] > 0:
+                time_lim += 2 * ms
+                player.itens[5]-= 1
+            if item7.rectangle.collidepoint((mx, my)) and player.itens[6] > 0:
+                time_lim += 2 * ms
+                player.itens[6]-= 1
+            if item8.rectangle.collidepoint((mx, my)) and player.itens[7] > 0:
+                time_lim += 2 * ms
+                player.itens[7]-= 1
+            if item9.rectangle.collidepoint((mx, my)) and player.itens[8] > 0:
+                player.itens[8]-= 1
+                time_lim += 2 * ms
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_d]:
-            print("OK")
-
-        text_time = int(time/1000)
+        text_time = round(time_lim/1000)
         tempo_text = font.render(str(text_time), True, WHITE)
-        tempo_title= tempo_text.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE*2))
+        tempo_title= tempo_text.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE*1.5 + TILESIZE/4))
         screen.blit(tempo_text, tempo_title)
-        time += tempo.tick()
+        time_lim -= tempo.tick()
+
+        font_text = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+
+        # Question Text
+
+        qSurface = pygame.Surface((TILESIZE*10, TILESIZE*4))  # the size of your rect
+        qSurface.set_alpha(128)  # alpha level
+        qSurface.fill(WHITE)  # this fills the entire surface
+        rect = qSurface.get_rect(midtop = (tempo_title.midbottom[0],tempo_title.midbottom[1] + TILESIZE/4))
+
+        question_text = font_text.render(question, True, WHITE)
+        question_rect = question_text.get_rect(center= rect.center)
+
+        screen.blit(qSurface, rect)
+        screen.blit(question_text, question_rect)
+
         pygame.display.flip()
-
-
 
         if player.life <=0 or enemy.life <=0:
             break
 
-
+    if not answered or not correct:
+        player.life -= 10
+    if answered and correct:
+        enemy.life -= 10
 
 def gameover(screen):
     screen.fill(BGCOLOR)
@@ -445,8 +593,157 @@ def gameover(screen):
     screen.blit(img, rect)
     pygame.display.flip()
 
-    run = True
-    while run:
+
+def end_animated_text(scn):
+    global text_surface, text_rect
+
+    poema1 = "Se..."
+    poema2 = " "
+    poema3 = "Se és capaz de manter tua calma, quando,"
+    poema4 = "todo mundo ao redor já a perdeu e te culpa."
+    poema5 = "De crer em ti quando estão todos duvidando,"
+    poema6 = "e para esses no entanto achar uma desculpa."
+    poema7 = "és um Homem, meu filho!"
+
+    full_end_list = [poema1, poema2, poema3, poema4, poema5, poema6, poema7]
+
+    smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+    text = ''
+    surfaces_list = []
+    linespace = 35
+    line = 0
+    skip = False
+
+    for intro in full_end_list:
+        for i in range(len(intro)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                surfaces_list = []
+                linespace = 30
+                line = 0
+                for intro_line in full_end_list:
+                    text_surface = smallfont.render(intro_line, True, WHITE)
+                    text_rect = text_surface.get_rect()
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    line += 1
+                    s = (text_surface, text_rect)
+                    surfaces_list.append(s)
+                continue
+
+            scn.fill(BLACK)
+            for s in surfaces_list:
+                scn.blit(*s)
+            text += intro[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 3 * linespace + line * linespace)
+            scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(40)
+
+        if skip:
+            break
+        else:
+            s = (text_surface, text_rect)
+            line += 1
+            surfaces_list.append(s)
+            text = ''
+
+    scn.fill(BLACK)
+    for s in surfaces_list:
+        scn.blit(*s)
+    pygame.display.update()
+
+    while True:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                run = False
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return
+
+def end_participantes(scn):
+    global text_surface, text_rect
+
+    poema1 = "Participantes:"
+    poema2 = "Arthur José - Pagodinho"
+    poema3 = "Fernando Zanchitta - Zank"
+    poema4 = "Gabriel Gobi - Gobi"
+    poema5 = "Guilherme Kowalczuk - Kowa"
+    poema6 = "Thiago Lopes - TH"
+    poema7 = "Yuri Gama - Índio"
+
+    full_end_list = [poema1, poema2, poema3, poema4, poema5, poema6, poema7]
+
+    smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+    text = ''
+    surfaces_list = []
+    linespace = 50
+    line = 0
+    skip = False
+
+    for intro in full_end_list:
+        for i in range(len(intro)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                surfaces_list = []
+                linespace = 30
+                line = 0
+                for intro_line in full_end_list:
+                    text_surface = smallfont.render(intro_line, True, WHITE)
+                    text_rect = text_surface.get_rect()
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    line += 1
+                    s = (text_surface, text_rect)
+                    surfaces_list.append(s)
+                continue
+
+            scn.fill(BLACK)
+            for s in surfaces_list:
+                scn.blit(*s)
+            text += intro[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 3 * linespace + line * linespace)
+            scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(40)
+
+        if skip:
+            break
+        else:
+            s = (text_surface, text_rect)
+            line += 1
+            surfaces_list.append(s)
+            text = ''
+
+    scn.fill(BLACK)
+    for s in surfaces_list:
+        scn.blit(*s)
+    pygame.display.update()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return

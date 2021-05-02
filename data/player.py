@@ -2,20 +2,14 @@ from settings import *
 from pygame.math import Vector2 as Vec
 import random as rnd
 
-
 class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, walls, hp=100, color=RED):
+    def __init__(self, x, y, walls, hp=100):
         self.life = hp
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((TILESIZE, TILESIZE))
         self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.x = x * TILESIZE
-        self.rect.y = y * TILESIZE
-        self.x = x
-        self.y = y
-        self.vx = 0
-        self.vy = 0
+        self.rect = self.image.get_rect(x=x*TILESIZE, y=y*TILESIZE)
+        self.x, self.y = x, y
         self.walls = walls
 
     def update(self):
@@ -23,26 +17,53 @@ class Character(pygame.sprite.Sprite):
         self.y = self.rect.y // TILESIZE
 
     def check_move(self, dx, dy):
+        for wall in self.walls:
+            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
+            # TODO tirar TILESIZE abaixo para playerwidth
+            if self.has_collide(wall):
+                if dx == 1:
+                    self.rect.x = wall.rect.x - TILESIZE
+                if dx == -1:
+                    self.rect.x = wall.rect.x + wall.rect.w
+                if dy == 1:
+                    self.rect.y = wall.rect.y - 2 * TILESIZE
+                if dy == -1:
+                    self.rect.y = wall.rect.y + wall.rect.h
+                self.stop()
+
+    def has_collide(self, wall):
+        px, py = self.rect.x, self.rect.y
+        wx ,wy, wh, ww = wall.rect.x, wall.rect.y, wall.rect.h, wall.rect.w
+        collide_hor = wx + ww > px > wx - TILESIZE
+        collide_ver = wy + wh > py > wy - 2 * TILESIZE
+        return collide_hor and collide_ver
+
+    def stop(self):
         pass
 
+    def load_frames(self, type):
+        frames = {}
+        direction = ["down", "up", "left", "right"]
+        for dir in direction:
+            list = []
+            for i in range(4):
+                list.append(pygame.image.load(f"img/{type}/{type}_{dir}_{i+1}.png").convert_alpha())
+            frames[dir] = list
+        for dir in direction:
+            for i in range(4):
+                frames[dir][i] = pygame.transform.scale(frames[dir][i], (TILESIZE, 2*TILESIZE))
+        return frames
 
 class Player(Character):
     def __init__(self, x, y, walls, *args, **kwargs):
         super().__init__(x, y, walls, *args, **kwargs)
+        self.current_player_frame = 0
+        self.frames = self.load_frames("player")
+        self.image = self.frames["down"][0]
         self.front = "down"
-        self.current_player_frame = 1
-        self.image = pygame.image.load("img/player/p_down_1.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
-        self.frames = [[]]
-        self.down_image = pygame.image.load("img/player/p_down_1.png").convert_alpha()
-        self.up_image = pygame.image.load("img/player/p_up_1.png").convert_alpha()
-        self.left_image = pygame.image.load("img/player/p_left_1.png").convert_alpha()
-        self.right_image = pygame.image.load("img/player/p_right_1.png").convert_alpha()
         self.tick = 1
         self.tick_max = 10
         self.itens = [9, 9, 9, 9, 9, 9, 9, 9, 9, 0]
-
-        # self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
 
     def move(self, sinalx, sinaly):
         self.rect.x += sinalx * PLAYER_SPEED
@@ -50,52 +71,25 @@ class Player(Character):
         self.tick += 1
         if self.tick > self.tick_max:
             self.tick = 1
-            self.current_player_frame = self.current_player_frame % 4+1
+            self.current_player_frame = (self.current_player_frame+1) % 4
         if sinalx == 1:
-            self.image = pygame.image.load(f'img/player/p_right_{self.current_player_frame}.png').convert_alpha()
+            self.image = self.frames["right"][self.current_player_frame]
             self.front = "right"
         elif sinalx == -1:
-            self.image = pygame.image.load(f'img/player/p_left_{self.current_player_frame}.png').convert_alpha()
+            self.image = self.frames["left"][self.current_player_frame]
             self.front = "left"
         elif sinaly == -1:
-            self.image = pygame.image.load(f'img/player/p_up_{self.current_player_frame}.png').convert_alpha()
+            self.image = self.frames["up"][self.current_player_frame]
             self.front = "up"
         elif sinaly == 1:
-            self.image = pygame.image.load(f'img/player/p_down_{self.current_player_frame}.png').convert_alpha()
+            self.image = self.frames["down"][self.current_player_frame]
             self.front = "down"
         self.check_move(sinalx, sinaly)
-        self.image = pygame.transform.scale(self.image, (TILESIZE, 2*TILESIZE))
 
     def stop(self):
-        if self.front == "down":
-            self.image = self.down_image
-        elif self.front == "up":
-            self.image = self.up_image
-        elif self.front == "left":
-            self.image = self.left_image
-        elif self.front == "right":
-            self.image = self.right_image
-        self.image = pygame.transform.scale(self.image, (TILESIZE, 2 * TILESIZE))
+        self.image = self.frames[self.front][0]
         self.tick = 5
 
-    def check_move(self, dx, dy):
-        for brick in self.walls:
-            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
-            # TODO tirar TILESIZE abaixo para playerwidth
-            if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
-                    self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2*TILESIZE:
-                if dx == 1:
-                    self.rect.x = brick.rect.x - TILESIZE
-                    self.stop()
-                if dx == -1:
-                    self.rect.x = brick.rect.x + brick.rect.w
-                    self.stop()
-                if dy == 1:
-                    self.rect.y = brick.rect.y - 2*TILESIZE
-                    self.stop()
-                if dy == -1:
-                    self.rect.y = brick.rect.y + brick.rect.h
-                    self.stop()
     # TODO
     # def load_frames(self):
 
@@ -106,64 +100,71 @@ class Enemy(Character):
         super().__init__(x, y, walls, *args, **kwargs)
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.frames = self.load_frames("enemies") # todos frames ja loadados
+        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha() # tirar depois
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
         self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
         self.tick = 0
         self.tmax = rnd.randrange(20, 50)
-        self.furious = rnd.randint(0, 1)
+        self.furious = False
         self.level = level
+        self.front = 'up'
+        self.vx, self.vy = 0,0
 
     def update(self):
-        # self.rot = (vec(self.player.x, self.player.y) - vec(self.x, self.y)).angle_to(vec(1,0))
+        self.update_near_player()
         if self.furious:
             self.target_velocity()
         else:
             self.random_velocity()
 
-        # self.walk()
-        phi = self.velocity.angle_to(Vec(1, 0))
-        self.image = pygame.transform.rotate(self.original_image, phi)
+        self.walk()
         super().update()
 
     def target_velocity(self):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
-        if displacement.length() == 0:
-            self.velocity = Vec(0, 0)
+        if displacement.length() != 0:
+            angle = displacement.angle_to(Vec(1,0))
+            self.update_velocity(angle)
+
+    def update_velocity(self, angle):
+        self.vx, self.vy = 0, 0
+        if 135 >= angle >= 45:
+            self.vy = -1
+        elif 45 >= angle >= -45:
+            self.vx = 1
+        elif -45 >= angle >= -135:
+            self.vy = 1
         else:
-            self.velocity = displacement.normalize()
+            self.vx = -1
+        self.update_front()
 
     def random_velocity(self):
         self.tick += 1
         if self.tick > self.tmax:
             self.tick = 0
             self.tmax = rnd.randrange(20, 50)
-            self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
+            angle = rnd.randrange(0, 360)
+            self.update_velocity(angle)
 
     def walk(self):
-        self.rect.x += ENEMY_SPEED * self.velocity.x
-        self.rect.y += ENEMY_SPEED * self.velocity.y
-        sinalx = 0 if self.velocity.x == 0 else int(self.velocity.x/abs(self.velocity.x))
-        sinaly = 0 if self.velocity.y == 0 else int(self.velocity.y / abs(self.velocity.y))
-        self.check_move(sinalx, sinaly)
+        self.rect.x += ENEMY_SPEED * self.vx
+        self.rect.y += ENEMY_SPEED * self.vy
+        self.check_move(self.vx, self.vy)
 
-    def check_move(self, dx, dy):
-        for brick in self.walls:
-            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
-            # TODO tirar TILESIZE abaixo para playerwidth
-            if self.rect.x < brick.rect.x + brick.rect.w and self.rect.x > brick.rect.x - TILESIZE and \
-                    self.rect.y < brick.rect.y + brick.rect.h and self.rect.y > brick.rect.y - 2 * TILESIZE:
-                print("Colidiu")
-                if dx == 1:
-                    self.rect.x = brick.rect.x - TILESIZE
-                if dx == -1:
-                    self.rect.x = brick.rect.x + brick.rect.w
-                if dy == 1:
-                    self.rect.y = brick.rect.y - TILESIZE
-                if dy == -1:
-                    self.rect.y = brick.rect.y + brick.rect.h
+    def update_front(self):
+        if self.vx == 1:
+            self.front = 'right'
+        elif self.vx == -1:
+            self.front = 'left'
+        elif self.vy == -1:
+            self.front = 'up'
+        elif self.vy == 1:
+            self.front = 'down'
 
-
-
+    def update_near_player(self):
+        displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
+        if displacement.length() <= 4:
+            self.furious = True

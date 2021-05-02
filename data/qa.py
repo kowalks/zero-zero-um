@@ -3,74 +3,54 @@ import random as rnd
 
 class QA():
     def __init__(self, key, *args, **kwargs):
-        self.generate(key)
         self.key = key
-        self.question = self.read_q()
-        self.ans = self.read_a()
+        self.question = "Faca = {}. Caveira = ?"
 
+    def get_qa(self, level):
+        if level == 1:
+            return self.get_qa_level1()
+        if level == 2:
+            return self.get_qa_level2()
+        if level == 3:
+            return self.get_qa_level3()
+        if level == 4:
+            return self.get_qa_level1()
 
+    def get_qa_level1(self):
+        faca = rnd.randint(1, self.key-1)
+        question = self.question.format(faca)
+        ans = []
+        ans.append(str(self.key - faca))
+        for i in range(0,2):
+            faca = rnd.randint(1, self.key - 1)
+            ans.append(str(self.key - faca))
 
+        return question, ans
 
-    def generate(self, key):
-        with open("q&a/ans.csv", mode='w') as employee_file:
-            employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            # [Answer, Option B, Option C]
-            x = [key - 3.5, key - 4.5, key - 5.5]
-            employee_writer.writerow(x)
-            x = [key - 8, key - 7, key - 9]
-            employee_writer.writerow(x)
-            x = [key - 32, key - 31, key - 30]
-            employee_writer.writerow(x)
-            # print("successfull")
+    def get_qa_level2(self):
+        faca = rnd.randint(-300, 300)
+        question = self.question.format(faca)
+        ans = []
+        ans.append(str(self.key - faca))
+        for i in range(0,2):
+            faca = rnd.randint(-200, 200)
+            ans.append(str(self.key - faca))
 
-    def read_q(self):
-        q = []
-        f = open("q&a/questions.txt", "r")
-        for text in f:
-            text = text.replace("\n", "") #removing \n
-            q.append(text)
-        f.close()
+        return question, ans
 
-        # print("questions created")
-        return q
+    def get_qa_level3(self):
+        faca = round(rnd.random()*rnd.randint(-100, 100),2)
+        question = self.question.format(faca)
+        ans = []
+        ans.append(str(round(self.key - faca,2)))
+        for i in range(0,2):
+            faca = round(rnd.random()*rnd.randint(-100, 100),2)
+            ans.append(str(round(self.key - faca,2)))
 
-    def read_a(self):
-        a = []
-        with open('q&a/ans.csv', 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                a.append(row)
-
-        # print("ans created")
-        return a
-
-
-    def reload(self):
-        self.question = self.read_q()
-        self.ans = self.read_a()
-
-    def get_qa(self):
-        if len(self.question) == 0:
-            # print("it is empty")
-            self.reload()
-            # print("reload successfull")
-
-        #getting them
-        sort = rnd.randint(0, len(self.question)-1)
-        question = self.question[sort]
-        ans = self.ans[sort]
-
-        #removing them from the list
-        self.question.remove(self.question[sort])
-        self.ans.remove(self.ans[sort])
-
-        # print("pop it")
         return question, ans
 
     def is_correct(self, index):
         if index == 0:
-            # print("CORRECT!")
             return True
 
-        # print("ERROOOU!")
         return False

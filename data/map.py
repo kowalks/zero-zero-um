@@ -51,7 +51,8 @@ class Map:
         # self.attack_improve_sprites = pygame.sprite.Group() # aumenta o dano dado por resposta correta (livro)
         # self.my_attack_improve = itens.ImproveAttackItem(self.all_sprites, self.attack_improve_sprites, self.my_player, 2, 4)
         #
-        # self.defence_sprites = pygame.sprite.Group() # dá uma chance de errar/passar tempo sem perder vida (colete)
+        # self.defence_sprites = pygame.sprite.Group() # dá uma chance de errar/passar tempo se
+        #m perder vida (colete)
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()

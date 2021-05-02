@@ -111,12 +111,13 @@ class Enemy(Character):
         self.player = player
         self.tick = 0
         self.tmax = rnd.randrange(20, 50)
-        self.furious = True
+        self.furious = False
         self.level = level
         self.front = 'up'
         self.vx, self.vy = 0,0
 
     def update(self):
+        self.update_near_player()
         if self.furious:
             self.target_velocity()
         else:
@@ -129,7 +130,6 @@ class Enemy(Character):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
         if displacement.length() != 0:
             angle = displacement.angle_to(Vec(1,0))
-            print(angle)
             self.update_velocity(angle)
 
     def update_velocity(self, angle):
@@ -166,3 +166,8 @@ class Enemy(Character):
             self.front = 'up'
         elif self.vy == 1:
             self.front = 'down'
+
+    def update_near_player(self):
+        displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
+        if displacement.length() <= 4:
+            self.furious = True

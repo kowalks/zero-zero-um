@@ -4,7 +4,7 @@ from settings import *
 import buttons
 import map
 import random as rnd
-
+from pygame import mixer
 class Screen():
     """ Class of a generic screen in the game """
     def __init__(self, caption = "My game name", *args, **kwargs):
@@ -107,15 +107,14 @@ class SettingsScreen(Screen):
         back_button = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
                                      settings.SCREEN_HEIGHT - settings.MARGIN,
                                      "Voltar", "blue_button")
-        video_button = buttons.Button(settings.MARGIN,
-                                      settings.MARGIN,
-                                      "Vídeo", "blue_button")
         sound_button = buttons.Button(settings.MARGIN,
                                       settings.MARGIN + settings.BT_HEIGHT,
                                       "Áudio", "blue_button")
-        video_button.draw_button(self.scn)
         back_button.draw_button(self.scn)
         sound_button.draw_button(self.scn)
+        smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 26)
+        text = smallfont.render("Configurações de Jogo:", True, (29, 13, 64))
+        self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():
@@ -125,104 +124,62 @@ class SettingsScreen(Screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
-        if state == "Vídeo":
-            video_setting_button_type1 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
-                                                        settings.SCREEN_HEIGHT - settings.MARGIN,
-                                                        "Default", "blue_button")
-            video_setting_button_type2 = buttons.Button(settings.MARGIN+ 2 * settings.BT_DIST,
-                                                        settings.MARGIN,
-                                                        "2560x1600", "blue_button")
-            video_setting_button_type3 = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
-                                                        settings.MARGIN + settings.BT_HEIGHT+1,
-                                                        "800x600", "blue_button")
-            video_setting_button_type1.draw_button(self.scn)
-            video_setting_button_type2.draw_button(self.scn)
-            video_setting_button_type3.draw_button(self.scn)
-            if video_setting_button_type1.rectangle.collidepoint((mx, my)):
-                if click:
-                    video_setting_button_type1.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    video_setting_button_type1.draw_button(self.scn)
-            if video_setting_button_type2.rectangle.collidepoint((mx, my)):
-                if click:
-                    video_setting_button_type2.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    video_setting_button_type2.draw_button(self.scn)
-            if video_setting_button_type3.rectangle.collidepoint((mx, my)):
-                if click:
-                    video_setting_button_type3.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    video_setting_button_type3.draw_button(self.scn)
-        if state == "Áudio":
-            music_setting_button = buttons.Button(settings.MARGIN + 2*settings.BT_DIST,
+        music_setting_button = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                              settings.MARGIN + settings.BT_HEIGHT,
+                                              "Music", "blue_button")
+        music_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
+                                                 settings.MARGIN + settings.BT_HEIGHT,
+                                                 "Infantaria", "blue_button")
+        music_setting_button_off = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
                                                   settings.MARGIN + settings.BT_HEIGHT,
-                                                  "Music", "blue_button")
-            music_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
-                                                     settings.MARGIN + settings.BT_HEIGHT,
-                                                     "ON", "blue_button")
-            music_setting_button_off = buttons.Button(settings.MARGIN+ 3* settings.BT_DIST,
-                                                      settings.MARGIN + settings.BT_HEIGHT,
-                                                      "OFF", "blue_button")
-            sound_setting_button = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
-                                                  settings.MARGIN + 2*settings.BT_HEIGHT+10,
-                                                  "Music", "blue_button")
-            sound_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
-                                                     settings.MARGIN + 2*settings.BT_HEIGHT+10,
-                                                     "ON", "blue_button")
-            sound_setting_button_off = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
-                                                      settings.MARGIN + 2*settings.BT_HEIGHT+10,
-                                                      "OFF", "blue_button")
-            music_setting_button_on.draw_button(self.scn)
-            music_setting_button.draw_button(self.scn)
-            music_setting_button_off.draw_button(self.scn)
-            sound_setting_button_on.draw_button(self.scn)
-            sound_setting_button.draw_button(self.scn)
-            sound_setting_button_off.draw_button(self.scn)
-            if music_setting_button.rectangle.collidepoint((mx, my)):
-                if click:
-                    pass
-            if music_setting_button_on.rectangle.collidepoint((mx, my)):
-                if click:
-                    music_setting_button_on.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    music_setting_button_on.draw_button(self.scn)
-            if music_setting_button_off.rectangle.collidepoint((mx, my)):
-                if click:
-                    music_setting_button_off.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    music_setting_button_off.draw_button(self.scn)
-            if sound_setting_button.rectangle.collidepoint((mx, my)):
-                if click:
-                    pass
-            if sound_setting_button_on.rectangle.collidepoint((mx, my)):
-                if click:
-                    sound_setting_button_on.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    sound_setting_button_on.draw_button(self.scn)
-            if sound_setting_button_off.rectangle.collidepoint((mx, my)):
-                if click:
-                    sound_setting_button_off.button_img = pygame.transform.scale(
-                        pygame.image.load(f'img/buttons/green_button.png'),
-                        (settings.BT_WIDTH, settings.BT_HEIGHT))
-                    sound_setting_button_off.draw_button(self.scn)
+                                                  "Avante", "blue_button")
+        music_setting_button_on.draw_button(self.scn)
+        music_setting_button.draw_button(self.scn)
+        music_setting_button_off.draw_button(self.scn)
+        dificuldade_setting_button = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                                    settings.MARGIN + 2 * settings.BT_HEIGHT,
+                                                    "Nível", "blue_button")
+        dificuldade_setting_button_on = buttons.Button(settings.MARGIN + settings.BT_DIST,
+                                                       settings.MARGIN + 2 * settings.BT_HEIGHT,
+                                                       "Facil", "blue_button")
+        dificuldade_setting_button_off = buttons.Button(settings.MARGIN + 3 * settings.BT_DIST,
+                                                        settings.MARGIN + 2 * settings.BT_HEIGHT,
+                                                        "Difícil", "blue_button")
+        dificuldade_setting_button_on.draw_button(self.scn)
+        dificuldade_setting_button.draw_button(self.scn)
+        dificuldade_setting_button_off.draw_button(self.scn)
+        if music_setting_button.rectangle.collidepoint((mx, my)):
+            if click:
+                pass
+        if music_setting_button_on.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(music_setting_button_on)
+                mixer.music.load('../extras/cancao_da_infantaria.WAV')
+                mixer.music.play(-1)
+        if music_setting_button_off.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(music_setting_button_off)
+                mixer.music.load('../extras/avante_camaradas.WAV')
+                mixer.music.play(-1)
+        if dificuldade_setting_button.rectangle.collidepoint((mx, my)):
+            if click:
+                pass
+        if dificuldade_setting_button_on.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(dificuldade_setting_button_on)
+
+        if dificuldade_setting_button_off.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(dificuldade_setting_button_off)
         # TODO: Antes de dar push, organizar essa implementacao do quit button
         if back_button.rectangle.collidepoint((mx, my)):
             if click:
+                back_button.button_img = pygame.transform.scale(
+                    pygame.image.load(f'img/buttons/green_button.png'),
+                    (settings.BT_WIDTH, settings.BT_HEIGHT))
+                back_button.draw_button(self.scn)
                 title_screen = TitleScreen()
                 running = title_screen.run(running)
-        if video_button.rectangle.collidepoint((mx, my)):
-            if click:
-                state = "Vídeo"
-        if sound_button.rectangle.collidepoint((mx, my)):
-            if click:
-                state = "Áudio"
 
         return running, state
 
@@ -235,13 +192,18 @@ class SettingsScreen(Screen):
                 running, self.state = self.run_events(running)
             pygame.display.update()
 
+    def clickstate(self,button):
+        button.button_img = pygame.transform.scale(
+            pygame.image.load(f'img/buttons/green_button.png'),
+            (settings.BT_WIDTH, settings.BT_HEIGHT))
+        button.draw_button(self.scn)
 class ControlsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Screen.set_bg(self, "bg_control_screen.png")  # mundando a tela para tela de instruções
 
     def run_events(self, running):
-
         mx, my = pygame.mouse.get_pos()
 
         back_button = quit_button = buttons.Button(settings.MARGIN + 3*settings.BT_DIST,
@@ -249,9 +211,10 @@ class ControlsScreen(Screen):
                                    "Voltar", "blue_button")
 
         back_button.draw_button(self.scn)
-        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
-        self.scn.blit(text, (50, 80))
+
+        #font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        #text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
+        #self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():
@@ -271,7 +234,7 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.key = rnd.randint(0, 200)
+        self.key = rnd.randint(30, 200)
 
     def run_events(self, running):
         game_map = map.Map(self.scn, self.key)
@@ -398,7 +361,7 @@ class GameScreen(Screen):
                     return
 
 
-def pop_up(player, enemy, screen, qa):
+def pop_up(player, enemy, screen, qa, itens_icon):
     tempo = pygame.time.Clock();
     ms = 1000
     time_lim = 10*ms
@@ -410,47 +373,56 @@ def pop_up(player, enemy, screen, qa):
     while time_lim >= 0:
         screen.blit(bg, (0, 0))
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+
+        playerSurface = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))
+        playerSurface.set_alpha(0)  # alpha level
+        playerSurface.fill(BLACK)  # this fills the entire surface
+        rect_player = playerSurface.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
+        pl_life_text = font.render('Vida:', True, WHITE)
+        vida_text = pl_life_text.get_rect(midleft=(TILESIZE / 2, rect_player.center[1]))
+
+        pl_life = font.render(str(player.life), True, RED)
+        vida = pl_life.get_rect(midleft=(vida_text.right, rect_player.center[1]))
+
+        bg_itens = pygame.image.load("img/map/inventario.png")
+
+        filter = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        filter.set_alpha(128)  # alpha level
+        filter.fill(BLACK)  # this fills the entire surface
+        rect_filter = filter.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
+        screen.blit(filter, rect_filter)
+        screen.blit(bg_itens, rect_player)
+        screen.blit(pl_life_text, vida_text)
+        screen.blit(pl_life, vida)
+
         # Title
         img = font.render('Combate', True, WHITE)
         rect = img.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE))
         screen.blit(img, rect)
 
-        # Players Life
-        pl_life = font.render('Vida:', True, WHITE)
-        vida = pl_life.get_rect(bottomleft=(TILESIZE, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
-
-        jogador = font.render("Jogador", True, WHITE)
-        player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
-        screen.blit(jogador, player_title)
-
-        pl_life = font.render(str(player.life), True, RED)
-        vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
-
         # Enemy Life
         jogador = font.render("Inimigo", True, WHITE)
-        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
-        screen.blit(jogador, enemy_title)
+        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, 3*TILESIZE))
 
         pl_life = font.render('Vida:', True, WHITE)
         vida = pl_life.get_rect(bottomleft=(enemy_title.left, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
+        #screen.blit(pl_life, vida)
 
         pl_life = font.render(str(enemy.life), True, RED)
         vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
         screen.blit(pl_life, vida)
 
-        BACK = (70, 70, 70)
         # Rect for actions
         rect = pygame.Rect(50, 60, SCREEN_WIDTH - 2 * TILESIZE, 0.4 * SCREEN_HEIGHT)
         rect.midbottom = (SCREEN_WIDTH / 2, SCREEN_HEIGHT - TILESIZE / 4)
-        pygame.draw.rect(screen, BACK, rect, border_radius=10)
 
         # Buttons
-        position_x = rect.x + (rect.right - rect.left) / 4
-        position_y = rect.y + rect.h/2 - TILESIZE + TILESIZE/4
-        print(sample, ans)
+        position_x = (SCREEN_WIDTH - BT_WIDTH)/2
+        position_y = rect.y + rect.h/2 - TILESIZE/8
+       # print(sample, ans)
+
         atck2 = buttons.ButtonFight(position_x,position_y
                                     ,
                                     ans[sample[0]], "withe_button", sample[0])
@@ -468,43 +440,16 @@ def pop_up(player, enemy, screen, qa):
         atck2.draw_button(screen)
         atck3.draw_button(screen)
 
-        itens = font.render("Itens", True, WHITE)
-        itenspos = itens.get_rect(midtop=(rect.center[0] + (rect.right - rect.left) / 4, rect.y + TILESIZE / 4))
-        screen.blit(itens, itenspos)
-
         # ITENS
         nTILESIZE = 1.2 * TILESIZE
-        rect_itens = pygame.Rect(0, 0, nTILESIZE, nTILESIZE)
 
         pos_center = []
-        for y_off in range(0, 3, 1):
-            for x_off in range(0, 3, 1):
-                rect_itens.topleft = (
-                itenspos.bottomleft[0] + x_off * nTILESIZE, itenspos.bottomleft[1] + y_off * nTILESIZE)
-                pos_center.append(rect_itens.center)
-                pygame.draw.rect(screen, (50, 50, 50), rect_itens)
-                pygame.draw.rect(screen, WHITE, rect_itens, width=1)
+        for i in range(0,5):
+            position = (700 + 108*i, rect_player.midleft[1])
+            pos_center.append(position)
 
-        #print(pos_center)
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", player.itens[4])
-        item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion", player.itens[5])
-        item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion", player.itens[6])
-        item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion", player.itens[7])
-        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "timer", player.itens[8])
-
-        item1.draw_button(screen)
-        item2.draw_button(screen)
-        item3.draw_button(screen)
-        item4.draw_button(screen)
-        item5.draw_button(screen)
-        item6.draw_button(screen)
-        item7.draw_button(screen)
-        item8.draw_button(screen)
-        item9.draw_button(screen)
+        for i in range(0, 5):
+            itens_icon[i].update(player.itens[i], screen)
 
         # mouse position
         mx, my = pygame.mouse.get_pos()
@@ -525,33 +470,21 @@ def pop_up(player, enemy, screen, qa):
             if atck3.rectangle.collidepoint((mx, my)):
                 answered, correct = True, qa.is_correct(atck3.index)
                 break
-            if item1.rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
+            if itens_icon[0].rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
                 time_lim += 10 * ms
                 player.itens[0] -= 1
-            if item2.rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
+            if itens_icon[1].rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
                 time_lim += 2 * ms
                 player.itens[1]-= 1
-            if item3.rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
+            if itens_icon[2].rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
                 time_lim += 2 * ms
                 player.itens[2]-= 1
-            if item4.rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
+            if itens_icon[3].rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
                 time_lim += 2 * ms
                 player.itens[3]-= 1
-            if item5.rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
+            if itens_icon[4].rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
                 time_lim += 2 * ms
                 player.itens[4]-= 1
-            if item6.rectangle.collidepoint((mx, my)) and player.itens[5] > 0:
-                time_lim += 2 * ms
-                player.itens[5]-= 1
-            if item7.rectangle.collidepoint((mx, my)) and player.itens[6] > 0:
-                time_lim += 2 * ms
-                player.itens[6]-= 1
-            if item8.rectangle.collidepoint((mx, my)) and player.itens[7] > 0:
-                time_lim += 2 * ms
-                player.itens[7]-= 1
-            if item9.rectangle.collidepoint((mx, my)) and player.itens[8] > 0:
-                player.itens[8]-= 1
-                time_lim += 2 * ms
 
         text_time = round(time_lim/1000)
         tempo_text = font.render(str(text_time), True, WHITE)
@@ -633,7 +566,7 @@ def end_animated_text(scn):
                 for intro_line in full_end_list:
                     text_surface = smallfont.render(intro_line, True, WHITE)
                     text_rect = text_surface.get_rect()
-                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 3) * linespace)
                     line += 1
                     s = (text_surface, text_rect)
                     surfaces_list.append(s)
@@ -710,7 +643,7 @@ def end_participantes(scn):
                 for intro_line in full_end_list:
                     text_surface = smallfont.render(intro_line, True, WHITE)
                     text_rect = text_surface.get_rect()
-                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 3) * linespace)
                     line += 1
                     s = (text_surface, text_rect)
                     surfaces_list.append(s)

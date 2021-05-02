@@ -367,6 +367,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
     ms = 1000
     time_lim = 10*ms
     answered, correct = False, False
+    shield = False
     question, ans = qa.get_qa(enemy.level)
     sample = rnd.sample(range(0, 3), 3)
     bg = pygame.transform.scale(pygame.image.load("img/background/battle_alt.png"),
@@ -460,7 +461,6 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
         if click:
             if atck1.rectangle.collidepoint((mx, my)):
                 answered, correct = True, qa.is_correct(atck1.index)
@@ -472,19 +472,19 @@ def pop_up(player, enemy, screen, qa, itens_icon):
                 answered, correct = True, qa.is_correct(atck3.index)
                 break
             if itens_icon[0].rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
-                time_lim += 10 * ms
+                time_lim += 600 * ms
                 player.itens[0] -= 1
             if itens_icon[1].rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
-                time_lim += 2 * ms
+                player.life += 50
                 player.itens[1]-= 1
             if itens_icon[2].rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
-                time_lim += 2 * ms
+                enemy.life -= 50
                 player.itens[2]-= 1
             if itens_icon[3].rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
-                time_lim += 2 * ms
+                enemy.life -= 10000
                 player.itens[3]-= 1
             if itens_icon[4].rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
-                time_lim += 2 * ms
+                shield = True
                 player.itens[4]-= 1
 
         text_time = round(time_lim/1000)
@@ -514,9 +514,12 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             break
 
     if not answered or not correct:
-        player.life -= 10
+        if not shield:
+            player.life -= 10
+
     if answered and correct:
         enemy.life -= 10
+
 
 
 def pop_up_final_question(player, enemy, screen, qa):

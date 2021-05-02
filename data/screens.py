@@ -201,9 +201,9 @@ class ControlsScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Screen.set_bg(self, "bg_control_screen.png")  # mundando a tela para tela de instruções
 
     def run_events(self, running):
-
         mx, my = pygame.mouse.get_pos()
 
         back_button = quit_button = buttons.Button(settings.MARGIN + 3*settings.BT_DIST,
@@ -211,9 +211,10 @@ class ControlsScreen(Screen):
                                    "Voltar", "blue_button")
 
         back_button.draw_button(self.scn)
-        font = pygame.font.Font("fonts/chalkduster.ttf", 60)
-        text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
-        self.scn.blit(text, (50, 80))
+
+        #font = pygame.font.Font("fonts/chalkduster.ttf", 60)
+        #text = font.render("Desenvolvimento futuro.", True, (29, 13, 64))
+        #self.scn.blit(text, (50, 80))
 
         click = False
         for event in pygame.event.get():
@@ -233,7 +234,7 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.key = rnd.randint(0, 200)
+        self.key = rnd.randint(30, 200)
 
     def run_events(self, running):
         game_map = map.Map(self.scn, self.key)
@@ -372,47 +373,56 @@ def pop_up(player, enemy, screen, qa):
     while time_lim >= 0:
         screen.blit(bg, (0, 0))
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
+
+        playerSurface = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))
+        playerSurface.set_alpha(0)  # alpha level
+        playerSurface.fill(BLACK)  # this fills the entire surface
+        rect_player = playerSurface.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
+        pl_life_text = font.render('Vida:', True, WHITE)
+        vida_text = pl_life_text.get_rect(midleft=(TILESIZE / 2, rect_player.center[1]))
+
+        pl_life = font.render(str(player.life), True, RED)
+        vida = pl_life.get_rect(midleft=(vida_text.right, rect_player.center[1]))
+
+        bg_itens = pygame.image.load("img/map/inventario.png")
+
+        filter = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        filter.set_alpha(128)  # alpha level
+        filter.fill(BLACK)  # this fills the entire surface
+        rect_filter = filter.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
+        screen.blit(filter, rect_filter)
+        screen.blit(bg_itens, rect_player)
+        screen.blit(pl_life_text, vida_text)
+        screen.blit(pl_life, vida)
+
         # Title
         img = font.render('Combate', True, WHITE)
         rect = img.get_rect(center=(SCREEN_WIDTH / 2, TILESIZE))
         screen.blit(img, rect)
 
-        # Players Life
-        pl_life = font.render('Vida:', True, WHITE)
-        vida = pl_life.get_rect(bottomleft=(TILESIZE, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
-
-        jogador = font.render("Jogador", True, WHITE)
-        player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
-        screen.blit(jogador, player_title)
-
-        pl_life = font.render(str(player.life), True, RED)
-        vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
-
         # Enemy Life
         jogador = font.render("Inimigo", True, WHITE)
-        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, vida.top))
-        screen.blit(jogador, enemy_title)
+        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, 3*TILESIZE))
 
         pl_life = font.render('Vida:', True, WHITE)
         vida = pl_life.get_rect(bottomleft=(enemy_title.left, 3 * TILESIZE))
-        screen.blit(pl_life, vida)
+        #screen.blit(pl_life, vida)
 
         pl_life = font.render(str(enemy.life), True, RED)
         vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
         screen.blit(pl_life, vida)
 
-        BACK = (70, 70, 70)
         # Rect for actions
         rect = pygame.Rect(50, 60, SCREEN_WIDTH - 2 * TILESIZE, 0.4 * SCREEN_HEIGHT)
         rect.midbottom = (SCREEN_WIDTH / 2, SCREEN_HEIGHT - TILESIZE / 4)
-        pygame.draw.rect(screen, BACK, rect, border_radius=10)
 
         # Buttons
-        position_x = rect.x + (rect.right - rect.left) / 4
-        position_y = rect.y + rect.h/2 - TILESIZE + TILESIZE/4
-        print(sample, ans)
+        position_x = (SCREEN_WIDTH - BT_WIDTH)/2
+        position_y = rect.y + rect.h/2 - TILESIZE/8
+       # print(sample, ans)
+
         atck2 = buttons.ButtonFight(position_x,position_y
                                     ,
                                     ans[sample[0]], "withe_button", sample[0])
@@ -430,43 +440,25 @@ def pop_up(player, enemy, screen, qa):
         atck2.draw_button(screen)
         atck3.draw_button(screen)
 
-        itens = font.render("Itens", True, WHITE)
-        itenspos = itens.get_rect(midtop=(rect.center[0] + (rect.right - rect.left) / 4, rect.y + TILESIZE / 4))
-        screen.blit(itens, itenspos)
-
         # ITENS
         nTILESIZE = 1.2 * TILESIZE
-        rect_itens = pygame.Rect(0, 0, nTILESIZE, nTILESIZE)
 
         pos_center = []
-        for y_off in range(0, 3, 1):
-            for x_off in range(0, 3, 1):
-                rect_itens.topleft = (
-                itenspos.bottomleft[0] + x_off * nTILESIZE, itenspos.bottomleft[1] + y_off * nTILESIZE)
-                pos_center.append(rect_itens.center)
-                pygame.draw.rect(screen, (50, 50, 50), rect_itens)
-                pygame.draw.rect(screen, WHITE, rect_itens, width=1)
+        for i in range(0,5):
+            position = (700 + 108*i, rect_player.midleft[1])
+            pos_center.append(position)
 
-        #print(pos_center)
         item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", player.itens[0])
         item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", player.itens[1])
         item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", player.itens[2])
         item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", player.itens[3])
         item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", player.itens[4])
-        item6 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[5], "hp_potion", player.itens[5])
-        item7 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[6], "hp_potion", player.itens[6])
-        item8 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[7], "hp_potion", player.itens[7])
-        item9 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[8], "timer", player.itens[8])
 
         item1.draw_button(screen)
         item2.draw_button(screen)
         item3.draw_button(screen)
         item4.draw_button(screen)
         item5.draw_button(screen)
-        item6.draw_button(screen)
-        item7.draw_button(screen)
-        item8.draw_button(screen)
-        item9.draw_button(screen)
 
         # mouse position
         mx, my = pygame.mouse.get_pos()
@@ -502,18 +494,6 @@ def pop_up(player, enemy, screen, qa):
             if item5.rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
                 time_lim += 2 * ms
                 player.itens[4]-= 1
-            if item6.rectangle.collidepoint((mx, my)) and player.itens[5] > 0:
-                time_lim += 2 * ms
-                player.itens[5]-= 1
-            if item7.rectangle.collidepoint((mx, my)) and player.itens[6] > 0:
-                time_lim += 2 * ms
-                player.itens[6]-= 1
-            if item8.rectangle.collidepoint((mx, my)) and player.itens[7] > 0:
-                time_lim += 2 * ms
-                player.itens[7]-= 1
-            if item9.rectangle.collidepoint((mx, my)) and player.itens[8] > 0:
-                player.itens[8]-= 1
-                time_lim += 2 * ms
 
         text_time = round(time_lim/1000)
         tempo_text = font.render(str(text_time), True, WHITE)

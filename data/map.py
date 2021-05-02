@@ -62,6 +62,11 @@ class Map:
         self.dt = 0
         self.qa = QA(self.key)
 
+
+        rect = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
+        rect = rect.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+        self.itens = self.draw_itens(rect, screen)
+
     def set_rooms(self):
         all_room_img = pygame.Surface((MAPSIZE*ROOMSIZE*ROOMSIZE, MAPSIZE*ROOMSIZE*ROOMSIZE))
         room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("before_end"), TiledRoom("End_room")],
@@ -222,21 +227,47 @@ class Map:
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
 
         # Players Life
+        lifeSurface = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
+        rect = lifeSurface.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
         pl_life_text = font.render('Vida:', True, WHITE)
-        vida_text = pl_life_text.get_rect(bottomleft=(TILESIZE/2, TILESIZE))
+        vida_text = pl_life_text.get_rect(midleft=(TILESIZE/2, rect.center[1]))
 
         pl_life = font.render(str(self.my_player.life), True, RED)
-        vida = pl_life.get_rect(bottomleft=(vida_text.right, TILESIZE))
+        vida = pl_life.get_rect(midleft =(vida_text.right, rect.center[1]))
 
-        lifeSurface = pygame.Surface(((vida.width + vida_text.width)*1.2, vida.height*1.2))  # the size of your rect
         lifeSurface.set_alpha(128)  # alpha level
         lifeSurface.fill(BLACK)  # this fills the entire surface
-        rect = lifeSurface.get_rect()
-        rect.left = vida_text.left - 0.1*((vida.width + vida_text.width))
-        rect.y = vida_text.y - 0.1*vida.height
+
+        bg = pygame.image.load("img/map/inventario.png")
         screen.blit(lifeSurface, rect)
+        screen.blit(bg, rect)
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
+
+
+        for i in range(0,5):
+            self.itens[i].update(self.my_player.itens[i],screen)
+
+
+    def draw_itens(self, rect_player, screen):
+        # ITENS
+        nTILESIZE = 1.2 * TILESIZE
+
+        pos_center = []
+        for i in range(0, 5):
+            position = (700 + 108 * i, rect_player.midleft[1])
+            pos_center.append(position)
+
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "hp_potion", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "hp_potion", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "hp_potion", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "hp_potion", self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "hp_potion", self.my_player.itens[4])
+
+        return [item1, item2, item3, item4, item5]
+
+
 
     # TODO: read spawn locations for data
     def spawn_enemies(self):

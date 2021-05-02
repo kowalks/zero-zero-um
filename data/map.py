@@ -272,12 +272,14 @@ class Map:
 
     # TODO: read spawn locations for data
     def spawn_enemies(self):
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 17, 12, 3)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 25, 6, 1)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 17, 5, 2)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 19, 12, 3)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 10, 10, 1)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, 17, 11, 2)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 1 * ROOMSIZE+8, 7, 1)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 4, 1)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 8, 1)
+        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
+                              self.my_player, 3*ROOMSIZE-1, 8, 2)
 
 class Camera:
     def __init__(self, sizeX, sizeY):

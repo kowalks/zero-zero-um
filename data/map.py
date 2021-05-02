@@ -25,7 +25,8 @@ class Map:
 
         self.key_sprites = pygame.sprite.Group()
         self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 25 , 8)
-
+        self.end_game_sprites = pygame.sprite.Group()
+        self.end_game = itens.EndGameItem(self.all_sprites, self.end_game_sprites, self.my_player,56 , 1)
         # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
         # self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 1, 2)
         #
@@ -144,6 +145,13 @@ class Map:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
                 self.my_key.show_key_password(screen, self.password)
+        for end in self.end_game_sprites:
+            if abs(self.my_player.rect.x - end.rect.x) < 2*TILESIZE and \
+                    abs(self.my_player.rect.y - end.rect.y) < TILESIZE:
+                #TODO estou jogando a vida pra 0 pra acabar com o game, mas da pra trocar dps
+                self.my_player.life = 0
+                scn.end_animated_text(screen)
+                scn.end_participantes(screen)
 
 
         # for clock in self.clock_sprites:

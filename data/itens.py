@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-
+import screens as scn
 class Item(pygame.sprite.Sprite):
 
     def __init__(self, x, y, got=False, COLOR=LIGHTGREY):
@@ -200,3 +200,20 @@ class ImproveLifeItem(Item):
 
     def update(self):
         super().update()
+
+class EndGameItem(Item):
+    def __init__(self, all_sprites, end_game_sprites, player, x, y, *args, **kwargs):
+        super().__init__(x, y, *args, **kwargs)
+        self.groups = all_sprites, end_game_sprites
+        self.image = pygame.Surface((1, 1))
+        self.image.fill(BGCOLOR)
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        # self.original_image = pygame.image.load("img/itens/invisivel.png").convert_alpha()
+        self.player = player
+        self.x = x
+        self.y = y
+
+    def update(self):
+        super().update()
+
+

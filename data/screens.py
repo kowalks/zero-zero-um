@@ -289,7 +289,7 @@ class GameScreen(Screen):
         smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
         text = ''
         surfaces_list = []
-        linespace = 30
+        linespace = 35
         line = 0
         skip = False
 
@@ -313,7 +313,7 @@ class GameScreen(Screen):
                         text_surface = smallfont.render(intro_line, True, WHITE)
                         text_rect = text_surface.get_rect()
                         text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + (line-1) * linespace)
-                        line+=1
+                        line += 1
                         s = (text_surface, text_rect)
                         surfaces_list.append(s)
                     continue
@@ -591,3 +591,158 @@ def gameover(screen):
     rect = img.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT/2))
     screen.blit(img, rect)
     pygame.display.flip()
+
+
+def end_animated_text(scn):
+    global text_surface, text_rect
+
+    poema1 = "Se..."
+    poema2 = " "
+    poema3 = "Se és capaz de manter tua calma, quando,"
+    poema4 = "todo mundo ao redor já a perdeu e te culpa."
+    poema5 = "De crer em ti quando estão todos duvidando,"
+    poema6 = "e para esses no entanto achar uma desculpa."
+    poema7 = "és um Homem, meu filho!"
+
+    full_end_list = [poema1, poema2, poema3, poema4, poema5, poema6, poema7]
+
+    smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+    text = ''
+    surfaces_list = []
+    linespace = 35
+    line = 0
+    skip = False
+
+    for intro in full_end_list:
+        for i in range(len(intro)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                surfaces_list = []
+                linespace = 30
+                line = 0
+                for intro_line in full_end_list:
+                    text_surface = smallfont.render(intro_line, True, WHITE)
+                    text_rect = text_surface.get_rect()
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    line += 1
+                    s = (text_surface, text_rect)
+                    surfaces_list.append(s)
+                continue
+
+            scn.fill(BLACK)
+            for s in surfaces_list:
+                scn.blit(*s)
+            text += intro[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 3 * linespace + line * linespace)
+            scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(40)
+
+        if skip:
+            break
+        else:
+            s = (text_surface, text_rect)
+            line += 1
+            surfaces_list.append(s)
+            text = ''
+
+    scn.fill(BLACK)
+    for s in surfaces_list:
+        scn.blit(*s)
+    pygame.display.update()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return
+
+def end_participantes(scn):
+    global text_surface, text_rect
+
+    poema1 = "Participantes:"
+    poema2 = "Arthur José - Pagodinho"
+    poema3 = "Fernando Zanchitta - Zank"
+    poema4 = "Gabriel Gobi - Gobi"
+    poema5 = "Guilherme Kowalczuk - Kowa"
+    poema6 = "Thiago Lopes - TH"
+    poema7 = "Yuri Gama - Índio"
+
+    full_end_list = [poema1, poema2, poema3, poema4, poema5, poema6, poema7]
+
+    smallfont = pygame.font.Font(f'fonts/{settings.BT_FONT}.ttf', 22)
+    text = ''
+    surfaces_list = []
+    linespace = 50
+    line = 0
+    skip = False
+
+    for intro in full_end_list:
+        for i in range(len(intro)):
+
+            # verificando se nao ha skip
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    skip = True
+                continue
+
+            if skip:
+                surfaces_list = []
+                linespace = 30
+                line = 0
+                for intro_line in full_end_list:
+                    text_surface = smallfont.render(intro_line, True, WHITE)
+                    text_rect = text_surface.get_rect()
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    line += 1
+                    s = (text_surface, text_rect)
+                    surfaces_list.append(s)
+                continue
+
+            scn.fill(BLACK)
+            for s in surfaces_list:
+                scn.blit(*s)
+            text += intro[i]
+            text_surface = smallfont.render(text, True, WHITE)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 3 * linespace + line * linespace)
+            scn.blit(text_surface, text_rect)
+            pygame.display.update()
+            pygame.time.wait(40)
+
+        if skip:
+            break
+        else:
+            s = (text_surface, text_rect)
+            line += 1
+            surfaces_list.append(s)
+            text = ''
+
+    scn.fill(BLACK)
+    for s in surfaces_list:
+        scn.blit(*s)
+    pygame.display.update()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return

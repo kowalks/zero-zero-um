@@ -575,7 +575,7 @@ def end_animated_text(scn):
                 for intro_line in full_end_list:
                     text_surface = smallfont.render(intro_line, True, WHITE)
                     text_rect = text_surface.get_rect()
-                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 3) * linespace)
                     line += 1
                     s = (text_surface, text_rect)
                     surfaces_list.append(s)
@@ -652,7 +652,7 @@ def end_participantes(scn):
                 for intro_line in full_end_list:
                     text_surface = smallfont.render(intro_line, True, WHITE)
                     text_rect = text_surface.get_rect()
-                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 1) * linespace)
+                    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + (line - 3) * linespace)
                     line += 1
                     s = (text_surface, text_rect)
                     surfaces_list.append(s)

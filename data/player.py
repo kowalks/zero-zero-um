@@ -195,5 +195,5 @@ class BlockingEnemy(Character):
         self.groups = all_sprites, enemy_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.player = player
-        self.image = pygame.image.load(f"img/enemies/level_1/enemies_left_1.png").convert_alpha()
+        self.image = pygame.image.load(f"img/enemies/blocking_enemy.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (TILESIZE, 2*TILESIZE))

@@ -275,11 +275,11 @@ class Map:
         self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
                               self.my_player, 1 * ROOMSIZE+8, 7, 1)
         self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 4, 1)
+                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 4, 2)
         self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 8, 1)
+                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 8, 3)
         self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 3*ROOMSIZE-1, 8, 2)
+                              self.my_player, 3*ROOMSIZE-1, 8, 4)
 
 class Camera:
     def __init__(self, sizeX, sizeY):

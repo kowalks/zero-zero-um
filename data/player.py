@@ -17,7 +17,6 @@ class Character(pygame.sprite.Sprite):
 
     def check_move(self, dx, dy):
         for wall in self.walls:
-            # print(self.rect.x, self.rect.y, brick.rect.x, brick.rect.y, brick.rect.w, brick.rect.h)
             # TODO tirar TILESIZE abaixo para playerwidth
             if self.has_collide(wall):
                 if dx == 1:
@@ -188,3 +187,13 @@ class Enemy(Character):
                 frames[dir][i] = pygame.transform.scale(frames[dir][i], (
                 TILESIZE, 2 * TILESIZE))
         return frames
+
+
+class BlockingEnemy(Character):
+    def __init__(self, walls, all_sprites, enemy_sprites, player, x, y, *args, **kwargs):
+        super().__init__(x, y, walls, *args, **kwargs)
+        self.groups = all_sprites, enemy_sprites
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.player = player
+        self.image = pygame.image.load(f"img/enemies/level_1/enemies_left_1.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (TILESIZE, 2*TILESIZE))

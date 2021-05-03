@@ -519,27 +519,6 @@ def pop_up(player, enemy, screen, qa, itens_icon):
         enemy.life -= 25
 
 
-
-def pop_up_final_question(player, enemy, screen, qa):
-    bg = pygame.transform.scale(
-        pygame.image.load("img/background/battle_alt.png"),
-        (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
-    screen.blit(bg, (0, 0))
-
-    # Players Life
-    pl_life = font.render('Vida:', True, WHITE)
-    vida = pl_life.get_rect(bottomleft=(TILESIZE, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
-
-    jogador = font.render("Jogador", True, WHITE)
-    player_title = jogador.get_rect(bottomleft=(TILESIZE, vida.top))
-    screen.blit(jogador, player_title)
-
-    pl_life = font.render(str(player.life), True, RED)
-    vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
-    screen.blit(pl_life, vida)
-
-
 def gameover(screen):
     screen.fill(BGCOLOR)
     font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 80)

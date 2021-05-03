@@ -143,7 +143,8 @@ class Map:
                 break
 
         for blocking_enemy in self.blocking_enemies:
-            if abs(self.my_player.rect.x - blocking_enemy.rect.x) < 1.5 * TILESIZE:
+            if abs(self.my_player.rect.x - blocking_enemy.rect.x) < 1.5 * TILESIZE and \
+                    abs(self.my_player.rect.y - enemy.rect.y) < 2*TILESIZE:
                 if self.password.enter_password_screen(screen, self.my_player):
                     blocking_enemy.kill()
                 else:

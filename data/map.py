@@ -25,6 +25,7 @@ class Map:
 
         self.key_sprites = pygame.sprite.Group()
         self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 3*ROOMSIZE + 7.5, 1*ROOMSIZE+ 8)
+
         self.end_game_sprites = pygame.sprite.Group()
         self.end_game = itens.EndGameItem(self.all_sprites, self.end_game_sprites, self.my_player,56 , 1)
         # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
@@ -57,6 +58,9 @@ class Map:
 
         self.enemies = pygame.sprite.Group()
         self.spawn_enemies()
+
+        self.blocking_enemies = pygame.sprite.Group()
+        self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
 
         self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
@@ -138,13 +142,21 @@ class Map:
                     enemy.kill()
                 break
 
+        for blocking_enemy in self.blocking_enemies:
+            if abs(self.my_player.rect.x - blocking_enemy.rect.x) < 1.5 * TILESIZE:
+                if self.password.enter_password_screen(screen, self.my_player):
+                    blocking_enemy.kill()
+                else:
+                    self.my_player.rect.x -= 2 * TILESIZE
+
         if self.my_player.life <= 0:
             scn.gameover(screen)
 
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
-                self.my_key.show_key_password(screen, self.password)
+                self.password.show_key_password(screen) # uncomment to return original funcionality
+
         for end in self.end_game_sprites:
             if abs(self.my_player.rect.x - end.rect.x) < 2*TILESIZE and \
                     abs(self.my_player.rect.y - end.rect.y) < TILESIZE:

@@ -369,7 +369,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
     shield = False
     question, ans = qa.get_qa(enemy.level)
     sample = rnd.sample(range(0, 3), 3)
-    bg = pygame.transform.scale(pygame.image.load("img/background/battle_alt.png"),
+    bg = pygame.transform.scale(pygame.image.load("img/background/battle_bg.png"),
                                 (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
     while time_lim >= 0:
         screen.blit(bg, (0, 0))

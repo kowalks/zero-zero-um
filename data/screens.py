@@ -473,7 +473,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
                 time_lim += 60 * ms
                 player.itens[0] -= 1
             if itens_icon[1].rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
-                player.life += 50
+                player.life += 30
                 player.itens[1]-= 1
             if itens_icon[2].rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
                 enemy.life -= 50
@@ -516,7 +516,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             player.life -= 10
 
     if answered and correct:
-        enemy.life -= 10
+        enemy.life -= 25
 
 
 

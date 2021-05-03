@@ -470,7 +470,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
                 answered, correct = True, qa.is_correct(atck3.index)
                 break
             if itens_icon[0].rectangle.collidepoint((mx, my)) and player.itens[0] > 0:
-                time_lim += 600 * ms
+                time_lim += 60 * ms
                 player.itens[0] -= 1
             if itens_icon[1].rectangle.collidepoint((mx, my)) and player.itens[1] > 0:
                 player.life += 50

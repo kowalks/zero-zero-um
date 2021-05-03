@@ -63,7 +63,7 @@ class ClockItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, clock_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.image.load("img/itens/ice_clock.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
@@ -175,7 +175,7 @@ class AdvancedAttackItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, advance_attack_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.image.load("img/itens/boot.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
@@ -191,7 +191,7 @@ class ImproveLifeItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, improve_life_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.image.load("img/itens/canteen.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player

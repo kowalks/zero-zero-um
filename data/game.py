@@ -8,5 +8,6 @@ class Game:
     def __init__(self):
         pygame.init()
 
+
     def close(self):
         pygame.quit()

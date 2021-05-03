@@ -23,6 +23,7 @@ class Map:
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.midgame = False
 
         self.key_sprites = pygame.sprite.Group()
         self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 3*ROOMSIZE + 7.5, 1*ROOMSIZE+ 8)
@@ -58,7 +59,7 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.spawn_enemies()
+        self.spawn_enemies('enemies/newgame_enemies.csv')
 
         self.blocking_enemies = pygame.sprite.Group()
         self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
@@ -159,7 +160,11 @@ class Map:
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
+                if self.midgame == False:
+                    self.spawn_enemies('enemies/afterkey_enemies.csv')
+                    self.midgame = True
                 self.password.show_key_password(screen) # uncomment to return original funcionality
+
 
         for end in self.end_game_sprites:
             if abs(self.my_player.rect.x - end.rect.x) < 2*TILESIZE and \
@@ -279,8 +284,8 @@ class Map:
 
 
     # TODO: read spawn locations for data
-    def spawn_enemies(self):
-        with open('newgame_enemies.csv', mode='r') as csv_file:
+    def spawn_enemies(self,file):
+        with open(file, mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))

@@ -61,7 +61,7 @@ class Player(Character):
         self.front = "down"
         self.tick = 1
         self.tick_max = 10
-        self.itens = [9, 9, 9, 9, 9, 9, 9, 9, 9, 0]
+        self.itens = [0, 0, 0, 0, 0]
 
     def move(self, sinalx, sinaly):
         self.rect.x += sinalx * PLAYER_SPEED

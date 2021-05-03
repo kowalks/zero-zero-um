@@ -78,7 +78,6 @@ class Map:
                 all_room_img = room_list[row][col].make_room(all_room_img, col, row)
                 for tile_object in room_list[row][col].tmxdata.objects:
                     if tile_object.name == 'Wall':
-                        # print(tile_object.x,tile_object.y,tile_object.width,tile_object.height)
                         Obstacle(self.walls, tile_object.x*4 + col * ROOMSIZE*TILESIZE,tile_object.y*4 + row * ROOMSIZE * TILESIZE, tile_object.width*4, tile_object.height*4)
         return all_room_img, room_list
 
@@ -104,12 +103,6 @@ class Map:
 
         pygame.display.flip()
 
-    # def draw_grid(self, screen):
-    #     for y_offset in range(0, SCREEN_HEIGHT, TILESIZE):
-    #         pygame.draw.line(screen, LIGHTGREY, (0,y_offset), (SCREEN_WIDTH, y_offset))
-    #     for x_offset in range(0, SCREEN_WIDTH, TILESIZE):
-    #         pygame.draw.line(screen, LIGHTGREY, (x_offset, 0), (x_offset, SCREEN_WIDTH))
-
     def event(self, running):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
@@ -133,7 +126,6 @@ class Map:
 
         self.all_sprites.update()
         self.camera.update(self.my_player)
-        # pygame.sprite.spritecollide(self.my_player, self.enemies, 1)
         return running
 
     def check_collision(self, screen):

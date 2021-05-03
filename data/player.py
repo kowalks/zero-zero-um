@@ -165,6 +165,9 @@ class Enemy(Character):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
         if displacement.length() <= 4:
             self.furious = True
+        if displacement.length() >= 12:
+            self.furious = False
+
 
     def render_image(self):
         self.tick_frame += 1

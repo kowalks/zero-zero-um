@@ -111,7 +111,7 @@ class SupremeItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, supreme_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.image.load("img/itens/fish.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
@@ -127,7 +127,7 @@ class DefenceItem(Item):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, defence_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
+        self.original_image = pygame.image.load("img/itens/vest.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player

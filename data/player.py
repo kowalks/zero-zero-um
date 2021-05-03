@@ -62,7 +62,7 @@ class Player(Character):
         self.front = "down"
         self.tick = 1
         self.tick_max = 10
-        self.itens = [9, 9, 9, 9, 9, 9, 9, 9, 9, 0]
+        self.itens = [0, 0, 0, 0, 0]
 
     def move(self, sinalx, sinaly):
         self.rect.x += sinalx * PLAYER_SPEED
@@ -104,7 +104,7 @@ class Enemy(Character):
         self.tick_max_walk = rnd.randrange(20, 50)
         self.furious = False
         self.front = "down"
-        self.vx, self.vy = 0,0
+        self.vx, self.vy = 0, 0
 
 
     def update(self):

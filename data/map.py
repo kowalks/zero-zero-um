@@ -58,7 +58,7 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.spawn_enemies()
+        self.spawn_enemies('newgame_enemies.csv')
 
         self.blocking_enemies = pygame.sprite.Group()
         self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
@@ -279,8 +279,8 @@ class Map:
 
 
     # TODO: read spawn locations for data
-    def spawn_enemies(self):
-        with open('newgame_enemies.csv', mode='r') as csv_file:
+    def spawn_enemies(self,file):
+        with open(file, mode='r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))

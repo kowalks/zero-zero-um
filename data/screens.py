@@ -190,6 +190,7 @@ class SettingsScreen(Screen):
             else:
                 running, self.state = self.run_events(running)
             pygame.display.update()
+        return running, self.state
 
     def clickstate(self,button):
         button.button_img = pygame.transform.scale(

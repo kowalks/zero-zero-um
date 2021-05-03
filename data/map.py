@@ -7,7 +7,8 @@ import screens as scn
 import itens
 from qa import *
 from password import *
-
+from pygame import mixer
+import csv
 class Map:
     def __init__(self, screen, key):
         self.key = key
@@ -151,7 +152,9 @@ class Map:
                     self.my_player.rect.x -= 2 * TILESIZE
 
         if self.my_player.life <= 0:
+            mixer.music.stop()
             scn.gameover(screen)
+
 
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
@@ -277,15 +280,10 @@ class Map:
 
     # TODO: read spawn locations for data
     def spawn_enemies(self):
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 1 * ROOMSIZE+8, 7, 1)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 4, 2)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 8, 3)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 3*ROOMSIZE-1, 8, 4)
-
+        with open('newgame_enemies.csv', mode='r') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            for row in csv_reader:
+                Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
     #def spawn_itens(self):
 

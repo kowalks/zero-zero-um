@@ -247,8 +247,8 @@ class Map:
         screen.blit(pl_life_text, vida_text)
         screen.blit(pl_life, vida)
 
-        for i in range(0,5):
-            self.itens[i].draw_button(screen)
+        for i in range(0, 5):
+            self.itens[i].update(self.my_player.itens[i], screen)
 
 
     def draw_itens(self, rect_player, screen):

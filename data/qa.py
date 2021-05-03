@@ -14,7 +14,7 @@ class QA():
         if level == 3:
             return self.get_qa_level3()
         if level == 4:
-            return self.get_qa_level1()
+            return self.get_qa_level3()
 
     def get_qa_level1(self):
         faca = rnd.randint(1, self.key-1)

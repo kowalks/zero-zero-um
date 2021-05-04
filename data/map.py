@@ -141,6 +141,7 @@ class Map:
                     abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 mixer.music.load('../extras/battle.wav')
                 mixer.music.play(-1)
+                mixer.music.set_volume(VOLUMESET)
                 while enemy.life > 0 and self.my_player.life > 0:
                     scn.pop_up(self.my_player, enemy, screen, self.qa, self.itens)
                 if enemy.life <= 0:
@@ -149,6 +150,7 @@ class Map:
                     mixer.music.unload()
                     mixer.music.load(CURRENTSONG)
                     mixer.music.play(-1)
+                    mixer.music.set_volume(VOLUMESET)
 
                 break
 

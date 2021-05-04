@@ -44,6 +44,7 @@ class TitleScreen(Screen):
         super().__init__(*args, **kwargs)
         mixer.music.load(settings.CURRENTSONG)
         mixer.music.play(-1)
+        mixer.music.set_volume(settings.VOLUMESET)
 
     def run_events(self, running):
 
@@ -197,7 +198,7 @@ class SettingsScreen(Screen):
         if volume_setting_button_menos.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(volume_setting_button_menos)
-                settings.VOLUMESET += 0.1
+                settings.VOLUMESET -= 0.1
                 mixer.music.set_volume(settings.VOLUMESET)
 
         if volume_setting_button_mais.rectangle.collidepoint((mx, my)):

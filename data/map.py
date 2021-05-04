@@ -62,7 +62,7 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.spawn_enemies('enemies/newgame_enemies.csv')
+        self.spawn_enemies('csv/newgame_enemies.csv')
 
         self.blocking_enemies = pygame.sprite.Group()
         self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
@@ -180,7 +180,7 @@ class Map:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
                 if self.midgame == False:
-                    self.spawn_enemies('enemies/afterkey_enemies.csv')
+                    self.spawn_enemies('csv/afterkey_enemies.csv')
                     self.midgame = True
                 self.password.show_key_password(screen) # uncomment to return original funcionality
 
@@ -347,6 +347,7 @@ class Map:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
     def spawn_itens(self):
+
         self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
         self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
         self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)

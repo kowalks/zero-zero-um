@@ -29,45 +29,12 @@ class KeyItem(Item):
         self.player = player
 
 
-
 class ClockItem(Item):
     def __init__(self, all_sprites, clock_sprites, player, x, y, *args, **kwargs):
         super().__init__(x, y, *args, **kwargs)
         self.groups = all_sprites, clock_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.original_image = pygame.image.load("img/itens/ice_clock.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image = self.original_image
-        self.player = player
-        self.x = x
-        self.y = y
-
-    def update(self):
-        super().update()
-
-
-class HealItem(Item):
-    def __init__(self, all_sprites, heal_sprites, player, x, y, *args, **kwargs):
-        super().__init__(x, y, *args, **kwargs)
-        self.groups = all_sprites, heal_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image = self.original_image
-        self.player = player
-        self.x = x
-        self.y = y
-
-    def update(self):
-        super().update()
-
-
-class AttackItem(Item):
-    def __init__(self, all_sprites, attack_sprites, player, x, y, *args, **kwargs):
-        super().__init__(x, y, *args, **kwargs)
-        self.groups = all_sprites, attack_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player
@@ -100,38 +67,6 @@ class DefenceItem(Item):
         self.groups = all_sprites, defence_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.original_image = pygame.image.load("img/itens/vest.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image = self.original_image
-        self.player = player
-        self.x = x
-        self.y = y
-
-    def update(self):
-        super().update()
-
-
-class AdvancedHealItem(Item):
-    def __init__(self, all_sprites, advance_heal_sprites, player, x, y, *args, **kwargs):
-        super().__init__(x, y, *args, **kwargs)
-        self.groups = all_sprites, advance_heal_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
-        self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
-        self.image = self.original_image
-        self.player = player
-        self.x = x
-        self.y = y
-
-    def update(self):
-        super().update()
-
-
-class ImproveAttackItem(Item):
-    def __init__(self, all_sprites, improve_attack_sprites, player, x, y, *args, **kwargs):
-        super().__init__(x, y, *args, **kwargs)
-        self.groups = all_sprites, improve_attack_sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        self.original_image = pygame.image.load("img/enemies/zoimbie1_hold.png").convert_alpha()
         self.original_image = pygame.transform.scale(self.original_image, (TILESIZE, TILESIZE))
         self.image = self.original_image
         self.player = player

@@ -69,9 +69,14 @@ class ButtonItens():
         self.item_number = font.render(str(item), True, settings.WHITE)
         self.item_rect = self.item_number.get_rect(center= (self.rectangle.bottomright[0]-2,self.rectangle.bottomright[1]-5))
         if bt_img_name != "":
-            self.button_img = pygame.transform.scale(
+            self.img_off= pygame.transform.scale(
+                pygame.image.load(f'img/itens/black_white_{bt_img_name}.png'),
+                (h, w))
+            self.img_on = pygame.transform.scale(
                 pygame.image.load(f'img/itens/{bt_img_name}.png'),
-                (h,w))
+                (h, w))
+            self.button_img = self.img_off
+            print(bt_img_name)
 
 
     def draw_button(self, screen):
@@ -80,4 +85,8 @@ class ButtonItens():
 
     def update(self, item,screen):
         self.item_number = self.font.render(str(item), True, settings.WHITE)
+        if item == 0:
+            self.button_img = self.img_off
+        else:
+            self.button_img = self.img_on
         self.draw_button(screen)

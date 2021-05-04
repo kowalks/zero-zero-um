@@ -196,7 +196,6 @@ class Map:
             if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
                 self.my_player.itens[0] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 clock.kill()
 
@@ -204,7 +203,6 @@ class Map:
             if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
                 self.my_player.itens[1] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 life_improve.kill()
 
@@ -212,7 +210,6 @@ class Map:
             if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
                 self.my_player.itens[2] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 attack_medium.kill()
 
@@ -220,7 +217,6 @@ class Map:
             if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
                 self.my_player.itens[3] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 supreme.kill()
 
@@ -228,7 +224,6 @@ class Map:
             if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
                 self.my_player.itens[4] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 defence.kill()
 
@@ -331,31 +326,11 @@ class Map:
             position = (700 + 108 * i, rect_player.midleft[1])
             pos_center.append(position)
 
-        str_clock = "ice_clock"
-        if self.my_player.itens[0] == 0:
-            str_clock = "black_white_clock"
-
-        str_canteen = "canteen"
-        if self.my_player.itens[1] == 0:
-            str_canteen = "black_white_canteen"
-
-        str_boot = "boot"
-        if self.my_player.itens[2] == 0:
-            str_boot = "black_white_boot"
-
-        str_fish = "fish"
-        if self.my_player.itens[3] == 0:
-            str_fish = "black_white_fish"
-
-        str_vest = "vest"
-        if self.my_player.itens[4] == 0:
-            str_vest = "black_white_vest"
-
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], str_clock, self.my_player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], str_canteen, self.my_player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], str_boot, self.my_player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], str_fish, self.my_player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], str_vest, self.my_player.itens[4])
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "ice_clock", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "canteen", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "boot", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "fish", self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "vest", self.my_player.itens[4])
 
         return [item1, item2, item3, item4, item5]
 

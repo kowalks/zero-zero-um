@@ -128,7 +128,7 @@ class SettingsScreen(Screen):
                     click = True
         music_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                               settings.MARGIN + settings.BT_HEIGHT,
-                                              "Música", "blue_button")
+                                              "Música", "black_button")
         music_setting_button_infantaria = buttons.Button(settings.MARGIN ,
                                                  settings.MARGIN + settings.BT_HEIGHT,
                                                  "Soldado", "blue_button")
@@ -140,7 +140,7 @@ class SettingsScreen(Screen):
         music_setting_button_avante.draw_button(self.scn)
         dificuldade_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                                     settings.MARGIN + 3 * settings.BT_HEIGHT,
-                                                    "Nível", "blue_button")
+                                                    "Nível", "black_button")
         dificuldade_setting_button_easy = buttons.Button(settings.MARGIN ,
                                                        settings.MARGIN + 3 * settings.BT_HEIGHT,
                                                        "Facil", "blue_button")
@@ -152,7 +152,7 @@ class SettingsScreen(Screen):
         dificuldade_setting_button_off.draw_button(self.scn)
         volume_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                                     settings.MARGIN + 5 * settings.BT_HEIGHT,
-                                                    "Volume", "blue_button")
+                                                    "Volume", "black_button")
         volume_setting_button_menos = buttons.Button(settings.MARGIN,
                                                          settings.MARGIN + 5 * settings.BT_HEIGHT,
                                                          "Menos", "blue_button")

@@ -347,8 +347,8 @@ class Map:
             for row in csv_reader:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
-    def spawn_itens(self,nivel):
-        if nivel == 'dificil':
+    def spawn_itens(self):
+        if self.nivel == 'dificil':
             self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
             self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
             self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)
@@ -356,7 +356,7 @@ class Map:
             self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 3, 3 * ROOMSIZE + 9)
             self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11, 2 * ROOMSIZE + 3)
             self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
-        if nivel == 'facil':
+        if self.nivel == 'facil':
             self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11,
                                             1 * ROOMSIZE + 5)
             self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10,
@@ -365,12 +365,15 @@ class Map:
                                                          2 * ROOMSIZE + 10, 11)
             self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player,
                                                          2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
-            self.my_supreme = itens.SupremeItem(self.all_sprites, self.attack_medium_sprites,
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites,
                                                              self.my_player, 3, 3 * ROOMSIZE + 9)
-            self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11,
-                                                2 * ROOMSIZE + 3)
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites,
+                                                self.my_player, 7, 7)
             self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player,
                                                 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
+            self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11,
+                                                2 * ROOMSIZE + 3)
+
 
 
 

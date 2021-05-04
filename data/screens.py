@@ -7,7 +7,7 @@ import random as rnd
 from pygame import mixer
 class Screen():
     """ Class of a generic screen in the game """
-    def __init__(self, caption = "My game name", *args, **kwargs):
+    def __init__(self, caption = "Zero Zero Um", *args, **kwargs):
         # Initialize screen
         self.scn = pygame.display.set_mode((settings.SCREEN_WIDTH,
                                                settings.SCREEN_HEIGHT))

@@ -94,7 +94,7 @@ class Enemy(Character):
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.current_enemy_frame = 0
         self.level = level
-        self.frames = self.load_frames("csv")
+        self.frames = self.load_frames("enemies")
         self.player = player
         self.velocity = Vec(1, 0).rotate(rnd.randrange(0, 360))
         self.tick_frame = 0
@@ -164,9 +164,9 @@ class Enemy(Character):
 
     def update_near_player(self):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
-        if displacement.length() <= 4:
+        if displacement.length() <= 6:
             self.furious = True
-        if displacement.length() >= 12:
+        if displacement.length() >= 10:
             self.furious = False
 
 

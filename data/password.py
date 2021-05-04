@@ -136,7 +136,7 @@ class Password:
                     exit()
                 elif event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER):
                     times_pressed += 1
-                    answers.append(int(text_input.get_text()))
+                    answers.append(text_input.get_text())
                     s = (text_input.get_surface(), answer_rect)
                     answers_surfaces_list.append(s)
                     text_input.clear_text()
@@ -200,6 +200,13 @@ class Password:
 
     def password_answer_correct(self, answers):
         isCorrect = False
+
+        for i in range(len(answers)):
+            if  answers[i] == '':
+                return False
+            else:
+                answers[i] = int(answers[i])
+
         if answers[0] == self.airplane_n:
             if answers[1] == self.departure_time:
                 if answers[2] == self.sigsauer_rifles:

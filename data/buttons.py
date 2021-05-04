@@ -76,7 +76,6 @@ class ButtonItens():
                 pygame.image.load(f'img/itens/{bt_img_name}.png'),
                 (h, w))
             self.button_img = self.img_off
-            print(bt_img_name)
 
 
     def draw_button(self, screen):

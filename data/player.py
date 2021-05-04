@@ -104,7 +104,8 @@ class Enemy(Character):
         self.furious = False
         self.front = "down"
         self.vx, self.vy = 0,0
-
+        if self.level == 4:
+            self.life += 50
 
     def update(self):
         self.update_near_player()

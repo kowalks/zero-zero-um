@@ -273,7 +273,7 @@ class GameScreen(Screen):
         self.key = rnd.randint(30, 200)
 
     def run_events(self, running):
-        game_map = map.Map(self.scn, self.key)
+        game_map = map.Map(self.scn, self.key,settings.VOLUMESET,settings.CURRENTSONG)
         running = game_map.run(self.scn, True)
         return running
 

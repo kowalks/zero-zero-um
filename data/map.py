@@ -11,7 +11,9 @@ from pygame import mixer
 import csv
 
 class Map:
-    def __init__(self, screen, key):
+    def __init__(self, screen, key,volume, music):
+        self.volume = volume
+        self.music = music
         self.key = key
         self.password = Password()
         self.clock = pygame.time.Clock()
@@ -141,16 +143,16 @@ class Map:
                     abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 mixer.music.load('../extras/battle.wav')
                 mixer.music.play(-1)
-                mixer.music.set_volume(VOLUMESET)
+                mixer.music.set_volume(self.volume)
                 while enemy.life > 0 and self.my_player.life > 0:
                     scn.pop_up(self.my_player, enemy, screen, self.qa, self.itens)
                 if enemy.life <= 0:
                     enemy.kill()
                     mixer.music.stop()
                     mixer.music.unload()
-                    mixer.music.load(CURRENTSONG)
+                    mixer.music.load(self.music)
                     mixer.music.play(-1)
-                    mixer.music.set_volume(VOLUMESET)
+                    mixer.music.set_volume(self.volume)
 
                 break
 

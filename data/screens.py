@@ -480,8 +480,6 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             if itens_icon[2].rectangle.collidepoint((mx, my)) and player.itens[2] > 0:
                 enemy.life -= 50
                 player.itens[2]-= 1
-                answered, correct = True, True
-                break
             if itens_icon[3].rectangle.collidepoint((mx, my)) and player.itens[3] > 0:
                 enemy.life -= 10000
                 player.itens[3]-= 1

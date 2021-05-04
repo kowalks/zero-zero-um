@@ -453,6 +453,10 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+
+        #rect_map = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
+        #rect_map = rect_map.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
         if click:
             if atck1.rectangle.collidepoint((mx, my)):
                 answered, correct = True, qa.is_correct(atck1.index)
@@ -480,6 +484,7 @@ def pop_up(player, enemy, screen, qa, itens_icon):
             if itens_icon[4].rectangle.collidepoint((mx, my)) and player.itens[4] > 0:
                 shield = True
                 player.itens[4]-= 1
+                #itens_icon = map.draw_itens( ,rect_map, screen)
 
         text_time = round(time_lim/1000)
         tempo_text = font.render(str(text_time), True, WHITE)

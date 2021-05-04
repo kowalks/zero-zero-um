@@ -103,7 +103,7 @@ class Enemy(Character):
         self.tick_max_walk = rnd.randrange(20, 50)
         self.furious = False
         self.front = "down"
-        self.vx, self.vy = 0,0
+        self.vx, self.vy = 0, 0
 
 
     def update(self):

@@ -65,7 +65,14 @@ class Map:
         self.blocking_enemies = pygame.sprite.Group()
         self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
 
-        self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.clock_sprites = pygame.sprite.Group()
+        self.life_improve_sprites = pygame.sprite.Group()
+        self.attack_medium_sprites = pygame.sprite.Group()
+        self.defence_sprites = pygame.sprite.Group()
+        self.supreme_sprites = pygame.sprite.Group()
+        self.spawn_itens()
+
+        #self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
         self.qa = QA(self.key)
 
@@ -182,6 +189,49 @@ class Map:
                 scn.end_animated_text(screen)
                 scn.end_participantes(screen)
 
+        rect = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
+        rect = rect.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
+
+        for clock in self.clock_sprites:
+            if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
+                self.my_player.itens[0] += 1
+                self.itens = self.draw_itens(rect, screen)
+                # print(self.my_player.itens)
+                clock.kill()
+
+        for life_improve in self.life_improve_sprites:
+            if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
+                self.my_player.itens[1] += 1
+                self.itens = self.draw_itens(rect, screen)
+                # print(self.my_player.itens)
+                life_improve.kill()
+
+        for attack_medium in self.attack_medium_sprites:
+            if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
+                self.my_player.itens[2] += 1
+                self.itens = self.draw_itens(rect, screen)
+                # print(self.my_player.itens)
+                attack_medium.kill()
+
+        for supreme in self.supreme_sprites:
+            if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
+                self.my_player.itens[3] += 1
+                self.itens = self.draw_itens(rect, screen)
+                # print(self.my_player.itens)
+                supreme.kill()
+
+        for defence in self.defence_sprites:
+            if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
+                    abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
+                self.my_player.itens[4] += 1
+                self.itens = self.draw_itens(rect, screen)
+                # print(self.my_player.itens)
+                defence.kill()
+
 
         # for clock in self.clock_sprites:
         #     if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
@@ -281,14 +331,33 @@ class Map:
             position = (700 + 108 * i, rect_player.midleft[1])
             pos_center.append(position)
 
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "clock", self.my_player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "ice_clock", self.my_player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "boot", self.my_player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "wood", self.my_player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "vest", self.my_player.itens[4])
+        str_clock = "ice_clock"
+        if self.my_player.itens[0] == 0:
+            str_clock = "black_white_clock"
+
+        str_canteen = "canteen"
+        if self.my_player.itens[1] == 0:
+            str_canteen = "black_white_canteen"
+
+        str_boot = "boot"
+        if self.my_player.itens[2] == 0:
+            str_boot = "black_white_boot"
+
+        str_fish = "fish"
+        if self.my_player.itens[3] == 0:
+            str_fish = "black_white_fish"
+
+        str_vest = "vest"
+        if self.my_player.itens[4] == 0:
+            str_vest = "black_white_vest"
+
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], str_clock, self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], str_canteen, self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], str_boot, self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], str_fish, self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], str_vest, self.my_player.itens[4])
 
         return [item1, item2, item3, item4, item5]
-
 
 
     # TODO: read spawn locations for data
@@ -298,7 +367,14 @@ class Map:
             for row in csv_reader:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
-    #def spawn_itens(self):
+    def spawn_itens(self):
+        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
+        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
+        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)
+        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
+        self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 3, 3 * ROOMSIZE + 9)
+        self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11, 2 * ROOMSIZE + 3)
+        self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
 
 
 class Camera:

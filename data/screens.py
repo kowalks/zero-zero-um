@@ -42,6 +42,8 @@ class TitleScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        mixer.music.load(settings.CURRENTSONG)
+        mixer.music.play(-1)
 
     def run_events(self, running):
 
@@ -128,7 +130,7 @@ class SettingsScreen(Screen):
                                               "Música", "blue_button")
         music_setting_button_infantaria = buttons.Button(settings.MARGIN ,
                                                  settings.MARGIN + settings.BT_HEIGHT,
-                                                 "Infantaria", "blue_button")
+                                                 "Soldado", "blue_button")
         music_setting_button_avante = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
                                                   settings.MARGIN + settings.BT_HEIGHT,
                                                   "Avante", "blue_button")
@@ -153,12 +155,18 @@ class SettingsScreen(Screen):
         if music_setting_button_infantaria.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(music_setting_button_infantaria)
-                mixer.music.load('../extras/cancao_da_infantaria.WAV')
+                settings.CURRENTSONG = '../extras/soldado.WAV'
+                mixer.music.stop()
+                mixer.music.unload()
+                mixer.music.load(settings.CURRENTSONG)
                 mixer.music.play(-1)
         if music_setting_button_avante.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(music_setting_button_avante)
-                mixer.music.load('../extras/avante_camaradas.WAV')
+                settings.CURRENTSONG = '../extras/avante_camaradas.WAV'
+                mixer.music.stop()
+                mixer.music.unload()
+                mixer.music.load(settings.CURRENTSONG)
                 mixer.music.play(-1)
         if dificuldade_setting_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -531,6 +539,11 @@ def gameover(screen):
 
 
 def end_animated_text(scn):
+    mixer.music.stop()
+    settings.CURRENTSONG = '../extras/Cano_do_Expedicionrio.WAV'
+    mixer.music.unload()
+    mixer.music.load(settings.CURRENTSONG)
+    mixer.music.play(-1)
     global text_surface, text_rect
 
     poema1 = "Se..."

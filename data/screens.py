@@ -404,15 +404,8 @@ def pop_up(player, enemy, screen, qa, itens_icon):
         screen.blit(img, rect)
 
         # Enemy Life
-        jogador = font.render("Inimigo", True, WHITE)
-        enemy_title = jogador.get_rect(bottomright=(SCREEN_WIDTH - TILESIZE, 3*TILESIZE))
-
-        pl_life = font.render('Vida:', True, WHITE)
-        vida = pl_life.get_rect(bottomleft=(enemy_title.left, 3 * TILESIZE))
-        #screen.blit(pl_life, vida)
-
         pl_life = font.render(str(enemy.life), True, RED)
-        vida = pl_life.get_rect(bottomleft=(vida.right, 3 * TILESIZE))
+        vida = pl_life.get_rect(center=(1100,7.75 * TILESIZE))
         screen.blit(pl_life, vida)
 
         # Rect for actions

@@ -164,9 +164,9 @@ class Enemy(Character):
 
     def update_near_player(self):
         displacement = Vec(self.player.x, self.player.y) - Vec(self.x, self.y)
-        if displacement.length() <= 4:
+        if displacement.length() <= 6:
             self.furious = True
-        if displacement.length() >= 12:
+        if displacement.length() >= 10:
             self.furious = False
 
 

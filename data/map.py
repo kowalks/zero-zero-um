@@ -11,7 +11,10 @@ from pygame import mixer
 import csv
 
 class Map:
-    def __init__(self, screen, key):
+    def __init__(self, screen, key,volume, music,nivel):
+        self.nivel = nivel
+        self.volume = volume
+        self.music = music
         self.key = key
         self.password = Password()
         self.clock = pygame.time.Clock()
@@ -60,7 +63,7 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.spawn_enemies('enemies/newgame_enemies.csv')
+        self.spawn_enemies('csv/newgame_enemies.csv')
 
         self.blocking_enemies = pygame.sprite.Group()
         self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
@@ -148,14 +151,16 @@ class Map:
                     abs(self.my_player.rect.y - enemy.rect.y) < TILESIZE:
                 mixer.music.load('../extras/battle.wav')
                 mixer.music.play(-1)
+                mixer.music.set_volume(self.volume)
                 while enemy.life > 0 and self.my_player.life > 0:
                     scn.pop_up(self.my_player, enemy, screen, self.qa, self.itens)
                 if enemy.life <= 0:
                     enemy.kill()
                     mixer.music.stop()
                     mixer.music.unload()
-                    mixer.music.load(CURRENTSONG)
+                    mixer.music.load(self.music)
                     mixer.music.play(-1)
+                    mixer.music.set_volume(self.volume)
 
                 break
 
@@ -176,7 +181,7 @@ class Map:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
                 if self.midgame == False:
-                    self.spawn_enemies('enemies/afterkey_enemies.csv')
+                    self.spawn_enemies('csv/afterkey_enemies.csv')
                     self.midgame = True
                 self.password.show_key_password(screen) # uncomment to return original funcionality
 
@@ -196,7 +201,6 @@ class Map:
             if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
                 self.my_player.itens[0] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 clock.kill()
 
@@ -204,7 +208,6 @@ class Map:
             if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
                 self.my_player.itens[1] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 life_improve.kill()
 
@@ -212,7 +215,6 @@ class Map:
             if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
                 self.my_player.itens[2] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 attack_medium.kill()
 
@@ -220,7 +222,6 @@ class Map:
             if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
                 self.my_player.itens[3] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 supreme.kill()
 
@@ -228,7 +229,6 @@ class Map:
             if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
                 self.my_player.itens[4] += 1
-                self.itens = self.draw_itens(rect, screen)
                 # print(self.my_player.itens)
                 defence.kill()
 
@@ -331,31 +331,11 @@ class Map:
             position = (700 + 108 * i, rect_player.midleft[1])
             pos_center.append(position)
 
-        str_clock = "ice_clock"
-        if self.my_player.itens[0] == 0:
-            str_clock = "black_white_clock"
-
-        str_canteen = "canteen"
-        if self.my_player.itens[1] == 0:
-            str_canteen = "black_white_canteen"
-
-        str_boot = "boot"
-        if self.my_player.itens[2] == 0:
-            str_boot = "black_white_boot"
-
-        str_fish = "fish"
-        if self.my_player.itens[3] == 0:
-            str_fish = "black_white_fish"
-
-        str_vest = "vest"
-        if self.my_player.itens[4] == 0:
-            str_vest = "black_white_vest"
-
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], str_clock, self.my_player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], str_canteen, self.my_player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], str_boot, self.my_player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], str_fish, self.my_player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], str_vest, self.my_player.itens[4])
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "ice_clock", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "canteen", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "boot", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "fish", self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "vest", self.my_player.itens[4])
 
         return [item1, item2, item3, item4, item5]
 
@@ -368,13 +348,33 @@ class Map:
                 Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
     def spawn_itens(self):
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
-        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)
-        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
-        self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 3, 3 * ROOMSIZE + 9)
-        self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11, 2 * ROOMSIZE + 3)
-        self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
+        if self.nivel == 'dificil':
+            self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
+            self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
+            self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)
+            self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
+            self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 3, 3 * ROOMSIZE + 9)
+            self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11, 2 * ROOMSIZE + 3)
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
+        if self.nivel == 'facil':
+            self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11,
+                                            1 * ROOMSIZE + 5)
+            self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10,
+                                            3 * ROOMSIZE + 3)
+            self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player,
+                                                         2 * ROOMSIZE + 10, 11)
+            self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player,
+                                                         2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites,
+                                                             self.my_player, 3, 3 * ROOMSIZE + 9)
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites,
+                                                self.my_player, 7, 7)
+            self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player,
+                                                3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
+            self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11,
+                                                2 * ROOMSIZE + 3)
+
+
 
 
 class Camera:

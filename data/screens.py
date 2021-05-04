@@ -7,7 +7,7 @@ import random as rnd
 from pygame import mixer
 class Screen():
     """ Class of a generic screen in the game """
-    def __init__(self, caption = "My game name", *args, **kwargs):
+    def __init__(self, caption = "Zero Zero Um", *args, **kwargs):
         # Initialize screen
         self.scn = pygame.display.set_mode((settings.SCREEN_WIDTH,
                                                settings.SCREEN_HEIGHT))
@@ -44,6 +44,7 @@ class TitleScreen(Screen):
         super().__init__(*args, **kwargs)
         mixer.music.load(settings.CURRENTSONG)
         mixer.music.play(-1)
+        mixer.music.set_volume(settings.VOLUMESET)
 
     def run_events(self, running):
 
@@ -127,7 +128,7 @@ class SettingsScreen(Screen):
                     click = True
         music_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                               settings.MARGIN + settings.BT_HEIGHT,
-                                              "Música", "blue_button")
+                                              "Música", "black_button")
         music_setting_button_infantaria = buttons.Button(settings.MARGIN ,
                                                  settings.MARGIN + settings.BT_HEIGHT,
                                                  "Soldado", "blue_button")
@@ -139,7 +140,7 @@ class SettingsScreen(Screen):
         music_setting_button_avante.draw_button(self.scn)
         dificuldade_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                                     settings.MARGIN + 3 * settings.BT_HEIGHT,
-                                                    "Nível", "blue_button")
+                                                    "Nível", "black_button")
         dificuldade_setting_button_easy = buttons.Button(settings.MARGIN ,
                                                        settings.MARGIN + 3 * settings.BT_HEIGHT,
                                                        "Facil", "blue_button")
@@ -151,7 +152,7 @@ class SettingsScreen(Screen):
         dificuldade_setting_button_off.draw_button(self.scn)
         volume_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
                                                     settings.MARGIN + 5 * settings.BT_HEIGHT,
-                                                    "Volume", "blue_button")
+                                                    "Volume", "black_button")
         volume_setting_button_menos = buttons.Button(settings.MARGIN,
                                                          settings.MARGIN + 5 * settings.BT_HEIGHT,
                                                          "Menos", "blue_button")
@@ -186,10 +187,12 @@ class SettingsScreen(Screen):
         if dificuldade_setting_button_easy.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(dificuldade_setting_button_easy)
+                settings.NIVEL = 'facil'
 
         if dificuldade_setting_button_off.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(dificuldade_setting_button_off)
+                settings.NIVEL = 'dificil'
 
         if volume_setting_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -197,7 +200,7 @@ class SettingsScreen(Screen):
         if volume_setting_button_menos.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(volume_setting_button_menos)
-                settings.VOLUMESET += 0.1
+                settings.VOLUMESET -= 0.1
                 mixer.music.set_volume(settings.VOLUMESET)
 
         if volume_setting_button_mais.rectangle.collidepoint((mx, my)):
@@ -269,10 +272,10 @@ class ControlsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.key = rnd.randint(30, 200)
+        self.key = rnd.randint(30, 100)
 
     def run_events(self, running):
-        game_map = map.Map(self.scn, self.key)
+        game_map = map.Map(self.scn, self.key,settings.VOLUMESET,settings.CURRENTSONG,settings.NIVEL)
         running = game_map.run(self.scn, True)
         return running
 

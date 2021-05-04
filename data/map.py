@@ -79,7 +79,7 @@ class Map:
         room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("before_end"), TiledRoom("End_room")],
                      [TiledRoom("passagem_up_left"),TiledRoom("map_template_bottom_middle"), TiledRoom("only_right"), TiledRoom("key_room")],
                      [TiledRoom("map_template_bottom_left"), TiledRoom("map_template_up_right"), TiledRoom("map_template_up_left"), TiledRoom("map_template_bottom_right")],
-                     [TiledRoom("only_left"), TiledRoom("map_template_bottom_middle"), TiledRoom("map_template_bottom_middle"), TiledRoom("only_right")]]
+                     [TiledRoom("only_left"), TiledRoom("map_template_bottom_middle_2"), TiledRoom("map_template_bottom_middle"), TiledRoom("only_right")]]
         for row in range(MAPSIZE):
             for col in range(MAPSIZE):
                 all_room_img = room_list[row][col].make_room(all_room_img, col, row)

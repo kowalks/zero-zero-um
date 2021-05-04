@@ -7,6 +7,8 @@ import screens as scn
 import itens
 from qa import *
 from password import *
+from pygame import mixer
+import csv
 
 class Map:
     def __init__(self, screen, key):
@@ -22,9 +24,11 @@ class Map:
         self.map_image = pygame.transform.scale(self.map_image, (MAPSIZE*ROOMSIZE*TILESIZE,MAPSIZE*ROOMSIZE*TILESIZE))
         self.map_rect = self.map_image.get_rect()
         self.camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.midgame = False
 
         self.key_sprites = pygame.sprite.Group()
         self.my_key = itens.KeyItem(self.all_sprites, self.key_sprites, self.my_player, 3*ROOMSIZE + 7.5, 1*ROOMSIZE+ 8)
+
         self.end_game_sprites = pygame.sprite.Group()
         self.end_game = itens.EndGameItem(self.all_sprites, self.end_game_sprites, self.my_player,56 , 1)
         # self.clock_sprites = pygame.sprite.Group() # aumenta o tempo de limite de resposta para todas perguntas (ponteiro)
@@ -56,16 +60,12 @@ class Map:
         # self.my_defence = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 2, 5)
 
         self.enemies = pygame.sprite.Group()
-        self.spawn_enemies()
+        self.spawn_enemies('enemies/newgame_enemies.csv')
 
-        self.clock_sprites = pygame.sprite.Group()
-        self.life_improve_sprites = pygame.sprite.Group()
-        self.attack_medium_sprites = pygame.sprite.Group()
-        self.defence_sprites = pygame.sprite.Group()
-        self.supreme_sprites = pygame.sprite.Group()
-        self.spawn_itens()
+        self.blocking_enemies = pygame.sprite.Group()
+        self.my_blocking_enemy = BlockingEnemy(self.walls, self.all_sprites, self.blocking_enemies, self.my_player, 47.5, 7)
 
-        #self.my_itens = [3, 3, 4, 3, 3]
+        self.my_itens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.dt = 0
         self.qa = QA(self.key)
 
@@ -79,7 +79,7 @@ class Map:
         room_list = [[TiledRoom("Spawnpoint"), TiledRoom("map_template_up_middle"), TiledRoom("before_end"), TiledRoom("End_room")],
                      [TiledRoom("passagem_up_left"),TiledRoom("map_template_bottom_middle"), TiledRoom("only_right"), TiledRoom("key_room")],
                      [TiledRoom("map_template_bottom_left"), TiledRoom("map_template_up_right"), TiledRoom("map_template_up_left"), TiledRoom("map_template_bottom_right")],
-                     [TiledRoom("only_left"), TiledRoom("map_template_bottom_middle_2"), TiledRoom("map_template_bottom_middle"), TiledRoom("only_right")]]
+                     [TiledRoom("only_left"), TiledRoom("map_template_bottom_middle"), TiledRoom("map_template_bottom_middle"), TiledRoom("only_right")]]
         for row in range(MAPSIZE):
             for col in range(MAPSIZE):
                 all_room_img = room_list[row][col].make_room(all_room_img, col, row)
@@ -152,13 +152,28 @@ class Map:
 
                 break
 
+        for blocking_enemy in self.blocking_enemies:
+            if abs(self.my_player.rect.x - blocking_enemy.rect.x) < 1.5 * TILESIZE and \
+                    abs(self.my_player.rect.y - blocking_enemy.rect.y) < 2*TILESIZE:
+                if self.password.enter_password_screen(screen, self.my_player):
+                    blocking_enemy.kill()
+                else:
+                    self.my_player.rect.x -= 2 * TILESIZE
+
         if self.my_player.life <= 0:
+            mixer.music.stop()
             scn.gameover(screen)
+
 
         for key in self.key_sprites:
             if abs(self.my_player.rect.x - key.rect.x) < TILESIZE and \
                     abs(self.my_player.rect.y - key.rect.y) < TILESIZE:
-                self.my_key.show_key_password(screen, self.password)
+                if self.midgame == False:
+                    self.spawn_enemies('enemies/afterkey_enemies.csv')
+                    self.midgame = True
+                self.password.show_key_password(screen) # uncomment to return original funcionality
+
+
         for end in self.end_game_sprites:
             if abs(self.my_player.rect.x - end.rect.x) < 2*TILESIZE and \
                     abs(self.my_player.rect.y - end.rect.y) < TILESIZE:
@@ -167,49 +182,14 @@ class Map:
                 scn.end_animated_text(screen)
                 scn.end_participantes(screen)
 
-        rect = pygame.Surface((SCREEN_WIDTH, 1.2 * TILESIZE))  # the size of your rect
-        rect = rect.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT))
 
-        for clock in self.clock_sprites:
-            if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
-                     abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
-                self.my_player.itens[0] += 1
-                self.itens = self.draw_itens(rect, screen)
-                #print(self.my_player.itens)
-                clock.kill()
-
-        for life_improve in self.life_improve_sprites:
-            if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
-                     abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
-                self.my_player.itens[1] += 1
-                self.itens = self.draw_itens(rect, screen)
-                #print(self.my_player.itens)
-                life_improve.kill()
-
-        for attack_medium in self.attack_medium_sprites:
-            if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
-                self.my_player.itens[2] += 1
-                self.itens = self.draw_itens(rect, screen)
-                #print(self.my_player.itens)
-                attack_medium.kill()
-
-        for supreme in self.supreme_sprites:
-            if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
-                self.my_player.itens[3] += 1
-                self.itens = self.draw_itens(rect, screen)
-                #print(self.my_player.itens)
-                supreme.kill()
-
-        for defence in self.defence_sprites:
-            if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
-                    abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
-                self.my_player.itens[4] += 1
-                self.itens = self.draw_itens(rect, screen)
-                #print(self.my_player.itens)
-                defence.kill()
-
+        # for clock in self.clock_sprites:
+        #     if abs(self.my_player.rect.x - clock.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - clock.rect.y) < TILESIZE:
+        #         self.my_player.itens[3]+= 1
+        #         print(self.my_player.itens)
+        #         clock.kill()
+        #
         # for heal_low in self.heal_low_sprites:
         #     if abs(self.my_player.rect.x - heal_low.rect.x) < TILESIZE and \
         #             abs(self.my_player.rect.y - heal_low.rect.y) < TILESIZE:
@@ -223,20 +203,48 @@ class Map:
         #         self.my_player.itens[1]+= 1
         #         print(self.my_player.itens)
         #         heal_medium.kill()
-
+        #
+        # for life_improve in self.life_improve_sprites:
+        #     if abs(self.my_player.rect.x - life_improve.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - life_improve.rect.y) < TILESIZE:
+        #         self.my_player.itens[2]+= 1
+        #         print(self.my_player.itens)
+        #         life_improve.kill()
+        #
+        # for defence in self.defence_sprites:
+        #     if abs(self.my_player.rect.x - defence.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - defence.rect.y) < TILESIZE:
+        #         self.my_player.itens[4]+= 1
+        #         print(self.my_player.itens)
+        #         defence.kill()
+        #
         # for attack_low in self.attack_low_sprites:
         #     if abs(self.my_player.rect.x - attack_low.rect.x) < TILESIZE and \
         #             abs(self.my_player.rect.y - attack_low.rect.y) < TILESIZE:
         #         self.my_player.itens[6]+= 1
         #         print(self.my_player.itens)
         #         attack_low.kill()
-
+        #
+        # for attack_medium in self.attack_medium_sprites:
+        #     if abs(self.my_player.rect.x - attack_medium.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - attack_medium.rect.y) < TILESIZE:
+        #         self.my_player.itens[7]+= 1
+        #         print(self.my_player.itens)
+        #         attack_medium.kill()
+        #
         # for attack_improve in self.attack_improve_sprites:
         #     if abs(self.my_player.rect.x - attack_improve.rect.x) < TILESIZE and \
         #             abs(self.my_player.rect.y - attack_improve.rect.y) < TILESIZE:
         #         self.my_player.itens[8]+= 1
         #         print(self.my_player.itens)
         #         attack_improve.kill()
+        #
+        # for supreme in self.supreme_sprites:
+        #     if abs(self.my_player.rect.x - supreme.rect.x) < TILESIZE and \
+        #             abs(self.my_player.rect.y - supreme.rect.y) < TILESIZE:
+        #         self.my_player.itens[5] = 1
+        #         print(self.my_player.itens)
+        #         supreme.kill()
 
     def draw_info(self, screen):
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)
@@ -273,56 +281,24 @@ class Map:
             position = (700 + 108 * i, rect_player.midleft[1])
             pos_center.append(position)
 
-        str_clock = "ice_clock"
-        if self.my_player.itens[0] == 0:
-            str_clock = "black_white_clock"
-
-        str_canteen = "canteen"
-        if self.my_player.itens[1] == 0:
-            str_canteen = "black_white_canteen"
-
-        str_boot = "boot"
-        if self.my_player.itens[2] == 0:
-            str_boot = "black_white_boot"
-
-        str_fish = "fish"
-        if self.my_player.itens[3] == 0:
-            str_fish = "black_white_fish"
-
-        str_vest = "vest"
-        if self.my_player.itens[4] == 0:
-            str_vest = "black_white_vest"
-
-        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], str_clock, self.my_player.itens[0])
-        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], str_canteen, self.my_player.itens[1])
-        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], str_boot, self.my_player.itens[2])
-        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], str_fish, self.my_player.itens[3])
-        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], str_vest, self.my_player.itens[4])
+        item1 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[0], "clock", self.my_player.itens[0])
+        item2 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[1], "ice_clock", self.my_player.itens[1])
+        item3 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[2], "boot", self.my_player.itens[2])
+        item4 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[3], "wood", self.my_player.itens[3])
+        item5 = buttons.ButtonItens(0, 0, nTILESIZE, pos_center[4], "vest", self.my_player.itens[4])
 
         return [item1, item2, item3, item4, item5]
 
 
 
     # TODO: read spawn locations for data
-    def spawn_enemies(self):
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, +8, 7, 1)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 4, 2)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 2 * ROOMSIZE + 3, 1 * ROOMSIZE + 8, 3)
-        self.my_enemy = Enemy(self.walls, self.all_sprites, self.enemies,
-                              self.my_player, 3*ROOMSIZE-1, 8, 4)
+    def spawn_enemies(self,file):
+        with open(file, mode='r') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            for row in csv_reader:
+                Enemy(self.walls, self.all_sprites, self.enemies, self.my_player, int(row["x"]), int(row["y"]), int(row["nivel"]))
 
-
-    def spawn_itens(self):
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 11, 1 * ROOMSIZE + 5)
-        self.my_clock = itens.ClockItem(self.all_sprites, self.clock_sprites, self.my_player, 2 * ROOMSIZE + 10, 3 * ROOMSIZE + 3)
-        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 10, 11)
-        self.my_life_improve = itens.ImproveLifeItem(self.all_sprites, self.life_improve_sprites, self.my_player, 2 * ROOMSIZE + 3, 3 * ROOMSIZE + 10)
-        self.my_attack_medium = itens.AdvancedAttackItem(self.all_sprites, self.attack_medium_sprites, self.my_player, 3, 3 * ROOMSIZE + 9)
-        self.my_defense = itens.DefenceItem(self.all_sprites, self.defence_sprites, self.my_player, 11, 2 * ROOMSIZE + 3)
-        self.my_supreme = itens.SupremeItem(self.all_sprites, self.supreme_sprites, self.my_player, 3 * ROOMSIZE + 9, 3 * ROOMSIZE + 9)
+    #def spawn_itens(self):
 
 
 class Camera:

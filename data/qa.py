@@ -40,15 +40,17 @@ class QA():
 
     def get_qa_level3(self):
         faca = rnd.randint(-300, 300)
-        faca_den = rnd.randint(0,100)/100
+        faca_den = rnd.randint(0,100)/10
+        alg = (faca_den - int(faca_den))/10
+        faca_den = faca_den/10
         faca = round(faca + faca_den,2)
         question = self.question.format(faca)
         ans = []
         ans.append(str(round(self.key - faca,2)))
         for i in range(0,2):
             faca = rnd.randint(-300, 300)
-            delta = rnd.randint(-1,1)/100
-            faca = round(faca + faca_den + delta,2)
+            delta = rnd.randint(-1,1)/10
+            faca = round(faca + alg + delta,2)
             ans.append(str(round(self.key - faca,2)))
 
         return question, ans

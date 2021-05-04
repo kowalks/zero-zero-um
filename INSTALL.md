@@ -7,5 +7,5 @@ $ pip install -r requirements
 
 # Run app
 ```console
-$ python main.py
+$ python data/main.py
 ```

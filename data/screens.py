@@ -149,6 +149,18 @@ class SettingsScreen(Screen):
         dificuldade_setting_button_easy.draw_button(self.scn)
         dificuldade_setting_button.draw_button(self.scn)
         dificuldade_setting_button_off.draw_button(self.scn)
+        volume_setting_button = buttons.Button(settings.MARGIN + settings.BT_DIST,
+                                                    settings.MARGIN + 5 * settings.BT_HEIGHT,
+                                                    "Volume", "blue_button")
+        volume_setting_button_menos = buttons.Button(settings.MARGIN,
+                                                         settings.MARGIN + 5 * settings.BT_HEIGHT,
+                                                         "Menos", "blue_button")
+        volume_setting_button_mais = buttons.Button(settings.MARGIN + 2 * settings.BT_DIST,
+                                                        settings.MARGIN + 5 * settings.BT_HEIGHT,
+                                                        "Mais", "blue_button")
+        volume_setting_button.draw_button(self.scn)
+        volume_setting_button_menos.draw_button(self.scn)
+        volume_setting_button_mais.draw_button(self.scn)
         if music_setting_button.rectangle.collidepoint((mx, my)):
             if click:
                 pass
@@ -178,6 +190,21 @@ class SettingsScreen(Screen):
         if dificuldade_setting_button_off.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(dificuldade_setting_button_off)
+
+        if volume_setting_button.rectangle.collidepoint((mx, my)):
+            if click:
+                pass
+        if volume_setting_button_menos.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(volume_setting_button_menos)
+                settings.VOLUMESET += 0.1
+                mixer.music.set_volume(settings.VOLUMESET)
+
+        if volume_setting_button_mais.rectangle.collidepoint((mx, my)):
+            if click:
+                self.clickstate(volume_setting_button_mais)
+                settings.VOLUMESET += 0.1
+                mixer.music.set_volume(settings.VOLUMESET)
         # TODO: Antes de dar push, organizar essa implementacao do quit button
         if back_button.rectangle.collidepoint((mx, my)):
             if click:

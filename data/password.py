@@ -51,7 +51,7 @@ class Password:
         click = False
 
         bg = pygame.transform.scale(
-            pygame.image.load("img/background/battle_alt.png"),
+            pygame.image.load("img/background/battle_bg.png"),
             (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(bg, (0, 0))
         font = pygame.font.Font(f'fonts/{BT_FONT}.ttf', 30)

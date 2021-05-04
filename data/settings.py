@@ -33,7 +33,7 @@ YELLOW = (255, 255, 0)
 TITLE = "Zero Zero Um"
 FPS = 30
 BGCOLOR = DARKGREY
-
+CURRENTSONG = "../extras/cancao_da_infantaria.WAV"
 TILESIZE = 64
 GRIDWIDTH = SCREEN_WIDTH / TILESIZE  # 40 in default
 GRIDHEIGHT = SCREEN_HEIGHT / TILESIZE # 22.5 in default

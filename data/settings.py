@@ -47,3 +47,4 @@ ROOMSIZE = 16
 MAPSIZE = 4  # in rooms
 
 
+NIVEL = 'facil'

@@ -187,10 +187,12 @@ class SettingsScreen(Screen):
         if dificuldade_setting_button_easy.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(dificuldade_setting_button_easy)
+                settings.NIVEL = 'facil'
 
         if dificuldade_setting_button_off.rectangle.collidepoint((mx, my)):
             if click:
                 self.clickstate(dificuldade_setting_button_off)
+                settings.NIVEL = 'dificil'
 
         if volume_setting_button.rectangle.collidepoint((mx, my)):
             if click:
@@ -273,7 +275,7 @@ class GameScreen(Screen):
         self.key = rnd.randint(30, 200)
 
     def run_events(self, running):
-        game_map = map.Map(self.scn, self.key,settings.VOLUMESET,settings.CURRENTSONG)
+        game_map = map.Map(self.scn, self.key,settings.VOLUMESET,settings.CURRENTSONG,settings.NIVEL)
         running = game_map.run(self.scn, True)
         return running
 

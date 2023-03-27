@@ -52,3 +52,10 @@ Ao final do projeto, será disponibilizado o código completo como repositório 
 
 [1]: https://github.com/kowalks/zero-zero-um
 [2]: https://www.notion.so/kowalks/Projeto-CES-22-a2e6df24c5dc484eaf110a69ac01da68
+
+## 6. Screenshots do jogo
+
+<img src="./extras/start.png">
+<img src="./extras/story.png">
+<img src="./extras/game1.png">
+<img src="./extras/game2.png">
